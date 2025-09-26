@@ -473,9 +473,12 @@ function initializeDashboard() {
 }
 
 function loadDashboardData() {
-    // Initialize charts
-    initializeSalesChart();
-    initializeProductsChart();
+    // تأخير قصير لضمان تحميل DOM بالكامل
+    setTimeout(() => {
+        // Initialize charts
+        initializeSalesChart();
+        initializeProductsChart();
+    }, 300);
 }
 
 function initializeSalesChart() {
@@ -492,23 +495,75 @@ function initializeSalesChart() {
                     backgroundColor: 'rgba(220, 38, 38, 0.1)',
                     borderWidth: 3,
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    pointBackgroundColor: '#dc2626',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        borderColor: '#dc2626',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        titleFont: {
+                            family: 'Cairo',
+                            size: 14,
+                            weight: '600'
+                        },
+                        bodyFont: {
+                            family: 'Cairo',
+                            size: 13
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                return 'المبيعات: ' + context.parsed.y.toLocaleString('ar-SA') + ' ر.س';
+                            }
+                        }
                     }
                 },
                 scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo',
+                                size: 12
+                            },
+                            color: '#666'
+                        }
+                    },
                     y: {
                         beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
                         ticks: {
+                            font: {
+                                family: 'Cairo',
+                                size: 12
+                            },
+                            color: '#666',
                             callback: function(value) {
-                                return value.toLocaleString('ar-SA') + ' ر.س';
+                                return (value / 1000) + 'ك ر.س';
                             }
                         }
                     }
@@ -521,7 +576,7 @@ function initializeSalesChart() {
 function initializeProductsChart() {
     const ctx = document.getElementById('productsChart');
     if (ctx) {
-        new Chart(ctx, {
+        const chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['خضروات', 'فواكه', 'لحوم', 'ألبان'],
@@ -533,18 +588,86 @@ function initializeProductsChart() {
                         '#dc2626',
                         '#3b82f6'
                     ],
-                    borderWidth: 0
+                    borderWidth: 0,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '#ffffff'
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                cutout: '60%',
+                interaction: {
+                    intersect: false
+                },
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: {
+                                family: 'Cairo',
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#666'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        borderColor: '#e5e5e5',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        titleFont: {
+                            family: 'Cairo',
+                            size: 14,
+                            weight: '600'
+                        },
+                        bodyFont: {
+                            family: 'Cairo',
+                            size: 13
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return label + ': ' + percentage + '%';
+                            }
+                        }
                     }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 1000
                 }
-            }
+            },
+            plugins: [{
+                id: 'centerText',
+                beforeDraw: function(chart) {
+                    const ctx = chart.ctx;
+                    const centerX = chart.width / 2;
+                    const centerY = chart.height / 2;
+                    
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#333';
+                    ctx.font = 'bold 18px Cairo';
+                    ctx.fillText('100%', centerX, centerY - 5);
+                    ctx.font = '12px Cairo';
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('إجمالي المنتجات', centerX, centerY + 15);
+                    ctx.restore();
+                }
+            }]
         });
     }
 }
