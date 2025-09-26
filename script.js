@@ -584,6 +584,11 @@ class SuperMarketApp {
     }
 }
 
+// Navigation function to account page
+function goToAccount() {
+    window.location.href = 'account.html';
+}
+
 // تشغيل التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
     const app = new SuperMarketApp();
