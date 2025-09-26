@@ -7,6 +7,15 @@
     box-sizing: border-box;
 }
 
+html, body {
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    zoom: normal !important;
+}
+
 body {
     font-family: 'Cairo', sans-serif;
     background: linear-gradient(135deg, #fff0f0 0%, #ffe5e5 100%);
@@ -14,6 +23,28 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     direction: rtl;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Prevent zoom on inputs */
+input, select, textarea {
+    font-size: 16px !important;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Disable zoom on double tap */
+button, a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .container {
@@ -1332,20 +1363,35 @@ body {
     color: #333;
 }
 
-/* Responsive Design */
+/* Mobile Responsive - Enhanced */
 @media (max-width: 768px) {
     .container {
-        padding: 0 15px;
+        padding: 0 10px;
     }
     
     .admin-header-content {
         flex-direction: column;
         gap: 15px;
         text-align: center;
+        padding: 15px 0;
     }
     
     .admin-brand {
         justify-content: center;
+    }
+    
+    .admin-title h1 {
+        font-size: 20px;
+    }
+    
+    .admin-actions {
+        gap: 10px;
+    }
+    
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
     
     .charts-section {
@@ -1353,7 +1399,21 @@ body {
     }
     
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .stat-card {
+        padding: 20px 15px;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
     }
     
     .form-row {
@@ -1363,6 +1423,7 @@ body {
     .filters-section {
         flex-direction: column;
         align-items: stretch;
+        gap: 15px;
     }
     
     .search-box {
@@ -1370,78 +1431,126 @@ body {
     }
     
     .filter-buttons {
-        justify-content: center;
+        justify-content: stretch;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .filter-buttons select {
+        width: 100%;
     }
     
     .nav-tabs {
-        justify-content: center;
+        justify-content: stretch;
+        padding: 0 10px;
     }
     
     .nav-tab {
-        min-width: 100px;
+        min-width: auto;
+        flex: 1;
         font-size: 12px;
+        padding: 15px 10px;
     }
     
     .nav-tab i {
         font-size: 16px;
     }
     
+    .nav-tab span {
+        font-size: 12px;
+    }
+    
     .section-header {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
+        gap: 15px;
+    }
+    
+    .section-header h2 {
+        font-size: 24px;
     }
     
     .products-grid {
         grid-template-columns: 1fr;
     }
     
+    .product-card {
+        padding: 15px;
+    }
+    
+    .product-actions {
+        gap: 8px;
+    }
+    
     .users-list {
         grid-template-columns: 1fr;
     }
     
+    .user-card {
+        padding: 15px;
+    }
+    
     .modal-content {
         width: 95%;
-        padding: 20px;
+        padding: 20px 15px;
+        margin: 10px;
+        max-height: 90vh;
+    }
+    
+    .modal-header h3 {
+        font-size: 18px;
     }
     
     .order-header {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
     
     .order-actions {
         justify-content: stretch;
+        flex-direction: column;
+        gap: 10px;
     }
     
     .user-stats {
         grid-template-columns: 1fr;
     }
-}
-
-@media (max-width: 480px) {
-    .admin-main {
-        padding: 20px 0;
+    
+    .user-actions {
+        gap: 8px;
     }
     
-    .stat-card {
-        flex-direction: column;
-        text-align: center;
+    .recent-orders {
+        gap: 10px;
     }
     
     .order-item {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
+        padding: 15px;
     }
     
     .order-amount {
         margin: 0;
         text-align: center;
+        order: 2;
+    }
+    
+    .order-status {
+        align-self: center;
+        order: 3;
     }
     
     .form-actions {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .cancel-btn, .save-btn {
+        width: 100%;
     }
     
     .toast {
@@ -1453,6 +1562,180 @@ body {
     
     .toast.show {
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 8px;
+    }
+    
+    .admin-main {
+        padding: 15px 0;
+    }
+    
+    .admin-header-content {
+        padding: 10px 0;
+    }
+    
+    .admin-title h1 {
+        font-size: 18px;
+    }
+    
+    .admin-title p {
+        font-size: 12px;
+    }
+    
+    .admin-logo {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .nav-tab {
+        padding: 12px 8px;
+        font-size: 11px;
+    }
+    
+    .nav-tab i {
+        font-size: 14px;
+    }
+    
+    .nav-tab span {
+        font-size: 10px;
+    }
+    
+    .section-header h2 {
+        font-size: 20px;
+    }
+    
+    .stat-card {
+        padding: 15px 10px;
+        min-height: 100px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .stat-number {
+        font-size: 20px;
+    }
+    
+    .modal-content {
+        width: 98%;
+        padding: 15px 10px;
+        margin: 5px;
+        border-radius: 15px;
+    }
+    
+    .modal-header h3 {
+        font-size: 16px;
+    }
+    
+    .close-modal {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .product-card {
+        padding: 12px;
+    }
+    
+    .product-image {
+        height: 120px;
+    }
+    
+    .product-info h3 {
+        font-size: 16px;
+    }
+    
+    .product-price {
+        font-size: 18px;
+    }
+    
+    .btn-edit, .btn-delete, .btn-view {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .user-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .user-basic-info h3 {
+        font-size: 16px;
+    }
+    
+    .toast {
+        padding: 15px;
+        min-width: auto;
+    }
+    
+    .toast-content {
+        gap: 10px;
+    }
+    
+    .toast-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .toast-message {
+        font-size: 12px;
+    }
+    
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+        padding: 15px 12px;
+        font-size: 16px;
+        border-radius: 12px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .input-group select {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: left 10px center;
+        background-size: 20px;
+        padding-left: 40px;
+    }
+    
+    .search-box input {
+        font-size: 16px !important;
+        padding: 15px 45px 15px 15px;
+    }
+    
+    .add-btn, .view-all-btn {
+        padding: 15px 20px;
+        font-size: 14px;
+        border-radius: 12px;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .admin-login-btn {
+        padding: 20px;
+        font-size: 16px;
+    }
+    
+    .input-group.login input {
+        padding: 20px 60px 20px 50px;
+        font-size: 16px;
     }
 }
 
@@ -1795,12 +2078,17 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
 .detail-label {
     font-size: 12px;
     color: #666;
     font-weight: 600;
+    text-transform: uppercase;
 }
 
 .detail-value {
@@ -1809,11 +2097,18 @@ body {
     font-weight: 600;
 }
 
+.order-items {
+    margin-bottom: 20px;
+}
+
 .order-items h4 {
     color: #333;
     margin-bottom: 15px;
     font-size: 16px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .item-list {
@@ -1855,6 +2150,7 @@ body {
     height: 50px;
     border-radius: 8px;
     object-fit: cover;
+    flex-shrink: 0;
 }
 
 .item-details {
@@ -1878,11 +2174,17 @@ body {
     font-weight: 600;
     color: #333;
     margin-left: 15px;
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 20px;
+    min-width: 35px;
+    text-align: center;
 }
 
 .item-actions {
     display: flex;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .btn-item-ready, .btn-item-replace, .btn-item-delete {
@@ -1894,6 +2196,11 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 70px;
+    justify-content: center;
 }
 
 .btn-item-ready {
@@ -2112,37 +2419,246 @@ body {
     
     .order-counters {
         justify-content: center;
+        gap: 15px;
     }
     
     .counter-card {
         min-width: 100px;
+        padding: 15px;
+    }
+    
+    .counter-card .count {
+        font-size: 24px;
+    }
+    
+    .counter-card .label {
+        font-size: 11px;
     }
     
     .order-tabs {
-        flex-direction: column;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 5px;
+        padding: 0 10px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .order-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .order-tab {
+        min-width: max-content;
+        padding: 12px 15px;
+        font-size: 13px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    .order-card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .order-header {
+        margin-bottom: 12px;
+    }
+    
+    .order-id {
+        font-size: 16px;
+    }
+    
+    .customer-name {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+    
+    .customer-contact {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+    
+    .customer-address {
+        font-size: 11px;
+        padding: 6px;
+        margin-bottom: 12px;
+    }
+    
+    .order-total {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+    
+    .payment-method {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    .btn-prepare {
+        padding: 12px;
+        font-size: 13px;
+        border-radius: 10px;
     }
     
     .customer-details-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .detail-item {
+        background: white;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #f0f0f0;
     }
     
     .product-comparison {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
     
     .confirmation-actions {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-success, .btn-danger, .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 15px;
+        font-size: 14px;
     }
     
     .sound-control {
         position: relative;
         top: auto;
         left: auto;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .sound-btn {
+        font-size: 13px;
+        padding: 12px 16px;
+        min-height: 44px;
+        min-width: 120px;
+    }
+    
+    .preparation-header {
+        text-align: center;
         margin-bottom: 20px;
     }
     
     .item-actions {
         flex-direction: column;
-        gap: 5px;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .btn-item-ready, .btn-item-replace, .btn-item-delete {
+        width: 100%;
+        padding: 12px;
+        font-size: 12px;
+        min-height: 44px;
+        justify-content: center;
+    }
+    
+    .item-info {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .item-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .item-name {
+        font-size: 13px;
+    }
+    
+    .item-price {
+        font-size: 11px;
+    }
+    
+    .item-quantity {
+        font-size: 12px;
+        margin-left: 0;
+        margin-top: 5px;
+        align-self: flex-start;
+    }
+    
+    .order-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .replacement-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+    
+    .replacement-item img {
+        width: 60px !important;
+        height: 60px !important;
+        align-self: center;
+        margin-bottom: 10px;
+    }
+    
+    .search-section {
+        margin-bottom: 15px;
+    }
+    
+    .search-section .search-box {
+        margin-bottom: 10px;
+    }
+    
+    .product-category-filter select {
+        width: 100%;
+        font-size: 16px !important;
+        padding: 15px;
+    }
+    
+    .replacement-products {
+        max-height: 250px;
+    }
+    
+    .modal-content.replace-modal-content,
+    .modal-content.order-modal-content,
+    .modal-content.confirmation-modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 10px;
+        padding: 15px;
+        max-height: 85vh;
+    }
+    
+    .customer-details-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .detail-item {
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .confirmation-actions {
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 20px;
+    }
+    
+    .btn-success, .btn-danger, .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 15px;
+        font-size: 14px;
+        min-height: 50px;
     }
 }

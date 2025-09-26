@@ -732,9 +732,20 @@ function handleEditProduct(e) {
 
 // Load Orders Data for Preparation System
 function loadOrdersData() {
+    console.log('Loading orders data...');
+    console.log('Current preparation orders:', preparationOrders);
+    
+    // Ensure data is loaded
+    if (!preparationOrders || preparationOrders.length === 0) {
+        console.log('No preparation orders found, reloading data...');
+        preparationOrders = [...samplePreparationOrders];
+    }
+    
     loadPreparationData();
     updateOrderCounters();
     loadOrderSections();
+    
+    console.log('Orders loaded successfully:', preparationOrders.length, 'orders');
 }
 
 // Load all preparation data
@@ -867,7 +878,12 @@ function loadCompletedOrders() {
 function createPreparationOrderCard(order) {
     const card = document.createElement('div');
     card.className = `order-card ${order.status} ${order.urgent ? 'urgent' : ''}`;
-    card.onclick = () => showOrderDetailsModal(order.id);
+    
+    // Add event listener instead of inline onclick for better debugging
+    card.addEventListener('click', function() {
+        console.log('Order card clicked, ID:', order.id);
+        showOrderDetailsModal(order.id);
+    });
     
     const orderTime = getTimeAgo(order.orderDate);
     const paymentMethodClass = order.paymentMethod === 'cash' ? 'cash' : 'instapay';
@@ -924,85 +940,129 @@ function createPreparationOrderCard(order) {
 
 // Show order details modal
 function showOrderDetailsModal(orderId) {
+    console.log('Opening order details for ID:', orderId);
     const order = preparationOrders.find(o => o.id === orderId);
-    if (!order) return;
+    console.log('Found order:', order);
     
-    // Update customer info
-    const customerInfo = document.getElementById('customerInfo');
-    if (customerInfo) {
-        customerInfo.innerHTML = `
-            <h4><i class="fas fa-user"></i> معلومات العميل</h4>
-            <div class="customer-details-grid">
-                <div class="detail-item">
-                    <span class="detail-label">الاسم:</span>
-                    <span class="detail-value">${order.customerName}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">الهاتف:</span>
-                    <span class="detail-value">${order.customerPhone}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">الإيميل:</span>
-                    <span class="detail-value">${order.customerEmail}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">العنوان:</span>
-                    <span class="detail-value">${order.address}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">المجموع:</span>
-                    <span class="detail-value">${order.total.toFixed(2)} ر.س</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">طريقة الدفع:</span>
-                    <span class="detail-value">${order.paymentMethod === 'cash' ? 'نقدي' : 'إنستاباي'}</span>
-                </div>
-            </div>
-        `;
+    if (!order) {
+        console.error('Order not found:', orderId);
+        showToast('خطأ: لم يتم العثور على الطلب', 'error');
+        return;
     }
     
-    // Update order items
-    const orderItems = document.getElementById('orderItems');
-    if (orderItems) {
-        const itemsHtml = order.items.map(item => {
-            const itemStatusClass = item.status === 'prepared' ? 'prepared' : 
-                                   item.status === 'replaced' ? 'replaced' : '';
-            
-            return `
-                <div class="order-item ${itemStatusClass}" data-item-id="${item.id}">
-                    <div class="item-info">
-                        <img src="${item.image}" alt="${item.name}" class="item-image">
-                        <div class="item-details">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-price">الكمية: ${item.quantity} | السعر: ${item.price.toFixed(2)} ر.س</div>
-                        </div>
-                        <div class="item-quantity">×${item.quantity}</div>
+    // Ensure modal exists before proceeding
+    const modal = document.getElementById('orderDetailsModal');
+    if (!modal) {
+        console.error('Order details modal not found');
+        showToast('خطأ: نافذة التفاصيل غير موجودة', 'error');
+        return;
+    }
+    
+    // Wait for DOM to be ready then update content
+    setTimeout(() => {
+        // Update customer info
+        const customerInfo = document.getElementById('customerInfo');
+        console.log('Customer info element:', customerInfo);
+        
+        if (customerInfo) {
+            customerInfo.innerHTML = `
+                <h4><i class="fas fa-user"></i> معلومات العميل</h4>
+                <div class="customer-details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">الاسم:</span>
+                        <span class="detail-value">${order.customerName}</span>
                     </div>
-                    
-                    ${item.status === 'pending' || item.status === 'preparing' ? `
-                        <div class="item-actions">
-                            <button class="btn-item-ready" onclick="markItemReady(${order.id}, ${item.id})">
-                                <i class="fas fa-check"></i> تم
-                            </button>
-                            <button class="btn-item-replace" onclick="showReplaceProductModal(${order.id}, ${item.id})">
-                                <i class="fas fa-exchange-alt"></i> استبدال
-                            </button>
-                            <button class="btn-item-delete" onclick="deleteOrderItem(${order.id}, ${item.id})">
-                                <i class="fas fa-trash"></i> حذف
-                            </button>
-                        </div>
-                    ` : ''}
+                    <div class="detail-item">
+                        <span class="detail-label">الهاتف:</span>
+                        <span class="detail-value">${order.customerPhone}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الإيميل:</span>
+                        <span class="detail-value">${order.customerEmail}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">العنوان:</span>
+                        <span class="detail-value">${order.address}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">المجموع:</span>
+                        <span class="detail-value">${order.total.toFixed(2)} ر.س</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">طريقة الدفع:</span>
+                        <span class="detail-value">${order.paymentMethod === 'cash' ? 'نقدي' : 'إنستاباي'}</span>
+                    </div>
                 </div>
             `;
-        }).join('');
+            console.log('Customer info updated successfully');
+        } else {
+            console.error('Customer info element not found');
+        }
         
-        orderItems.innerHTML = `
-            <h4><i class="fas fa-shopping-basket"></i> منتجات الطلب</h4>
-            <div class="item-list">
-                ${itemsHtml}
-            </div>
-        `;
-    }
+        // Update order items
+        const orderItems = document.getElementById('orderItems');
+        console.log('Order items element:', orderItems);
+        console.log('Order items data:', order.items);
+        
+        if (orderItems && order.items && order.items.length > 0) {
+            const itemsHtml = order.items.map(item => {
+                const itemStatusClass = item.status === 'prepared' ? 'prepared' : 
+                                       item.status === 'replaced' ? 'replaced' : '';
+                
+                return `
+                    <div class="order-item ${itemStatusClass}" data-item-id="${item.id}">
+                        <div class="item-info">
+                            <img src="${item.image || 'https://via.placeholder.com/60x60/dc2626/white?text=منتج'}" alt="${item.name}" class="item-image">
+                            <div class="item-details">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">الكمية: ${item.quantity} | السعر: ${item.price.toFixed(2)} ر.س</div>
+                            </div>
+                            <div class="item-quantity">×${item.quantity}</div>
+                        </div>
+                        
+                        ${item.status === 'pending' || item.status === 'preparing' ? `
+                            <div class="item-actions">
+                                <button class="btn-item-ready" onclick="markItemReady(${order.id}, ${item.id})">
+                                    <i class="fas fa-check"></i> تم
+                                </button>
+                                <button class="btn-item-replace" onclick="showReplaceProductModal(${order.id}, ${item.id})">
+                                    <i class="fas fa-exchange-alt"></i> استبدال
+                                </button>
+                                <button class="btn-item-delete" onclick="deleteOrderItem(${order.id}, ${item.id})">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            orderItems.innerHTML = `
+                <h4><i class="fas fa-shopping-basket"></i> منتجات الطلب</h4>
+                <div class="item-list">
+                    ${itemsHtml}
+                </div>
+            `;
+            console.log('Order items updated successfully');
+        } else {
+            console.error('Order items element not found or no items in order');
+            if (orderItems) {
+                orderItems.innerHTML = `
+                    <h4><i class="fas fa-shopping-basket"></i> منتجات الطلب</h4>
+                    <div class="item-list">
+                        <p style="text-align: center; padding: 20px; color: #999;">لا توجد منتجات في هذا الطلب</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Add order title to modal header
+        const modalTitle = document.querySelector('#orderDetailsModal .modal-header h3');
+        if (modalTitle) {
+            modalTitle.innerHTML = `<i class="fas fa-clipboard-list"></i> تفاصيل الطلب #${order.id}`;
+        }
+        
+    }, 100); // Small delay to ensure DOM is ready
     
     showModal('orderDetailsModal');
 }
@@ -1526,18 +1586,28 @@ function displayFilteredUsers(filteredUsers) {
 
 // Modal Functions
 function showModal(modalId) {
+    console.log('Showing modal:', modalId);
     const modal = document.getElementById(modalId);
     if (modal) {
+        // Use class-based approach that matches CSS
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        console.log('Modal displayed successfully');
+    } else {
+        console.error('Modal not found:', modalId);
     }
 }
 
 function closeModal(modalId) {
+    console.log('Closing modal:', modalId);
     const modal = document.getElementById(modalId);
     if (modal) {
+        // Use class-based approach that matches CSS
         modal.classList.remove('show');
         document.body.style.overflow = 'auto';
+        console.log('Modal closed successfully');
+    } else {
+        console.error('Modal not found:', modalId);
     }
 }
 

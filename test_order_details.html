@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اختبار تفاصيل الطلب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div style="padding: 20px; font-family: 'Cairo', sans-serif;">
+        <h2>اختبار تفاصيل الطلب</h2>
+        <p>هذا اختبار سريع لضمان أن تفاصيل الطلب تعمل بشكل صحيح.</p>
+        
+        <button onclick="testOrderDetailsModal()" style="padding: 15px 30px; background: #dc2626; color: white; border: none; border-radius: 10px; font-family: 'Cairo'; font-size: 16px; cursor: pointer;">
+            <i class="fas fa-test"></i> اختبار فتح تفاصيل الطلب
+        </button>
+        
+        <div style="margin-top: 20px;">
+            <h3>البيانات المختبرة:</h3>
+            <pre id="testData" style="background: #f5f5f5; padding: 15px; border-radius: 8px; font-family: monospace; direction: ltr; text-align: left;"></pre>
+        </div>
+    </div>
+
+    <!-- Include the order details modal from main HTML -->
+    <div class="modal order-details-modal" id="orderDetailsModal">
+        <div class="modal-content order-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-clipboard-list"></i> تفاصيل الطلب</h3>
+                <button class="close-modal" onclick="closeModal('orderDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="customer-info" id="customerInfo">
+                    <!-- Customer info will be loaded here -->
+                </div>
+                
+                <div class="order-items" id="orderItems">
+                    <!-- Order items will be loaded here -->
+                </div>
+                
+                <div class="order-actions">
+                    <button class="btn-primary" onclick="startPreparingOrder()">بدء التجهيز</button>
+                    <button class="btn-secondary" onclick="closeModal('orderDetailsModal')">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+    <script>
+        // Test function
+        function testOrderDetailsModal() {
+            console.log('Testing order details modal...');
+            
+            // Display test data
+            const testDataElement = document.getElementById('testData');
+            testDataElement.textContent = JSON.stringify(preparationOrders[0], null, 2);
+            
+            // Try to open the first order
+            if (preparationOrders && preparationOrders.length > 0) {
+                const firstOrderId = preparationOrders[0].id;
+                console.log('Opening order with ID:', firstOrderId);
+                showOrderDetailsModal(firstOrderId);
+            } else {
+                console.error('No preparation orders found!');
+                alert('لا توجد طلبات للاختبار!');
+            }
+        }
+        
+        // Initialize data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded');
+            console.log('Available orders:', preparationOrders ? preparationOrders.length : 'undefined');
+        });
+    </script>
+</body>
+</html>

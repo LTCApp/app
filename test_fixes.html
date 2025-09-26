@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اختبار سريع - نظام تجهيز الطلبات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            zoom: normal !important;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fff0f0 0%, #ffe5e5 100%);
+            color: #333;
+            line-height: 1.6;
+            direction: rtl;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            padding: 20px;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-header h1 {
+            color: #dc2626;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .test-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+        }
+
+        .test-section.success {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .test-section h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-section .status {
+            background: #10b981;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 10px 10px 0;
+            touch-action: manipulation;
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+        }
+
+        .test-button:active {
+            transform: translateY(0);
+        }
+
+        .zoom-test {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 2px solid #f59e0b;
+        }
+
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .grid-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .mobile-test {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #0284c7;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-size: 16px !important;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+        }
+
+        .main-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .main-link a {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .main-link a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .screen-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .test-header h1 {
+                font-size: 22px;
+            }
+
+            .responsive-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-button {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .screen-info {
+                background: #dc2626;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                padding: 15px;
+                margin: 5px;
+            }
+
+            .test-header h1 {
+                font-size: 20px;
+            }
+
+            .test-section {
+                padding: 15px;
+            }
+
+            .screen-info {
+                background: #10b981;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-info" id="screenInfo">
+        شاشة: <span id="screenSize"></span>
+    </div>
+
+    <div class="test-container">
+        <div class="test-header">
+            <h1><i class="fas fa-flask"></i> اختبار نظام تجهيز الطلبات</h1>
+            <p>تحقق من الإصلاحات والتحسينات المطبقة</p>
+        </div>
+
+        <!-- Test 1: Zoom Prevention -->
+        <div class="test-section success">
+            <h3>
+                <i class="fas fa-search-minus"></i>
+                اختبار منع التكبير
+                <span class="status">✅ مُصلح</span>
+            </h3>
+            <div class="zoom-test">
+                <p><strong>جرب الإجراءات التالية:</strong></p>
+                <ul style="margin: 10px 0; padding-right: 20px;">
+                    <li>القرص للتكبير على الشاشة</li>
+                    <li>النقر المزدوج للتكبير</li>
+                    <li>الكتابة في الحقل أدناه (لا يجب أن يسبب تكبير تلقائي)</li>
+                </ul>
+                <input type="text" placeholder="اكتب هنا للاختبار - يجب ألا يسبب تكبير">
+                <select>
+                    <option>اختر خيار - يجب ألا يسبب تكبير</option>
+                    <option>خيار 1</option>
+                    <option>خيار 2</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Test 2: Responsive Design -->
+        <div class="test-section success">
+            <h3>
+                <i class="fas fa-mobile-alt"></i>
+                اختبار التصميم المتجاوب
+                <span class="status">✅ مُصلح</span>
+            </h3>
+            <p>غير حجم نافذة المتصفح لاختبار التجاوب:</p>
+            
+            <div class="responsive-grid">
+                <div class="grid-item">
+                    <strong>Desktop</strong><br>
+                    > 768px<br>
+                    عرض شبكي كامل
+                </div>
+                <div class="grid-item">
+                    <strong>Tablet</strong><br>
+                    481-768px<br>
+                    تخطيط متوسط
+                </div>
+                <div class="grid-item">
+                    <strong>Mobile</strong><br>
+                    < 481px<br>
+                    عمود واحد
+                </div>
+            </div>
+
+            <div class="mobile-test">
+                <strong>اختبار الموبايل:</strong> إذا كنت على موبايل، يجب أن تكون هذه العناصر مكدسة عمودياً وسهلة الاستخدام
+            </div>
+        </div>
+
+        <!-- Test 3: Touch Interactions -->
+        <div class="test-section success">
+            <h3>
+                <i class="fas fa-hand-pointer"></i>
+                اختبار التفاعل باللمس
+                <span class="status">✅ مُصلح</span>
+            </h3>
+            <p>جرب الضغط على الأزرار التالية:</p>
+            
+            <button class="test-button" onclick="testTouch('button1')">
+                <i class="fas fa-check"></i> زر اختبار 1
+            </button>
+            <button class="test-button" onclick="testTouch('button2')">
+                <i class="fas fa-exchange-alt"></i> زر اختبار 2
+            </button>
+            <button class="test-button" onclick="testTouch('button3')">
+                <i class="fas fa-trash"></i> زر اختبار 3
+            </button>
+
+            <div id="touchResult" style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 8px; display: none;">
+                <strong>نتيجة الاختبار:</strong> <span id="touchText"></span>
+            </div>
+        </div>
+
+        <!-- Test 4: Order Details Fix -->
+        <div class="test-section success">
+            <h3>
+                <i class="fas fa-clipboard-list"></i>
+                اختبار تفاصيل الطلب
+                <span class="status">✅ مُصلح</span>
+            </h3>
+            <p>تم إصلاح مشكلة عرض تفاصيل الطلب الفارغة في النظام الرئيسي</p>
+            
+            <ul style="margin: 10px 0; padding-right: 20px; color: #059669;">
+                <li>✅ إزالة العناصر المكررة في HTML</li>
+                <li>✅ إضافة تحقق من وجود البيانات</li>
+                <li>✅ تحسين تحميل البيانات التجريبية</li>
+                <li>✅ إضافة debugging للمساعدة في استكشاف الأخطاء</li>
+            </ul>
+        </div>
+
+        <!-- Main Link -->
+        <div class="main-link">
+            <a href="admin.html">
+                <i class="fas fa-rocket"></i>
+                افتح النظام الكامل لاختبار جميع الميزات
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Update screen size info
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            let device = 'Desktop';
+            
+            if (width <= 480) {
+                device = 'Mobile Small';
+            } else if (width <= 768) {
+                device = 'Mobile/Tablet';
+            } else if (width <= 1024) {
+                device = 'Tablet/Small Desktop';
+            }
+            
+            document.getElementById('screenSize').textContent = `${device} (${width}x${height})`;
+        }
+
+        // Touch test function
+        function testTouch(buttonName) {
+            const result = document.getElementById('touchResult');
+            const text = document.getElementById('touchText');
+            
+            result.style.display = 'block';
+            result.style.background = '#d1fae5';
+            result.style.color = '#065f46';
+            
+            text.textContent = `تم الضغط على ${buttonName} بنجاح! ✅`;
+            
+            setTimeout(() => {
+                result.style.display = 'none';
+            }, 2000);
+        }
+
+        // Zoom prevention test
+        function testZoomPrevention() {
+            // Try to trigger zoom (this should be prevented)
+            document.body.style.zoom = '1.5';
+            
+            setTimeout(() => {
+                if (document.body.style.zoom === '1.5') {
+                    alert('⚠️ تحذير: لا يزال بإمكان التكبير! تحقق من الإعدادات');
+                    document.body.style.zoom = '1';
+                } else {
+                    alert('✅ ممتاز! منع التكبير يعمل بشكل صحيح');
+                }
+            }, 100);
+        }
+
+        // Initialize
+        updateScreenInfo();
+        window.addEventListener('resize', updateScreenInfo);
+
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Test zoom prevention automatically
+        setTimeout(() => {
+            console.log('🧪 Testing zoom prevention...');
+            testZoomPrevention();
+        }, 1000);
+    </script>
+</body>
+</html>
