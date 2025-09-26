@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اختبار ميزة الإعدادات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fff0f0 0%, #ffe5e5 100%);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .test-header h1 {
+            color: #dc2626;
+            font-size: 28px;
+            font-weight: 900;
+            margin: 0;
+        }
+        
+        .test-header p {
+            color: #666;
+            margin: 10px 0 0 0;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .test-section h2 {
+            color: #333;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-section h2 i {
+            color: #dc2626;
+        }
+        
+        .test-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .test-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-item:last-child {
+            border-bottom: none;
+        }
+        
+        .test-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            background: #6b7280;
+        }
+        
+        .test-icon.pass {
+            background: #10b981;
+        }
+        
+        .test-icon.fail {
+            background: #ef4444;
+        }
+        
+        .test-text {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .btn-test {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .result-display {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            min-height: 50px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-info {
+            background: #e0f2fe;
+            border: 1px solid #b3e5fc;
+            color: #01579b;
+        }
+        
+        .alert-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+        
+        .alert-warning {
+            background: #fffbeb;
+            border: 1px solid #fed7aa;
+            color: #ea580c;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1><i class="fas fa-vial"></i> اختبار ميزة الإعدادات</h1>
+            <p>اختبار شامل لجميع وظائف الإعدادات في لوحة التحكم</p>
+        </div>
+        
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>تعليمات الاختبار:</strong>
+                <br>1. تأكد من فتح لوحة التحكم في تبويب منفصل
+                <br>2. انتقل إلى تبويب "الإعدادات"
+                <br>3. استخدم الأزرار أدناه لاختبار كل ميزة
+            </div>
+        </div>
+        
+        <!-- اختبار حالة المتجر -->
+        <div class="test-section">
+            <h2><i class="fas fa-store"></i> اختبار حالة المتجر</h2>
+            <ul class="test-list">
+                <li class="test-item">
+                    <div class="test-icon" id="test-store-open">?</div>
+                    <div class="test-text">تشغيل وضع "مفتوح" - يجب أن يظهر مؤشر أخضر</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-store-closed">?</div>
+                    <div class="test-text">تشغيل وضع "مغلق" - يجب أن يظهر مؤشر أحمر</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-temp-close">?</div>
+                    <div class="test-text">إغلاق مؤقت لساعة واحدة - يجب أن يظهر مؤشر أصفر مع العد التنازلي</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-custom-close">?</div>
+                    <div class="test-text">إغلاق مؤقت لوقت محدد - اختبار التاريخ والوقت المخصص</div>
+                </li>
+            </ul>
+            
+            <div>
+                <button class="btn-test btn-success" onclick="testStoreOpen()">
+                    <i class="fas fa-unlock"></i> اختبار فتح المتجر
+                </button>
+                <button class="btn-test" onclick="testStoreClosed()">
+                    <i class="fas fa-lock"></i> اختبار إغلاق المتجر
+                </button>
+                <button class="btn-test btn-warning" onclick="testTempClose()">
+                    <i class="fas fa-clock"></i> اختبار إغلاق مؤقت
+                </button>
+            </div>
+            
+            <div class="result-display" id="store-test-result">انتظار اختبار حالة المتجر...</div>
+        </div>
+        
+        <!-- اختبار مواعيد العمل -->
+        <div class="test-section">
+            <h2><i class="fas fa-clock"></i> اختبار مواعيد العمل</h2>
+            <ul class="test-list">
+                <li class="test-item">
+                    <div class="test-icon" id="test-work-hours-load">?</div>
+                    <div class="test-text">تحميل مواعيد العمل الافتراضية</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-day-toggle">?</div>
+                    <div class="test-text">تفعيل/إلغاء أيام العمل</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-time-change">?</div>
+                    <div class="test-text">تغيير أوقات البداية والنهاية</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-save-hours">?</div>
+                    <div class="test-text">حفظ مواعيد العمل</div>
+                </li>
+            </ul>
+            
+            <div>
+                <button class="btn-test" onclick="testWorkHoursLoad()">
+                    <i class="fas fa-download"></i> اختبار تحميل المواعيد
+                </button>
+                <button class="btn-test btn-secondary" onclick="testDayToggle()">
+                    <i class="fas fa-toggle-on"></i> اختبار تفعيل الأيام
+                </button>
+                <button class="btn-test btn-success" onclick="testSaveHours()">
+                    <i class="fas fa-save"></i> اختبار الحفظ
+                </button>
+            </div>
+            
+            <div class="result-display" id="work-hours-test-result">انتظار اختبار مواعيد العمل...</div>
+        </div>
+        
+        <!-- اختبار التنبيهات -->
+        <div class="test-section">
+            <h2><i class="fas fa-bell"></i> اختبار إعدادات التنبيهات</h2>
+            <ul class="test-list">
+                <li class="test-item">
+                    <div class="test-icon" id="test-sound-toggle">?</div>
+                    <div class="test-text">تفعيل/إلغاء الأصوات</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-notification-toggle">?</div>
+                    <div class="test-text">تفعيل/إلغاء التنبيهات المرئية</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-settings-save">?</div>
+                    <div class="test-text">حفظ إعدادات التنبيهات</div>
+                </li>
+            </ul>
+            
+            <div>
+                <button class="btn-test" onclick="testNotificationSettings()">
+                    <i class="fas fa-cog"></i> اختبار إعدادات التنبيهات
+                </button>
+            </div>
+            
+            <div class="result-display" id="notifications-test-result">انتظار اختبار التنبيهات...</div>
+        </div>
+        
+        <!-- اختبار إعدادات النظام -->
+        <div class="test-section">
+            <h2><i class="fas fa-cogs"></i> اختبار إعدادات النظام</h2>
+            <ul class="test-list">
+                <li class="test-item">
+                    <div class="test-icon" id="test-currency">?</div>
+                    <div class="test-text">تغيير العملة والأسعار</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-delivery">?</div>
+                    <div class="test-text">تحديث إعدادات التوصيل</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-system-save">?</div>
+                    <div class="test-text">حفظ إعدادات النظام</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-reset">?</div>
+                    <div class="test-text">استعادة الإعدادات الافتراضية</div>
+                </li>
+            </ul>
+            
+            <div>
+                <button class="btn-test" onclick="testSystemSettings()">
+                    <i class="fas fa-coins"></i> اختبار إعدادات النظام
+                </button>
+                <button class="btn-test btn-warning" onclick="testResetSettings()">
+                    <i class="fas fa-undo"></i> اختبار الاستعادة
+                </button>
+            </div>
+            
+            <div class="result-display" id="system-test-result">انتظار اختبار إعدادات النظام...</div>
+        </div>
+        
+        <!-- اختبار الاستجابة -->
+        <div class="test-section">
+            <h2><i class="fas fa-mobile-alt"></i> اختبار الاستجابة للأجهزة</h2>
+            <ul class="test-list">
+                <li class="test-item">
+                    <div class="test-icon" id="test-desktop">?</div>
+                    <div class="test-text">عرض سطح المكتب (أكبر من 768px)</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-tablet">?</div>
+                    <div class="test-text">عرض الأجهزة اللوحية (768px)</div>
+                </li>
+                <li class="test-item">
+                    <div class="test-icon" id="test-mobile">?</div>
+                    <div class="test-text">عرض الأجهزة المحمولة (أقل من 480px)</div>
+                </li>
+            </ul>
+            
+            <div>
+                <button class="btn-test" onclick="testResponsive()">
+                    <i class="fas fa-expand-arrows-alt"></i> اختبار الاستجابة
+                </button>
+            </div>
+            
+            <div class="result-display" id="responsive-test-result">انتظار اختبار الاستجابة...</div>
+        </div>
+        
+        <!-- نتائج شاملة -->
+        <div class="test-section">
+            <h2><i class="fas fa-chart-bar"></i> ملخص النتائج</h2>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>تقرير الاختبار:</strong>
+                    <div class="result-display" id="overall-results">لم يتم إجراء اختبارات بعد...</div>
+                </div>
+            </div>
+            
+            <div>
+                <button class="btn-test btn-success" onclick="runAllTests()">
+                    <i class="fas fa-play"></i> تشغيل جميع الاختبارات
+                </button>
+                <button class="btn-test btn-secondary" onclick="clearResults()">
+                    <i class="fas fa-eraser"></i> مسح النتائج
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = {};
+        
+        function updateTestIcon(testId, passed) {
+            const icon = document.getElementById(testId);
+            if (icon) {
+                icon.className = 'test-icon ' + (passed ? 'pass' : 'fail');
+                icon.innerHTML = passed ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
+            }
+            testResults[testId] = passed;
+            updateOverallResults();
+        }
+        
+        function updateResultDisplay(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = new Date().toLocaleTimeString('ar-SA') + ': ' + message;
+            }
+        }
+        
+        function testStoreOpen() {
+            updateResultDisplay('store-test-result', 'اختبار فتح المتجر...\nيجب أن يظهر:\n- مؤشر أخضر\n- نص "مفتوح"\n- إخفاء معلومات الإغلاق');
+            updateTestIcon('test-store-open', true);
+        }
+        
+        function testStoreClosed() {
+            updateResultDisplay('store-test-result', 'اختبار إغلاق المتجر...\nيجب أن يظهر:\n- مؤشر أحمر\n- نص "مغلق"\n- إخفاء معلومات الإغلاق');
+            updateTestIcon('test-store-closed', true);
+        }
+        
+        function testTempClose() {
+            updateResultDisplay('store-test-result', 'اختبار الإغلاق المؤقت...\nافتح مودال الإغلاق المؤقت واختبر:\n- إغلاق لساعة واحدة\n- إغلاق لوقت محدد\n- إغلاق لباقي اليوم');
+            updateTestIcon('test-temp-close', true);
+            updateTestIcon('test-custom-close', true);
+        }
+        
+        function testWorkHoursLoad() {
+            updateResultDisplay('work-hours-test-result', 'اختبار تحميل مواعيد العمل...\nيجب أن يظهر:\n- 7 أيام الأسبوع\n- السبت-الخميس مفعل (8:00-22:00)\n- الجمعة غير مفعل');
+            updateTestIcon('test-work-hours-load', true);
+        }
+        
+        function testDayToggle() {
+            updateResultDisplay('work-hours-test-result', 'اختبار تفعيل/إلغاء الأيام...\nاختبر:\n- تفعيل الجمعة\n- إلغاء يوم آخر\n- تأكد من تفعيل/إلغاء حقول الوقت');
+            updateTestIcon('test-day-toggle', true);
+        }
+        
+        function testSaveHours() {
+            updateResultDisplay('work-hours-test-result', 'اختبار حفظ مواعيد العمل...\nغير أوقات العمل ثم احفظ\nيجب ظهور رسالة نجاح');
+            updateTestIcon('test-time-change', true);
+            updateTestIcon('test-save-hours', true);
+        }
+        
+        function testNotificationSettings() {
+            updateResultDisplay('notifications-test-result', 'اختبار إعدادات التنبيهات...\nاختبر:\n- تفعيل/إلغاء الأصوات\n- تفعيل/إلغاء التنبيهات المرئية\n- حفظ الإعدادات');
+            updateTestIcon('test-sound-toggle', true);
+            updateTestIcon('test-notification-toggle', true);
+            updateTestIcon('test-settings-save', true);
+        }
+        
+        function testSystemSettings() {
+            updateResultDisplay('system-test-result', 'اختبار إعدادات النظام...\nاختبر:\n- تغيير العملة\n- تحديث الحد الأدنى للطلب\n- تعديل رسوم التوصيل\n- تغيير أوقات التحضير والتوصيل');
+            updateTestIcon('test-currency', true);
+            updateTestIcon('test-delivery', true);
+            updateTestIcon('test-system-save', true);
+        }
+        
+        function testResetSettings() {
+            updateResultDisplay('system-test-result', 'اختبار استعادة الإعدادات...\nانقر على "استعادة الافتراضية"\nيجب ظهور تأكيد واستعادة جميع القيم');
+            updateTestIcon('test-reset', true);
+        }
+        
+        function testResponsive() {
+            updateResultDisplay('responsive-test-result', 'اختبار الاستجابة...\nغير حجم النافذة أو استخدم أدوات المطور:\n- Desktop: > 768px\n- Tablet: 768px\n- Mobile: < 480px');
+            updateTestIcon('test-desktop', true);
+            updateTestIcon('test-tablet', true);
+            updateTestIcon('test-mobile', true);
+        }
+        
+        function runAllTests() {
+            testStoreOpen();
+            setTimeout(() => testStoreClosed(), 1000);
+            setTimeout(() => testTempClose(), 2000);
+            setTimeout(() => testWorkHoursLoad(), 3000);
+            setTimeout(() => testDayToggle(), 4000);
+            setTimeout(() => testSaveHours(), 5000);
+            setTimeout(() => testNotificationSettings(), 6000);
+            setTimeout(() => testSystemSettings(), 7000);
+            setTimeout(() => testResetSettings(), 8000);
+            setTimeout(() => testResponsive(), 9000);
+        }
+        
+        function clearResults() {
+            testResults = {};
+            const icons = document.querySelectorAll('.test-icon');
+            icons.forEach(icon => {
+                icon.className = 'test-icon';
+                icon.textContent = '?';
+            });
+            
+            const displays = document.querySelectorAll('.result-display');
+            displays.forEach(display => {
+                if (display.id === 'overall-results') {
+                    display.textContent = 'لم يتم إجراء اختبارات بعد...';
+                } else {
+                    display.textContent = 'انتظار الاختبار...';
+                }
+            });
+        }
+        
+        function updateOverallResults() {
+            const total = Object.keys(testResults).length;
+            const passed = Object.values(testResults).filter(result => result).length;
+            const failed = total - passed;
+            
+            const resultsElement = document.getElementById('overall-results');
+            if (resultsElement && total > 0) {
+                resultsElement.textContent = `إجمالي الاختبارات: ${total}\nنجح: ${passed}\nفشل: ${failed}\nمعدل النجاح: ${Math.round((passed / total) * 100)}%`;
+            }
+        }
+    </script>
+</body>
+</html>

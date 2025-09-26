@@ -191,6 +191,36 @@ const samplePreparationOrders = [
 // Initialize preparation orders
 let preparationOrders = [...samplePreparationOrders];
 
+// Settings Variables
+let storeSettings = {
+    status: 'open', // 'open', 'closed', 'temp-closed'
+    tempCloseUntil: null,
+    tempCloseReason: '',
+    workHours: {
+        saturday: { enabled: true, start: '08:00', end: '22:00' },
+        sunday: { enabled: true, start: '08:00', end: '22:00' },
+        monday: { enabled: true, start: '08:00', end: '22:00' },
+        tuesday: { enabled: true, start: '08:00', end: '22:00' },
+        wednesday: { enabled: true, start: '08:00', end: '22:00' },
+        thursday: { enabled: true, start: '08:00', end: '22:00' },
+        friday: { enabled: false, start: '08:00', end: '22:00' }
+    },
+    notifications: {
+        orderSound: true,
+        lowStockSound: true,
+        desktopNotifications: true,
+        badgeCount: true
+    },
+    currency: 'ر.س',
+    minOrderAmount: 50,
+    deliveryFee: 15,
+    preparationTime: 30,
+    deliveryTime: 45,
+    deliveryRadius: 25
+};
+
+let tempCloseTimer = null;
+
 const sampleUsers = [
     {
         id: 1,
@@ -461,6 +491,9 @@ function switchTab(tabName) {
             break;
         case 'users':
             loadUsersData();
+            break;
+        case 'settings':
+            loadSettingsData();
             break;
     }
 }
@@ -1819,3 +1852,420 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 1000); // Delay to ensure elements are created
 });
+
+// Settings Functions
+
+function loadSettingsData() {
+    loadStoreStatus();
+    loadWorkHours();
+    loadNotificationSettings();
+    loadSystemSettings();
+    checkTempCloseStatus();
+}
+
+function loadStoreStatus() {
+    const statusText = document.getElementById('storeStatusText');
+    const statusDot = document.getElementById('storeStatusDot');
+    const statusCard = document.querySelector('.store-status-card');
+    const currentClosureInfo = document.getElementById('currentClosureInfo');
+    
+    // Reset all status classes
+    const statusBtns = document.querySelectorAll('.status-btn');
+    statusBtns.forEach(btn => btn.classList.remove('active'));
+    
+    if (statusText && statusDot && statusCard) {
+        statusCard.className = 'setting-card store-status-card';
+        
+        switch(storeSettings.status) {
+            case 'open':
+                statusText.textContent = 'مفتوح';
+                statusText.className = 'status-text';
+                statusDot.className = 'status-dot open';
+                statusCard.classList.add('open');
+                document.getElementById('openBtn').classList.add('active');
+                if (currentClosureInfo) currentClosureInfo.style.display = 'none';
+                break;
+                
+            case 'temp-closed':
+                statusText.textContent = 'مغلق مؤقتاً';
+                statusText.className = 'status-text temp-closed';
+                statusDot.className = 'status-dot temp-closed';
+                statusCard.classList.add('temp-closed');
+                document.getElementById('tempCloseBtn').classList.add('active');
+                showClosureInfo();
+                break;
+                
+            case 'closed':
+                statusText.textContent = 'مغلق';
+                statusText.className = 'status-text closed';
+                statusDot.className = 'status-dot closed';
+                statusCard.classList.add('closed');
+                document.getElementById('closedBtn').classList.add('active');
+                if (currentClosureInfo) currentClosureInfo.style.display = 'none';
+                break;
+        }
+    }
+}
+
+function showClosureInfo() {
+    const currentClosureInfo = document.getElementById('currentClosureInfo');
+    const closureReason = document.getElementById('closureReason');
+    const closureTime = document.getElementById('closureTime');
+    
+    if (currentClosureInfo && storeSettings.status === 'temp-closed') {
+        currentClosureInfo.style.display = 'block';
+        
+        if (closureReason) {
+            closureReason.textContent = storeSettings.tempCloseReason || 'إغلاق مؤقت';
+        }
+        
+        if (closureTime && storeSettings.tempCloseUntil) {
+            const reopenDate = new Date(storeSettings.tempCloseUntil);
+            const now = new Date();
+            const timeDiff = reopenDate - now;
+            
+            if (timeDiff > 0) {
+                const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                closureTime.textContent = `سيفتح بعد ${hours} ساعة و ${minutes} دقيقة`;
+            } else {
+                closureTime.textContent = 'انتهى وقت الإغلاق المؤقت';
+            }
+        }
+    }
+}
+
+function loadWorkHours() {
+    const workHoursGrid = document.getElementById('workHoursGrid');
+    if (!workHoursGrid) return;
+    
+    const days = {
+        'saturday': 'السبت',
+        'sunday': 'الأحد', 
+        'monday': 'الاثنين',
+        'tuesday': 'الثلاثاء',
+        'wednesday': 'الأربعاء',
+        'thursday': 'الخميس',
+        'friday': 'الجمعة'
+    };
+    
+    let html = '';
+    Object.keys(days).forEach(dayKey => {
+        const day = storeSettings.workHours[dayKey];
+        const isDisabled = !day.enabled ? 'disabled' : '';
+        
+        html += `
+            <div class="work-day ${isDisabled}">
+                <div class="day-name">${days[dayKey]}</div>
+                <div class="time-range">
+                    <input type="time" id="${dayKey}_start" value="${day.start}" ${!day.enabled ? 'disabled' : ''}>
+                    <span>إلى</span>
+                    <input type="time" id="${dayKey}_end" value="${day.end}" ${!day.enabled ? 'disabled' : ''}>
+                </div>
+                <div class="day-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" ${day.enabled ? 'checked' : ''} onchange="toggleWorkDay('${dayKey}', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        `;
+    });
+    
+    workHoursGrid.innerHTML = html;
+}
+
+function toggleWorkDay(day, enabled) {
+    storeSettings.workHours[day].enabled = enabled;
+    
+    const startInput = document.getElementById(`${day}_start`);
+    const endInput = document.getElementById(`${day}_end`);
+    const workDay = startInput.closest('.work-day');
+    
+    if (enabled) {
+        startInput.disabled = false;
+        endInput.disabled = false;
+        workDay.classList.remove('disabled');
+    } else {
+        startInput.disabled = true;
+        endInput.disabled = true;
+        workDay.classList.add('disabled');
+    }
+}
+
+function loadNotificationSettings() {
+    const settings = storeSettings.notifications;
+    
+    const orderSoundToggle = document.getElementById('orderSoundToggle');
+    const lowStockSoundToggle = document.getElementById('lowStockSoundToggle');
+    const desktopNotificationsToggle = document.getElementById('desktopNotificationsToggle');
+    const badgeCountToggle = document.getElementById('badgeCountToggle');
+    
+    if (orderSoundToggle) orderSoundToggle.checked = settings.orderSound;
+    if (lowStockSoundToggle) lowStockSoundToggle.checked = settings.lowStockSound;
+    if (desktopNotificationsToggle) desktopNotificationsToggle.checked = settings.desktopNotifications;
+    if (badgeCountToggle) badgeCountToggle.checked = settings.badgeCount;
+}
+
+function loadSystemSettings() {
+    const currencySymbol = document.getElementById('currencySymbol');
+    const minOrderAmount = document.getElementById('minOrderAmount');
+    const deliveryFee = document.getElementById('deliveryFee');
+    const preparationTime = document.getElementById('preparationTime');
+    const deliveryTime = document.getElementById('deliveryTime');
+    const deliveryRadius = document.getElementById('deliveryRadius');
+    
+    if (currencySymbol) currencySymbol.value = storeSettings.currency;
+    if (minOrderAmount) minOrderAmount.value = storeSettings.minOrderAmount;
+    if (deliveryFee) deliveryFee.value = storeSettings.deliveryFee;
+    if (preparationTime) preparationTime.value = storeSettings.preparationTime;
+    if (deliveryTime) deliveryTime.value = storeSettings.deliveryTime;
+    if (deliveryRadius) deliveryRadius.value = storeSettings.deliveryRadius;
+}
+
+function setStoreStatus(status) {
+    if (status === 'temp-closed') return; // Use modal for temp close
+    
+    storeSettings.status = status;
+    storeSettings.tempCloseUntil = null;
+    storeSettings.tempCloseReason = '';
+    
+    if (tempCloseTimer) {
+        clearTimeout(tempCloseTimer);
+        tempCloseTimer = null;
+    }
+    
+    loadStoreStatus();
+    showToast(status === 'open' ? 'تم فتح الفرع بنجاح' : 'تم إغلاق الفرع', 'success');
+}
+
+function showTempCloseModal() {
+    const modal = document.getElementById('tempCloseModal');
+    if (modal) {
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        const reopenDate = document.getElementById('reopenDate');
+        if (reopenDate) {
+            reopenDate.min = today;
+            reopenDate.value = today;
+        }
+        
+        // Set current time + 1 hour as default
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        const timeString = now.toTimeString().slice(0, 5);
+        const reopenTime = document.getElementById('reopenTime');
+        if (reopenTime) {
+            reopenTime.value = timeString;
+        }
+        
+        modal.style.display = 'flex';
+    }
+}
+
+function selectCloseOption(option) {
+    // Remove selected class from all options
+    const options = document.querySelectorAll('.close-option');
+    options.forEach(opt => opt.classList.remove('selected'));
+    
+    // Add selected class to clicked option
+    const selectedOption = document.querySelector(`.close-option`);
+    if (selectedOption) {
+        event.currentTarget.classList.add('selected');
+    }
+    
+    // Check the radio button
+    const radio = document.getElementById(`close${option.charAt(0).toUpperCase() + option.slice(1)}`);
+    if (radio) radio.checked = true;
+    
+    // Show/hide custom time section
+    const customTimeSection = document.getElementById('customTimeSection');
+    if (customTimeSection) {
+        customTimeSection.style.display = option === 'custom' ? 'block' : 'none';
+    }
+}
+
+function confirmTempClose() {
+    const selectedOption = document.querySelector('input[name="closeOption"]:checked');
+    if (!selectedOption) {
+        showToast('يرجى اختيار نوع الإغلاق المؤقت', 'error');
+        return;
+    }
+    
+    const reason = document.getElementById('closeReasonText').value || 'إغلاق مؤقت';
+    let reopenTime;
+    
+    switch(selectedOption.value) {
+        case '1hour':
+            reopenTime = new Date();
+            reopenTime.setHours(reopenTime.getHours() + 1);
+            break;
+            
+        case 'custom':
+            const dateInput = document.getElementById('reopenDate').value;
+            const timeInput = document.getElementById('reopenTime').value;
+            
+            if (!dateInput || !timeInput) {
+                showToast('يرجى تحديد تاريخ ووقت إعادة الفتح', 'error');
+                return;
+            }
+            
+            reopenTime = new Date(`${dateInput}T${timeInput}`);
+            
+            if (reopenTime <= new Date()) {
+                showToast('وقت إعادة الفتح يجب أن يكون في المستقبل', 'error');
+                return;
+            }
+            break;
+            
+        case 'endOfDay':
+            reopenTime = new Date();
+            reopenTime.setDate(reopenTime.getDate() + 1);
+            // Set to next day's opening time (assuming 8 AM)
+            reopenTime.setHours(8, 0, 0, 0);
+            break;
+    }
+    
+    storeSettings.status = 'temp-closed';
+    storeSettings.tempCloseUntil = reopenTime.toISOString();
+    storeSettings.tempCloseReason = reason;
+    
+    // Set timer to automatically reopen
+    const timeUntilReopen = reopenTime.getTime() - new Date().getTime();
+    if (timeUntilReopen > 0) {
+        tempCloseTimer = setTimeout(() => {
+            setStoreStatus('open');
+            showToast('تم فتح الفرع تلقائياً', 'success');
+        }, timeUntilReopen);
+    }
+    
+    loadStoreStatus();
+    closeModal('tempCloseModal');
+    showToast('تم إغلاق الفرع مؤقتاً', 'success');
+}
+
+function reopenStore() {
+    setStoreStatus('open');
+}
+
+function checkTempCloseStatus() {
+    if (storeSettings.status === 'temp-closed' && storeSettings.tempCloseUntil) {
+        const reopenTime = new Date(storeSettings.tempCloseUntil);
+        const now = new Date();
+        
+        if (now >= reopenTime) {
+            // Time has passed, reopen automatically
+            setStoreStatus('open');
+            showToast('انتهى وقت الإغلاق المؤقت - تم فتح الفرع', 'success');
+        } else {
+            // Set timer for automatic reopening
+            const timeUntilReopen = reopenTime.getTime() - now.getTime();
+            tempCloseTimer = setTimeout(() => {
+                setStoreStatus('open');
+                showToast('تم فتح الفرع تلقائياً', 'success');
+            }, timeUntilReopen);
+        }
+    }
+}
+
+function saveWorkHours() {
+    const days = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    
+    days.forEach(day => {
+        if (storeSettings.workHours[day].enabled) {
+            const startInput = document.getElementById(`${day}_start`);
+            const endInput = document.getElementById(`${day}_end`);
+            
+            if (startInput && endInput) {
+                storeSettings.workHours[day].start = startInput.value;
+                storeSettings.workHours[day].end = endInput.value;
+            }
+        }
+    });
+    
+    showToast('تم حفظ ساعات العمل بنجاح', 'success');
+}
+
+function saveAllSettings() {
+    // Save notification settings
+    const orderSoundToggle = document.getElementById('orderSoundToggle');
+    const lowStockSoundToggle = document.getElementById('lowStockSoundToggle');
+    const desktopNotificationsToggle = document.getElementById('desktopNotificationsToggle');
+    const badgeCountToggle = document.getElementById('badgeCountToggle');
+    
+    if (orderSoundToggle) storeSettings.notifications.orderSound = orderSoundToggle.checked;
+    if (lowStockSoundToggle) storeSettings.notifications.lowStockSound = lowStockSoundToggle.checked;
+    if (desktopNotificationsToggle) storeSettings.notifications.desktopNotifications = desktopNotificationsToggle.checked;
+    if (badgeCountToggle) storeSettings.notifications.badgeCount = badgeCountToggle.checked;
+    
+    // Save system settings
+    const currencySymbol = document.getElementById('currencySymbol');
+    const minOrderAmount = document.getElementById('minOrderAmount');
+    const deliveryFee = document.getElementById('deliveryFee');
+    const preparationTime = document.getElementById('preparationTime');
+    const deliveryTime = document.getElementById('deliveryTime');
+    const deliveryRadius = document.getElementById('deliveryRadius');
+    
+    if (currencySymbol) storeSettings.currency = currencySymbol.value;
+    if (minOrderAmount) storeSettings.minOrderAmount = parseFloat(minOrderAmount.value) || 50;
+    if (deliveryFee) storeSettings.deliveryFee = parseFloat(deliveryFee.value) || 15;
+    if (preparationTime) storeSettings.preparationTime = parseInt(preparationTime.value) || 30;
+    if (deliveryTime) storeSettings.deliveryTime = parseInt(deliveryTime.value) || 45;
+    if (deliveryRadius) storeSettings.deliveryRadius = parseInt(deliveryRadius.value) || 25;
+    
+    // Save work hours
+    saveWorkHours();
+    
+    // Update currency labels
+    const currencyLabels = document.querySelectorAll('.currency-label');
+    currencyLabels.forEach(label => {
+        label.textContent = storeSettings.currency;
+    });
+    
+    showToast('تم حفظ جميع الإعدادات بنجاح', 'success');
+}
+
+function resetSettings() {
+    if (confirm('هل أنت متأكد من استعادة الإعدادات الافتراضية؟ سيتم فقدان جميع التخصيصات الحالية.')) {
+        // Reset to default settings
+        storeSettings = {
+            status: 'open',
+            tempCloseUntil: null,
+            tempCloseReason: '',
+            workHours: {
+                saturday: { enabled: true, start: '08:00', end: '22:00' },
+                sunday: { enabled: true, start: '08:00', end: '22:00' },
+                monday: { enabled: true, start: '08:00', end: '22:00' },
+                tuesday: { enabled: true, start: '08:00', end: '22:00' },
+                wednesday: { enabled: true, start: '08:00', end: '22:00' },
+                thursday: { enabled: true, start: '08:00', end: '22:00' },
+                friday: { enabled: false, start: '08:00', end: '22:00' }
+            },
+            notifications: {
+                orderSound: true,
+                lowStockSound: true,
+                desktopNotifications: true,
+                badgeCount: true
+            },
+            currency: 'ر.س',
+            minOrderAmount: 50,
+            deliveryFee: 15,
+            preparationTime: 30,
+            deliveryTime: 45,
+            deliveryRadius: 25
+        };
+        
+        if (tempCloseTimer) {
+            clearTimeout(tempCloseTimer);
+            tempCloseTimer = null;
+        }
+        
+        loadSettingsData();
+        showToast('تم استعادة الإعدادات الافتراضية', 'success');
+    }
+}
+
+function showSettings() {
+    switchTab('settings');
+}

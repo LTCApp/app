@@ -112,6 +112,10 @@
                         <i class="fas fa-users"></i>
                         <span>المستخدمين</span>
                     </button>
+                    <button class="nav-tab" data-tab="settings">
+                        <i class="fas fa-cogs"></i>
+                        <span>الإعدادات</span>
+                    </button>
                 </div>
             </div>
         </nav>
@@ -403,6 +407,225 @@
                     </div>
                 </div>
 
+                <!-- Settings Tab -->
+                <div class="tab-content" id="settings">
+                    <!-- Store Status Section -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-store"></i> حالة المتجر</h2>
+                        </div>
+                        
+                        <div class="settings-grid">
+                            <div class="setting-card store-status-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-power-off"></i> حالة الفرع</h3>
+                                    <div class="store-status-indicator" id="storeStatusIndicator">
+                                        <span class="status-text" id="storeStatusText">مفتوح</span>
+                                        <div class="status-dot open" id="storeStatusDot"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="status-controls">
+                                        <button class="status-btn open active" onclick="setStoreStatus('open')" id="openBtn">
+                                            <i class="fas fa-unlock"></i>
+                                            فتح الفرع
+                                        </button>
+                                        
+                                        <button class="status-btn temp-close" onclick="showTempCloseModal()" id="tempCloseBtn">
+                                            <i class="fas fa-clock"></i>
+                                            إغلاق مؤقت
+                                        </button>
+                                        
+                                        <button class="status-btn closed" onclick="setStoreStatus('closed')" id="closedBtn">
+                                            <i class="fas fa-lock"></i>
+                                            إغلاق الفرع
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="current-closure-info" id="currentClosureInfo" style="display: none;">
+                                        <div class="closure-details">
+                                            <span class="closure-reason" id="closureReason"></span>
+                                            <span class="closure-time" id="closureTime"></span>
+                                        </div>
+                                        <button class="reopen-btn" onclick="reopenStore()">
+                                            <i class="fas fa-unlock"></i>
+                                            إعادة فتح الآن
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-clock"></i> ساعات العمل</h3>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="work-hours-grid" id="workHoursGrid">
+                                        <!-- Work hours will be loaded dynamically -->
+                                    </div>
+                                    
+                                    <div class="work-hours-actions">
+                                        <button class="save-btn" onclick="saveWorkHours()">
+                                            <i class="fas fa-save"></i>
+                                            حفظ ساعات العمل
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Settings -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-bell"></i> إعدادات التنبيهات</h2>
+                        </div>
+                        
+                        <div class="settings-grid">
+                            <div class="setting-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-volume-up"></i> الأصوات</h3>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="setting-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="orderSoundToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="option-info">
+                                            <span class="option-title">صوت الطلبات الجديدة</span>
+                                            <span class="option-desc">تشغيل صوت عند وصول طلب جديد</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="setting-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="lowStockSoundToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="option-info">
+                                            <span class="option-title">تنبيه نفاد المخزون</span>
+                                            <span class="option-desc">تشغيل صوت عند انخفاض المخزون</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-mobile-alt"></i> التنبيهات المرئية</h3>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="setting-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="desktopNotificationsToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="option-info">
+                                            <span class="option-title">تنبيهات سطح المكتب</span>
+                                            <span class="option-desc">إظهار تنبيهات النظام</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="setting-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="badgeCountToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="option-info">
+                                            <span class="option-title">عدادات التنبيه</span>
+                                            <span class="option-desc">إظهار أرقام التنبيهات على الأيقونات</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- System Settings -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-cog"></i> إعدادات النظام</h2>
+                        </div>
+                        
+                        <div class="settings-grid">
+                            <div class="setting-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-coins"></i> العملة والأسعار</h3>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="form-group">
+                                        <label>رمز العملة الافتراضي</label>
+                                        <select id="currencySymbol">
+                                            <option value="ر.س" selected>ر.س (ريال سعودي)</option>
+                                            <option value="$">$ (دولار أمريكي)</option>
+                                            <option value="€">€ (يورو)</option>
+                                            <option value="£">£ (جنيه إسترليني)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>الحد الأدنى للطلب</label>
+                                        <div class="input-with-currency">
+                                            <input type="number" id="minOrderAmount" value="50" min="0" step="0.01">
+                                            <span class="currency-label">ر.س</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>رسوم التوصيل</label>
+                                        <div class="input-with-currency">
+                                            <input type="number" id="deliveryFee" value="15" min="0" step="0.01">
+                                            <span class="currency-label">ر.س</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-card">
+                                <div class="setting-header">
+                                    <h3><i class="fas fa-truck"></i> إعدادات التوصيل</h3>
+                                </div>
+                                
+                                <div class="setting-content">
+                                    <div class="form-group">
+                                        <label>متوسط وقت التحضير (بالدقائق)</label>
+                                        <input type="number" id="preparationTime" value="30" min="5" max="120">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>متوسط وقت التوصيل (بالدقائق)</label>
+                                        <input type="number" id="deliveryTime" value="45" min="10" max="180">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>نطاق التوصيل (بالكيلومتر)</label>
+                                        <input type="number" id="deliveryRadius" value="25" min="1" max="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="save-all-btn" onclick="saveAllSettings()">
+                                <i class="fas fa-save"></i>
+                                حفظ جميع الإعدادات
+                            </button>
+                            
+                            <button class="reset-btn" onclick="resetSettings()">
+                                <i class="fas fa-undo"></i>
+                                استعادة الافتراضية
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -635,6 +858,89 @@
                     <button class="btn-danger" onclick="customerRejected()">العميل رفض</button>
                     <button class="btn-secondary" onclick="cancelReplacement()">إلغاء</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Temporary Close Modal -->
+    <div class="modal" id="tempCloseModal" style="display: none;">
+        <div class="modal-content temp-close-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-clock"></i> إغلاق مؤقت للفرع</h2>
+                <span class="close" onclick="closeModal('tempCloseModal')">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="close-options">
+                    <div class="close-option" onclick="selectCloseOption('1hour')">
+                        <div class="option-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="option-content">
+                            <h3>إغلاق لساعة واحدة</h3>
+                            <p>سيفتح الفرع تلقائياً بعد ساعة</p>
+                        </div>
+                        <div class="option-radio">
+                            <input type="radio" name="closeOption" value="1hour" id="close1hour">
+                        </div>
+                    </div>
+                    
+                    <div class="close-option" onclick="selectCloseOption('custom')">
+                        <div class="option-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <div class="option-content">
+                            <h3>إغلاق لوقت محدد</h3>
+                            <p>اختر الوقت المحدد للإغلاق</p>
+                        </div>
+                        <div class="option-radio">
+                            <input type="radio" name="closeOption" value="custom" id="closeCustom">
+                        </div>
+                    </div>
+                    
+                    <div class="close-option" onclick="selectCloseOption('endOfDay')">
+                        <div class="option-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="option-content">
+                            <h3>إغلاق لباقي اليوم</h3>
+                            <p>سيفتح الفرع تلقائياً غداً في الموعد المحدد</p>
+                        </div>
+                        <div class="option-radio">
+                            <input type="radio" name="closeOption" value="endOfDay" id="closeEndOfDay">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="custom-time-section" id="customTimeSection" style="display: none;">
+                    <h4>تحديد وقت إعادة الفتح</h4>
+                    <div class="time-inputs">
+                        <div class="time-input-group">
+                            <label>التاريخ</label>
+                            <input type="date" id="reopenDate" min="">
+                        </div>
+                        <div class="time-input-group">
+                            <label>الوقت</label>
+                            <input type="time" id="reopenTime">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="close-reason-section">
+                    <label for="closeReason">سبب الإغلاق (اختياري)</label>
+                    <textarea id="closeReasonText" placeholder="اكتب سبب الإغلاق المؤقت مثل: صيانة، استراحة الغداء، إلخ..."></textarea>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="cancel-btn" onclick="closeModal('tempCloseModal')">
+                    <i class="fas fa-times"></i>
+                    إلغاء
+                </button>
+                <button class="confirm-close-btn" onclick="confirmTempClose()">
+                    <i class="fas fa-lock"></i>
+                    تأكيد الإغلاق
+                </button>
             </div>
         </div>
     </div>
