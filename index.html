@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوق الجملة - تطبيق التسوق الذكي</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-brand">
+                    <div class="logo">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="brand-info">
+                        <h1>سوق الجملة</h1>
+                        <p>تسوق ذكي وأسعار مميزة</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="profile-btn">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث عن المنتجات...">
+                    <button class="voice-search">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-banner">
+                    <div class="hero-content">
+                        <h2>عروض حصرية</h2>
+                        <p>خصومات تصل إلى 50%</p>
+                        <button class="cta-btn">تسوق الآن</button>
+                    </div>
+                    <div class="hero-image">
+                        <div class="floating-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>الأقسام الرئيسية</h3>
+                    <button class="see-all">عرض الكل</button>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-shopping-basket"></i>
+                        </div>
+                        <h4>السوبر ماركت</h4>
+                        <p>جميع احتياجاتك اليومية</p>
+                        <span class="item-count">+500 منتج</span>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-spray-can"></i>
+                        </div>
+                        <h4>المنظفات</h4>
+                        <p>أفضل منتجات التنظيف</p>
+                        <span class="item-count">+150 منتج</span>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-apple-alt"></i>
+                        </div>
+                        <h4>الخضروات والفاكهة</h4>
+                        <p>طازجة وعالية الجودة</p>
+                        <span class="item-count">+200 منتج</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Offers Section -->
+        <section class="offers-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>العروض والخصومات المميزة</h3>
+                    <div class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span>ينتهي خلال: 2 ساعة 30 دقيقة</span>
+                    </div>
+                </div>
+                <div class="offers-slider">
+                    <div class="offer-card featured">
+                        <div class="offer-badge">خصم 40%</div>
+                        <div class="offer-content">
+                            <h4>عرض خاص على المنظفات</h4>
+                            <p>اشتر 2 واحصل على 1 مجاناً</p>
+                            <div class="offer-price">
+                                <span class="old-price">150 جنيه</span>
+                                <span class="new-price">90 جنيه</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="offer-card">
+                        <div class="offer-badge">خصم 25%</div>
+                        <div class="offer-content">
+                            <h4>فواكه طازجة</h4>
+                            <p>خصم على جميع أنواع الفواكه</p>
+                            <div class="offer-price">
+                                <span class="old-price">80 جنيه</span>
+                                <span class="new-price">60 جنيه</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="offer-card">
+                        <div class="offer-badge">خصم 35%</div>
+                        <div class="offer-content">
+                            <h4>منتجات السوبر ماركت</h4>
+                            <p>خصم على المشتريات فوق 200 جنيه</p>
+                            <div class="offer-price">
+                                <span class="old-price">200 جنيه</span>
+                                <span class="new-price">130 جنيه</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Products Section -->
+        <section class="popular-products">
+            <div class="container">
+                <div class="section-header">
+                    <h3>المنتجات الأكثر مبيعاً</h3>
+                    <button class="see-all">عرض المزيد</button>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">الأكثر مبيعاً</div>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <h5>زيت طعام عباد الشمس</h5>
+                            <div class="rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span>(4.2)</span>
+                            </div>
+                            <div class="price">
+                                <span class="current-price">45 جنيه</span>
+                                <span class="old-price">55 جنيه</span>
+                            </div>
+                            <button class="add-to-cart">
+                                <i class="fas fa-plus"></i>
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge hot">جديد</div>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <h5>منظف أرضيات فلاش</h5>
+                            <div class="rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span>(4.8)</span>
+                            </div>
+                            <div class="price">
+                                <span class="current-price">35 جنيه</span>
+                            </div>
+                            <button class="add-to-cart">
+                                <i class="fas fa-plus"></i>
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>تواصل معنا</h4>
+                        <p>خدمة العملاء متاحة 24/7</p>
+                        <a href="tel:01001470449" class="contact-number">
+                            01001470449
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>الأقسام</span>
+        </div>
+        <div class="nav-item cart-nav">
+            <i class="fas fa-shopping-cart"></i>
+            <span>السلة</span>
+            <div class="cart-badge">2</div>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-heart"></i>
+            <span>المفضلة</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>حسابي</span>
+        </div>
+    </nav>
+
+    <!-- Shopping Cart Floating Button -->
+    <button class="floating-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">2</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
