@@ -267,6 +267,12 @@ class SuperMarketApp {
         
         navItems.forEach(item => {
             item.addEventListener('click', () => {
+                // Handle cart navigation
+                if (item.classList.contains('cart-nav')) {
+                    this.goToCart();
+                    return;
+                }
+                
                 // إزالة الفئة النشطة من جميع العناصر
                 navItems.forEach(nav => nav.classList.remove('active'));
                 // إضافة للعنصر المضغوط
@@ -276,6 +282,14 @@ class SuperMarketApp {
                 item.style.animation = 'navPulse 0.3s ease-out';
             });
         });
+        
+        // Setup floating cart button
+        const floatingCart = document.querySelector('.floating-cart');
+        if (floatingCart) {
+            floatingCart.addEventListener('click', () => {
+                this.goToCart();
+            });
+        }
     }
 
     setupInteractiveButtons() {
@@ -498,6 +512,15 @@ class SuperMarketApp {
         }, 3000);
     }
 
+    // Navigation to cart page
+    goToCart() {
+        if (this.cart.length === 0) {
+            this.showNotification('سلة التسوق فارغة! أضف بعض المنتجات أولاً', 'error');
+            return;
+        }
+        window.location.href = 'cart.html';
+    }
+    
     // دالة لإضافة تأثيرات CSS إضافية
     addCustomStyles() {
         const style = document.createElement('style');
@@ -593,6 +616,14 @@ function goToAccount() {
 document.addEventListener('DOMContentLoaded', () => {
     const app = new SuperMarketApp();
     app.addCustomStyles();
+    
+    // Listen for cart updates from other windows
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'cartUpdate') {
+            app.cart = JSON.parse(localStorage.getItem('cart')) || [];
+            app.updateCartCount();
+        }
+    });
     
     // رسالة ترحيب
     setTimeout(() => {

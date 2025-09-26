@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الطلب - سوق الجملة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="checkout-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="checkout-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-btn" onclick="goBackToCart()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <h1>إتمام الطلب</h1>
+                <div class="checkout-steps">
+                    <div class="step active">
+                        <span>1</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <span>2</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <span>3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="checkout-main">
+        <div class="container">
+            <!-- Step 1: Customer Information -->
+            <section id="step-1" class="checkout-step active">
+                <div class="step-header">
+                    <h2>بيانات العميل</h2>
+                    <p>أدخل بياناتك لإتمام الطلب</p>
+                </div>
+                
+                <div class="form-section">
+                    <div class="input-group">
+                        <label for="customer-name">الاسم الكامل <span class="required">*</span></label>
+                        <input type="text" id="customer-name" required>
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="customer-phone">رقم الهاتف <span class="required">*</span></label>
+                        <input type="tel" id="customer-phone" required>
+                        <div class="input-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="customer-email">البريد الإلكتروني</label>
+                        <input type="email" id="customer-email">
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="next-btn" onclick="goToStep(2)">
+                        متابعة
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 2: Delivery Information -->
+            <section id="step-2" class="checkout-step">
+                <div class="step-header">
+                    <h2>بيانات التسليم</h2>
+                    <p>حدد عنوان وطريقة التسليم</p>
+                </div>
+                
+                <div class="form-section">
+                    <div class="delivery-options">
+                        <div class="delivery-option active" data-type="home">
+                            <div class="option-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="option-details">
+                                <h4>توصيل منزلي</h4>
+                                <p>توصيل سريع لعنوانك</p>
+                                <span class="delivery-fee">مجاناً</span>
+                            </div>
+                        </div>
+                        
+                        <div class="delivery-option" data-type="pickup">
+                            <div class="option-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="option-details">
+                                <h4>استلام من المتجر</h4>
+                                <p>استلام من فرعنا</p>
+                                <span class="delivery-fee">مجاناً</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="address-section" class="address-section">
+                        <div class="input-group">
+                            <label for="customer-address">العنوان المفصل <span class="required">*</span></label>
+                            <textarea id="customer-address" rows="3" required></textarea>
+                            <div class="input-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="customer-city">المدينة <span class="required">*</span></label>
+                                <input type="text" id="customer-city" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="customer-district">الحي</label>
+                                <input type="text" id="customer-district">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="delivery-notes">ملاحظات التسليم</label>
+                            <textarea id="delivery-notes" rows="2" placeholder="تعليمات إضافية للمندوب..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="prev-btn" onclick="goToStep(1)">
+                        <i class="fas fa-arrow-right"></i>
+                        رجوع
+                    </button>
+                    <button class="next-btn" onclick="goToStep(3)">
+                        متابعة
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 3: Order Review & Payment -->
+            <section id="step-3" class="checkout-step">
+                <div class="step-header">
+                    <h2>مراجعة الطلب</h2>
+                    <p>راجع بيانات طلبك قبل التأكيد</p>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>ملخص الطلب</h3>
+                    <div id="order-items" class="order-items">
+                        <!-- Order items will be populated here -->
+                    </div>
+                    
+                    <div class="order-totals">
+                        <div class="total-row">
+                            <span>المجموع الفرعي:</span>
+                            <span id="order-subtotal">0 جنيه</span>
+                        </div>
+                        <div class="total-row" id="discount-row" style="display: none;">
+                            <span>الخصم:</span>
+                            <span id="order-discount">0 جنيه</span>
+                        </div>
+                        <div class="total-row">
+                            <span>رسوم الشحن:</span>
+                            <span id="order-shipping">مجاناً</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>المجموع النهائي:</span>
+                            <span id="order-total">0 جنيه</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="payment-section">
+                    <h3>طريقة الدفع</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="cash">
+                            <div class="method-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="method-details">
+                                <h4>دفع عند الاستلام</h4>
+                                <p>ادفع نقداً عند وصول الطلب</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-method" data-method="card">
+                            <div class="method-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="method-details">
+                                <h4>بطاقة ائتمانية</h4>
+                                <p>فيزا - ماستركارد</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-method" data-method="wallet">
+                            <div class="method-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="method-details">
+                                <h4>محفظة إلكترونية</h4>
+                                <p>فودافون كاش - إتصالات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Info Review -->
+                <div class="customer-review">
+                    <h3>بيانات العميل</h3>
+                    <div id="customer-info-review" class="info-review">
+                        <!-- Customer info will be populated here -->
+                    </div>
+                    <button class="edit-info-btn" onclick="goToStep(1)">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="prev-btn" onclick="goToStep(2)">
+                        <i class="fas fa-arrow-right"></i>
+                        رجوع
+                    </button>
+                    <button class="confirm-order-btn" onclick="confirmOrder()">
+                        <i class="fas fa-check-circle"></i>
+                        تأكيد الطلب
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>تم تأكيد الطلب بنجاح!</h3>
+            <p>سيتم التواصل معك قريباً لتأكيد الطلب</p>
+            <div class="order-number">
+                <span>رقم الطلب:</span>
+                <strong id="order-number-display">#12345</strong>
+            </div>
+            <div class="modal-actions">
+                <button class="primary-btn" onclick="goToHome()">
+                    <i class="fas fa-home"></i>
+                    العودة للرئيسية
+                </button>
+                <button class="secondary-btn" onclick="trackOrder()">
+                    <i class="fas fa-search"></i>
+                    تتبع الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loading-modal" class="modal">
+        <div class="modal-content loading">
+            <div class="loading-spinner"></div>
+            <h3>جاري معالجة الطلب...</h3>
+            <p>يرجى الانتظار</p>
+        </div>
+    </div>
+
+    <script src="checkout-script.js"></script>
+</body>
+</html>

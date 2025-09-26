@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوق الجملة - واجهة فائقة التطور 🚀</title>
+    <link rel="stylesheet" href="enhanced-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Tajawal:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- التأثيرات الصوتية -->
+    <link rel="preload" href="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" as="audio">
+</head>
+<body>
+    <!-- خلفية الجسيمات المتحركة -->
+    <div class="particles-container" id="particles-bg">
+        <canvas id="particles-canvas"></canvas>
+    </div>
+    
+    <!-- تأثيرات الضوء الديناميكية -->
+    <div class="dynamic-lights">
+        <div class="light-beam light-1"></div>
+        <div class="light-beam light-2"></div>
+        <div class="light-beam light-3"></div>
+    </div>
+
+    <!-- المؤشر التفاعلي المخصص -->
+    <div class="custom-cursor">
+        <div class="cursor-inner"></div>
+        <div class="cursor-outer"></div>
+    </div>
+
+    <!-- Header فائق التطور -->
+    <header class="ultra-header">
+        <div class="header-glow"></div>
+        <div class="container">
+            <!-- الصف العلوي -->
+            <div class="header-top">
+                <div class="brand-ultra">
+                    <div class="logo-3d">
+                        <div class="logo-inner">
+                            <i class="fas fa-shopping-cart"></i>
+                            <div class="logo-rings">
+                                <div class="ring ring-1"></div>
+                                <div class="ring ring-2"></div>
+                                <div class="ring ring-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="brand-info-enhanced">
+                        <h1 class="glitch-text" data-text="سوق الجملة">سوق الجملة</h1>
+                        <p class="typing-text">تسوق ذكي وأسعار مميزة</p>
+                        <div class="brand-particles"></div>
+                    </div>
+                </div>
+                
+                <div class="header-actions-ultra">
+                    <div class="action-button notification-ultra">
+                        <div class="btn-glow"></div>
+                        <i class="fas fa-bell"></i>
+                        <span class="ultra-badge">
+                            <span class="badge-text">3</span>
+                            <div class="badge-pulse"></div>
+                        </span>
+                        <div class="ripple-effect"></div>
+                    </div>
+                    
+                    <div class="action-button profile-ultra">
+                        <div class="btn-glow"></div>
+                        <i class="fas fa-user-astronaut"></i>
+                        <div class="profile-status online"></div>
+                        <div class="ripple-effect"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- شريط البحث الذكي -->
+            <div class="ultra-search-container">
+                <div class="search-hologram">
+                    <div class="search-field-3d">
+                        <div class="search-icon-animated">
+                            <i class="fas fa-search"></i>
+                            <div class="search-waves">
+                                <div class="wave wave-1"></div>
+                                <div class="wave wave-2"></div>
+                                <div class="wave wave-3"></div>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="ابحث في عالم من المنتجات الرائعة..." id="ultra-search">
+                        <div class="search-suggestions" id="search-suggestions"></div>
+                        
+                        <div class="voice-command">
+                            <button class="voice-btn-3d" id="voice-search">
+                                <i class="fas fa-microphone-alt"></i>
+                                <div class="voice-waves">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="ai-assistant">
+                            <button class="ai-btn" id="ai-help">
+                                <i class="fas fa-robot"></i>
+                                <span>AI</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="ultra-main">
+        <!-- القسم البطولي المتطور -->
+        <section class="mega-hero">
+            <div class="hero-3d-scene">
+                <div class="container">
+                    <div class="hero-content-floating">
+                        <div class="hero-hologram">
+                            <h2 class="hero-title-3d">
+                                <span class="title-word" data-word="عروض">عروض</span>
+                                <span class="title-word" data-word="حصرية">حصرية</span>
+                                <span class="title-word" data-word="فائقة">فائقة</span>
+                            </h2>
+                            <p class="hero-subtitle-animated">
+                                خصومات تصل إلى 
+                                <span class="percentage-counter" data-target="75">0</span>%
+                            </p>
+                            
+                            <div class="cta-button-mega">
+                                <button class="cta-3d" id="hero-cta">
+                                    <span class="btn-text">تسوق الآن</span>
+                                    <div class="btn-particles"></div>
+                                    <div class="btn-energy-field"></div>
+                                    <i class="fas fa-rocket btn-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-visual-3d">
+                            <div class="floating-products">
+                                <div class="product-orbit product-1">
+                                    <i class="fas fa-shopping-basket"></i>
+                                </div>
+                                <div class="product-orbit product-2">
+                                    <i class="fas fa-apple-alt"></i>
+                                </div>
+                                <div class="product-orbit product-3">
+                                    <i class="fas fa-bread-slice"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="discount-hologram">
+                                <div class="discount-ring">
+                                    <span class="discount-text">50% OFF</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تأثيرات الخلفية المتحركة -->
+            <div class="hero-bg-effects">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                    <div class="shape shape-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأقسام التفاعلية المتطورة -->
+        <section class="categories-galaxy">
+            <div class="container">
+                <div class="section-header-ultra">
+                    <h3 class="section-title-3d">
+                        <span class="title-spark">الأقسام الرئيسية</span>
+                        <div class="title-underglow"></div>
+                    </h3>
+                    <button class="see-all-futuristic">
+                        <span>عرض الكل</span>
+                        <i class="fas fa-arrow-left"></i>
+                        <div class="btn-trail"></div>
+                    </button>
+                </div>
+                
+                <div class="categories-constellation">
+                    <div class="category-planet supermarket">
+                        <div class="planet-atmosphere"></div>
+                        <div class="planet-core">
+                            <div class="category-icon-3d">
+                                <i class="fas fa-shopping-basket"></i>
+                                <div class="icon-energy"></div>
+                            </div>
+                            <h4>السوبر ماركت</h4>
+                            <p>جميع احتياجاتك اليومية</p>
+                            <div class="product-count">
+                                <span class="count-number">+500</span>
+                                <span class="count-label">منتج</span>
+                            </div>
+                        </div>
+                        <div class="planet-rings">
+                            <div class="ring-orbit ring-1"></div>
+                            <div class="ring-orbit ring-2"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-planet cleaning">
+                        <div class="planet-atmosphere"></div>
+                        <div class="planet-core">
+                            <div class="category-icon-3d">
+                                <i class="fas fa-spray-can"></i>
+                                <div class="icon-energy"></div>
+                            </div>
+                            <h4>المنظفات</h4>
+                            <p>أفضل منتجات التنظيف</p>
+                            <div class="product-count">
+                                <span class="count-number">+150</span>
+                                <span class="count-label">منتج</span>
+                            </div>
+                        </div>
+                        <div class="planet-rings">
+                            <div class="ring-orbit ring-1"></div>
+                            <div class="ring-orbit ring-2"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-planet fruits">
+                        <div class="planet-atmosphere"></div>
+                        <div class="planet-core">
+                            <div class="category-icon-3d">
+                                <i class="fas fa-apple-alt"></i>
+                                <div class="icon-energy"></div>
+                            </div>
+                            <h4>الخضروات والفاكهة</h4>
+                            <p>طازجة وعالية الجودة</p>
+                            <div class="product-count">
+                                <span class="count-number">+200</span>
+                                <span class="count-label">منتج</span>
+                            </div>
+                        </div>
+                        <div class="planet-rings">
+                            <div class="ring-orbit ring-1"></div>
+                            <div class="ring-orbit ring-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- العروض المتطورة -->
+        <section class="offers-dimension">
+            <div class="container">
+                <div class="section-header-ultra">
+                    <h3 class="section-title-3d">
+                        <span class="title-spark">العروض الخارقة</span>
+                        <div class="title-underglow"></div>
+                    </h3>
+                    <div class="countdown-hologram">
+                        <div class="countdown-3d">
+                            <i class="fas fa-rocket"></i>
+                            <span class="countdown-text">ينتهي خلال:</span>
+                            <div class="time-display">
+                                <div class="time-unit">
+                                    <span class="time-number" id="hours">02</span>
+                                    <span class="time-label">ساعة</span>
+                                </div>
+                                <div class="time-separator">:</div>
+                                <div class="time-unit">
+                                    <span class="time-number" id="minutes">30</span>
+                                    <span class="time-label">دقيقة</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="offers-matrix">
+                    <div class="offer-card-quantum featured">
+                        <div class="card-energy-field"></div>
+                        <div class="discount-badge-3d">
+                            <span class="badge-text">40%</span>
+                            <div class="badge-explosion"></div>
+                        </div>
+                        <div class="offer-content-3d">
+                            <h4 class="offer-title">عرض خاص على المنظفات</h4>
+                            <p class="offer-description">اشتر 2 واحصل على 1 مجاناً</p>
+                            <div class="price-showcase">
+                                <span class="old-price">150 جنيه</span>
+                                <div class="price-arrow">→</div>
+                                <span class="new-price">90 جنيه</span>
+                            </div>
+                            <button class="grab-offer-btn">
+                                <span>احصل عليه الآن</span>
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="offer-card-quantum">
+                        <div class="card-energy-field"></div>
+                        <div class="discount-badge-3d">
+                            <span class="badge-text">25%</span>
+                            <div class="badge-explosion"></div>
+                        </div>
+                        <div class="offer-content-3d">
+                            <h4 class="offer-title">فواكه طازجة</h4>
+                            <p class="offer-description">خصم على جميع أنواع الفواكه</p>
+                            <div class="price-showcase">
+                                <span class="old-price">80 جنيه</span>
+                                <div class="price-arrow">→</div>
+                                <span class="new-price">60 جنيه</span>
+                            </div>
+                            <button class="grab-offer-btn">
+                                <span>احصل عليه الآن</span>
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="offer-card-quantum">
+                        <div class="card-energy-field"></div>
+                        <div class="discount-badge-3d">
+                            <span class="badge-text">35%</span>
+                            <div class="badge-explosion"></div>
+                        </div>
+                        <div class="offer-content-3d">
+                            <h4 class="offer-title">منتجات السوبر ماركت</h4>
+                            <p class="offer-description">خصم على المشتريات فوق 200 جنيه</p>
+                            <div class="price-showcase">
+                                <span class="old-price">200 جنيه</span>
+                                <div class="price-arrow">→</div>
+                                <span class="new-price">130 جنيه</span>
+                            </div>
+                            <button class="grab-offer-btn">
+                                <span>احصل عليه الآن</span>
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- المنتجات الشائعة بتقنية متقدمة -->
+        <section class="products-universe">
+            <div class="container">
+                <div class="section-header-ultra">
+                    <h3 class="section-title-3d">
+                        <span class="title-spark">المنتجات الأكثر مبيعاً</span>
+                        <div class="title-underglow"></div>
+                    </h3>
+                    <button class="see-all-futuristic">
+                        <span>عرض المزيد</span>
+                        <i class="fas fa-arrow-left"></i>
+                        <div class="btn-trail"></div>
+                    </button>
+                </div>
+                
+                <div class="products-galaxy">
+                    <div class="product-card-nexus bestseller">
+                        <div class="card-aura"></div>
+                        <div class="product-badge-3d bestseller-badge">
+                            <span>الأكثر مبيعاً</span>
+                            <div class="badge-glow"></div>
+                        </div>
+                        
+                        <div class="product-image-3d">
+                            <div class="image-placeholder">
+                                <i class="fas fa-oil-can"></i>
+                            </div>
+                            <div class="image-effects">
+                                <div class="sparkle sparkle-1"></div>
+                                <div class="sparkle sparkle-2"></div>
+                                <div class="sparkle sparkle-3"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="product-info-enhanced">
+                            <h5 class="product-name">زيت طعام عباد الشمس</h5>
+                            <div class="rating-constellation">
+                                <div class="stars-3d">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="rating-score">(4.2)</span>
+                            </div>
+                            
+                            <div class="price-matrix">
+                                <span class="current-price">45 جنيه</span>
+                                <span class="old-price">55 جنيه</span>
+                                <div class="savings-indicator">وفر 10 جنيه!</div>
+                            </div>
+                            
+                            <button class="add-to-cart-quantum">
+                                <div class="btn-background"></div>
+                                <i class="fas fa-plus"></i>
+                                <span>أضف للسلة</span>
+                                <div class="btn-particles"></div>
+                            </button>
+                        </div>
+                        
+                        <button class="favorite-btn-3d">
+                            <i class="far fa-heart"></i>
+                            <div class="heart-pulse"></div>
+                        </button>
+                    </div>
+                    
+                    <div class="product-card-nexus new">
+                        <div class="card-aura"></div>
+                        <div class="product-badge-3d new-badge">
+                            <span>جديد</span>
+                            <div class="badge-glow"></div>
+                        </div>
+                        
+                        <div class="product-image-3d">
+                            <div class="image-placeholder">
+                                <i class="fas fa-spray-can"></i>
+                            </div>
+                            <div class="image-effects">
+                                <div class="sparkle sparkle-1"></div>
+                                <div class="sparkle sparkle-2"></div>
+                                <div class="sparkle sparkle-3"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="product-info-enhanced">
+                            <h5 class="product-name">منظف أرضيات فلاش</h5>
+                            <div class="rating-constellation">
+                                <div class="stars-3d">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-score">(4.8)</span>
+                            </div>
+                            
+                            <div class="price-matrix">
+                                <span class="current-price">35 جنيه</span>
+                                <div class="price-new-indicator">سعر مميز!</div>
+                            </div>
+                            
+                            <button class="add-to-cart-quantum">
+                                <div class="btn-background"></div>
+                                <i class="fas fa-plus"></i>
+                                <span>أضف للسلة</span>
+                                <div class="btn-particles"></div>
+                            </button>
+                        </div>
+                        
+                        <button class="favorite-btn-3d">
+                            <i class="far fa-heart"></i>
+                            <div class="heart-pulse"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- التواصل المتطور -->
+        <section class="contact-nexus">
+            <div class="container">
+                <div class="contact-hologram">
+                    <div class="contact-field-3d">
+                        <div class="contact-icon-quantum">
+                            <i class="fas fa-headset"></i>
+                            <div class="icon-pulse-rings">
+                                <div class="pulse-ring ring-1"></div>
+                                <div class="pulse-ring ring-2"></div>
+                                <div class="pulse-ring ring-3"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-enhanced">
+                            <h4 class="contact-title">تواصل معنا فوراً</h4>
+                            <p class="contact-subtitle">خدمة العملاء الذكية متاحة 24/7</p>
+                            <div class="contact-methods">
+                                <a href="tel:01001470449" class="contact-btn primary">
+                                    <i class="fas fa-phone-alt"></i>
+                                    <span>01001470449</span>
+                                    <div class="btn-energy"></div>
+                                </a>
+                                
+                                <button class="contact-btn whatsapp">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>واتساب</span>
+                                    <div class="btn-energy"></div>
+                                </button>
+                                
+                                <button class="contact-btn ai-chat">
+                                    <i class="fas fa-robot"></i>
+                                    <span>الدردشة الذكية</span>
+                                    <div class="btn-energy"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- الشريط السفلي المتطور -->
+    <nav class="navigation-quantum">
+        <div class="nav-container">
+            <div class="nav-item active">
+                <div class="nav-icon-3d">
+                    <i class="fas fa-home"></i>
+                    <div class="icon-orbit"></div>
+                </div>
+                <span class="nav-label">الرئيسية</span>
+                <div class="nav-glow"></div>
+            </div>
+            
+            <div class="nav-item">
+                <div class="nav-icon-3d">
+                    <i class="fas fa-th-large"></i>
+                    <div class="icon-orbit"></div>
+                </div>
+                <span class="nav-label">الأقسام</span>
+                <div class="nav-glow"></div>
+            </div>
+            
+            <div class="nav-item cart-quantum">
+                <div class="nav-icon-3d">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="icon-orbit"></div>
+                </div>
+                <span class="nav-label">السلة</span>
+                <div class="cart-badge-quantum">
+                    <span class="badge-count">2</span>
+                    <div class="badge-pulse-effect"></div>
+                </div>
+                <div class="nav-glow"></div>
+            </div>
+            
+            <div class="nav-item">
+                <div class="nav-icon-3d">
+                    <i class="fas fa-heart"></i>
+                    <div class="icon-orbit"></div>
+                </div>
+                <span class="nav-label">المفضلة</span>
+                <div class="nav-glow"></div>
+            </div>
+            
+            <div class="nav-item">
+                <div class="nav-icon-3d">
+                    <i class="fas fa-user"></i>
+                    <div class="icon-orbit"></div>
+                </div>
+                <span class="nav-label">حسابي</span>
+                <div class="nav-glow"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- زر السلة العائم المتطور -->
+    <button class="floating-cart-nexus">
+        <div class="cart-background-3d"></div>
+        <div class="cart-icon-container">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="cart-energy-field"></div>
+        </div>
+        <div class="cart-count-3d">
+            <span class="count-number">2</span>
+            <div class="count-pulse"></div>
+        </div>
+        <div class="cart-trail"></div>
+    </button>
+
+    <!-- مشغل الموسيقى التفاعلي -->
+    <div class="music-player-quantum">
+        <button class="music-toggle" id="musicToggle">
+            <i class="fas fa-music"></i>
+            <div class="music-waves">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+    </div>
+
+    <!-- إعدادات الواجهة -->
+    <div class="ui-controls">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-palette"></i>
+            <span>تغيير اللون</span>
+        </button>
+        <button class="effects-toggle" id="effectsToggle">
+            <i class="fas fa-magic"></i>
+            <span>المؤثرات</span>
+        </button>
+    </div>
+
+    <!-- أصوات التفاعل -->
+    <audio id="clickSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DvuGoUAi2H0fPVeywGKHLH7dx3KwUZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DvuGoUAi2H0fPVeywGKHLH7dx3KwU="></source>
+    </audio>
+    <audio id="hoverSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRvIHAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YU4HAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DvuGoUAi2H0fPVeywGKHLH7dx3KwUXY7bt456MEAwRqOPwtmQdAi6H0vLUeSwGKHHL7tx5KgQ="></source>
+    </audio>
+
+    <script src="enhanced-script.js"></script>
+</body>
+</html>

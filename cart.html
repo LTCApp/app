@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلة التسوق - سوق الجملة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cart-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <h1>سلة التسوق</h1>
+                <button class="clear-cart-btn" onclick="clearCart()">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="cart-main">
+        <div class="container">
+            <!-- Empty Cart State -->
+            <div id="empty-cart" class="empty-cart-state" style="display: none;">
+                <div class="empty-cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>سلة التسوق فارغة</h3>
+                <p>لم تقم بإضافة أي منتجات بعد</p>
+                <button class="continue-shopping-btn" onclick="goToHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    متابعة التسوق
+                </button>
+            </div>
+
+            <!-- Cart Items -->
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will be populated here -->
+            </div>
+
+            <!-- Cart Summary -->
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                <div class="summary-row">
+                    <span>المجموع الفرعي:</span>
+                    <span id="subtotal">0 جنيه</span>
+                </div>
+                <div class="summary-row">
+                    <span>رسوم الشحن:</span>
+                    <span id="shipping">مجاناً</span>
+                </div>
+                <div class="summary-row">
+                    <span>الخصم:</span>
+                    <span id="discount">0 جنيه</span>
+                </div>
+                <div class="summary-row total">
+                    <span>المجموع الكلي:</span>
+                    <span id="total">0 جنيه</span>
+                </div>
+                
+                <!-- Coupon Section -->
+                <div class="coupon-section">
+                    <div class="coupon-input">
+                        <input type="text" id="coupon-code" placeholder="أدخل كود الخصم">
+                        <button id="apply-coupon-btn" onclick="applyCoupon()">
+                            <i class="fas fa-tag"></i>
+                            تطبيق
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Checkout Button -->
+                <button class="checkout-btn" onclick="goToCheckout()">
+                    <i class="fas fa-credit-card"></i>
+                    إتمام الطلب
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Quantity Modal -->
+    <div id="quantity-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل الكمية</h3>
+                <button class="close-modal" onclick="closeQuantityModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="quantity-controls">
+                    <button class="quantity-btn minus" onclick="decreaseQuantity()">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" id="quantity-input" value="1" min="1" max="50">
+                    <button class="quantity-btn plus" onclick="increaseQuantity()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="quantity-actions">
+                    <button class="save-quantity-btn" onclick="saveQuantity()">
+                        <i class="fas fa-check"></i>
+                        حفظ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تأكيد الحذف</h3>
+                <button class="close-modal" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من حذف هذا المنتج من السلة؟</p>
+                <div class="modal-actions">
+                    <button class="confirm-delete-btn" onclick="confirmDelete()">
+                        <i class="fas fa-trash"></i>
+                        حذف
+                    </button>
+                    <button class="cancel-btn" onclick="closeDeleteModal()">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart-script.js"></script>
+</body>
+</html>
