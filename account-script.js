@@ -140,12 +140,15 @@ class AccountManager {
         this.showLoading('جاري التحقق من البيانات...');
 
         try {
-            // Simulate API call
+            // Simulate API call with better feedback
             await this.simulateDelay(2000);
             
             // Generate OTP and send
             this.currentOTP = this.generateOTP();
-            console.log('OTP Generated for login:', this.currentOTP); // For testing
+            
+            // Show OTP in console and as alert for testing (remove in production)
+            console.log('🔐 كود التحقق للدخول:', this.currentOTP);
+            this.showNotification(`كود التحقق الخاص بك: ${this.currentOTP}`, 'success');
             
             // Store phone for verification
             sessionStorage.setItem('verificationPhone', fullPhone);
@@ -208,12 +211,15 @@ class AccountManager {
         this.showLoading('جاري إنشاء الحساب...');
 
         try {
-            // Simulate API call
+            // Simulate API call with better feedback
             await this.simulateDelay(2000);
             
             // Generate OTP and send
             this.currentOTP = this.generateOTP();
-            console.log('OTP Generated for registration:', this.currentOTP); // For testing
+            
+            // Show OTP in console and as alert for testing (remove in production)
+            console.log('🔐 كود التحقق للتسجيل:', this.currentOTP);
+            this.showNotification(`كود التحقق الخاص بك: ${this.currentOTP}`, 'success');
             
             // Store user data for completion after verification
             const userData = {
@@ -481,9 +487,10 @@ class AccountManager {
         try {
             await this.simulateDelay(2000);
             
-            // Generate new OTP
+            // Generate new OTP with visual feedback
             this.currentOTP = this.generateOTP();
-            console.log('New OTP:', this.currentOTP); // For testing
+            console.log('🔐 كود التحقق الجديد:', this.currentOTP);
+            this.showNotification(`كود التحقق الجديد: ${this.currentOTP}`, 'success');
             
             // Restart timer
             this.startOTPTimer();
@@ -832,47 +839,107 @@ class AccountManager {
     }
 
     showNotification(message, type = 'success') {
+        // Create notification container if it doesn't exist
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10001;
+                max-width: 350px;
+                direction: rtl;
+            `;
+            document.body.appendChild(container);
+        }
+        
         const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <span>${message}</span>
-            </div>
-        `;
+        notification.className = `notification notification-${type}`;
+        
+        const colors = {
+            success: '#16a34a',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6'
+        };
+        
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            warning: 'fas fa-exclamation-triangle',
+            info: 'fas fa-info-circle'
+        };
         
         notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)' : 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'};
-            color: white;
+            background: white;
+            border-right: 4px solid ${colors[type]};
             padding: 15px 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            z-index: 10001;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInFromRight 0.4s ease-out;
             font-family: 'Cairo', sans-serif;
-            max-width: 300px;
+            direction: rtl;
+            text-align: right;
+            min-width: 300px;
+            backdrop-filter: blur(10px);
         `;
         
-        document.body.appendChild(notification);
+        notification.innerHTML = `
+            <div style="color: ${colors[type]}; font-size: 18px; flex-shrink: 0;">
+                <i class="${icons[type]}"></i>
+            </div>
+            <div style="flex: 1; color: #333; font-weight: 600; font-size: 15px; line-height: 1.4;">
+                ${message}
+            </div>
+            <button onclick="this.parentElement.remove()" style="
+                background: none; 
+                border: none; 
+                color: #999; 
+                cursor: pointer;
+                font-size: 16px;
+                padding: 5px;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                flex-shrink: 0;
+            " 
+            onmouseover="this.style.backgroundColor='#f3f4f6'; this.style.color='#666'" 
+            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#999'">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
         
-        // Show notification
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
+        container.appendChild(notification);
         
-        // Hide notification
+        // Auto remove after 6 seconds
         setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
+            if (notification.parentElement) {
+                notification.style.animation = 'slideOutToRight 0.4s ease-in forwards';
+                setTimeout(() => notification.remove(), 400);
+            }
+        }, 6000);
+        
+        // Add CSS animations if not already added
+        if (!document.getElementById('notification-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notification-styles';
+            styles.textContent = `
+                @keyframes slideInFromRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
                 }
-            }, 300);
-        }, 4000);
+                @keyframes slideOutToRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(styles);
+        }
     }
 }
 
@@ -925,8 +992,8 @@ function logout() {
 }
 
 function continueAsGuest() {
-    // Navigate back to main app as guest
-    window.location.href = 'index.html';
+    // This function is removed - no longer available
+    console.log('Guest login has been disabled');
 }
 
 function goBack() {
@@ -963,8 +1030,8 @@ window.viewNotifications = viewNotifications;
 window.contactSupport = contactSupport;
 window.appSettings = appSettings;
 window.logout = logout;
-window.continueAsGuest = continueAsGuest;
 window.goBack = goBack;
+// Removed: window.continueAsGuest
 
 // Initialize account manager
 let accountManager;
@@ -1022,3 +1089,146 @@ function resetInactivityTimer() {
 
 // Initialize timer
 resetInactivityTimer();
+
+// Enhanced Google Auth Setup
+AccountManager.prototype.setupGoogleAuth = function() {
+    const googleBtn = document.getElementById('googleSignInBtn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', () => {
+            this.handleGoogleLogin();
+        });
+    }
+    
+    this.loadGoogleIdentityAPI();
+};
+
+AccountManager.prototype.loadGoogleIdentityAPI = function() {
+    if (!window.google) {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+            this.initializeGoogleSignIn();
+        };
+        document.head.appendChild(script);
+    } else {
+        this.initializeGoogleSignIn();
+    }
+};
+
+AccountManager.prototype.initializeGoogleSignIn = function() {
+    if (window.google?.accounts) {
+        window.google.accounts.id.initialize({
+            client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+            callback: (response) => this.handleGoogleCallback(response),
+            auto_select: false,
+            cancel_on_tap_outside: true
+        });
+    }
+};
+
+AccountManager.prototype.handleGoogleLogin = function() {
+    this.showLoading('جاري تسجيل الدخول بحساب جوجل...');
+    
+    // For demo purposes - simulate realistic Google login
+    setTimeout(async () => {
+        try {
+            const arabicNames = [
+                'أحمد محمد العلي',
+                'فاطمة سعد الشامي', 
+                'محمد عبدالله القحطاني',
+                'نور أحمد المصري',
+                'خالد سالم البحريني',
+                'سارة عبدالرحمن الزهراني',
+                'يوسف طارق الكويتي',
+                'مريم عثمان الأردنية',
+                'علي حسن اللبناني'
+            ];
+            
+            const randomName = arabicNames[Math.floor(Math.random() * arabicNames.length)];
+            const randomEmail = `user${Math.floor(Math.random() * 999)}@gmail.com`;
+            
+            await this.simulateDelay(2500);
+            
+            const googleUser = {
+                id: this.generateUserId(),
+                name: randomName,
+                email: randomEmail,
+                phone: null,
+                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(randomName)}&background=dc2626&color=fff&size=128&format=png&rounded=true`,
+                provider: 'google',
+                joinDate: new Date().toISOString(),
+                isVerified: true,
+                wallet: 50, // Welcome bonus
+                orders: [],
+                favorites: [],
+                addresses: []
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(googleUser));
+            this.currentUser = googleUser;
+            this.isAuthenticated = true;
+
+            this.hideLoading();
+            this.showNotification(`مرحباً ${randomName}! تم تسجيل الدخول بنجاح عبر جوجل 🎉`, 'success');
+            
+            setTimeout(() => {
+                this.showUserProfile();
+            }, 2000);
+            
+        } catch (error) {
+            this.hideLoading();
+            this.showError('فشل في تسجيل الدخول بحساب جوجل. يرجى المحاولة مرة أخرى');
+        }
+    }, 100);
+};
+
+AccountManager.prototype.handleGoogleCallback = function(response) {
+    if (response.credential) {
+        try {
+            const payload = this.parseJWT(response.credential);
+            
+            const googleUser = {
+                id: this.generateUserId(),
+                name: payload.name,
+                email: payload.email,
+                phone: null,
+                avatar: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name)}&background=dc2626&color=fff&size=128&format=png&rounded=true`,
+                provider: 'google',
+                joinDate: new Date().toISOString(),
+                isVerified: true,
+                wallet: 50,
+                orders: [],
+                favorites: [],
+                addresses: []
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(googleUser));
+            this.currentUser = googleUser;
+            this.isAuthenticated = true;
+
+            this.showNotification(`مرحباً ${payload.name}! تم تسجيل الدخول بنجاح 🎉`, 'success');
+            
+            setTimeout(() => {
+                this.showUserProfile();
+            }, 1500);
+        } catch (error) {
+            this.showError('حدث خطأ في تسجيل الدخول. يرجى المحاولة مرة أخرى');
+        }
+    }
+};
+
+AccountManager.prototype.parseJWT = function(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('خطأ في تحليل JWT:', error);
+        return {};
+    }
+};

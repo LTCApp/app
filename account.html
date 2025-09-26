@@ -64,8 +64,8 @@
                                 <i class="fas fa-mobile-alt"></i>
                                 رقم الموبايل
                             </label>
-                            <div class="phone-input">
-                                <select class="country-code" id="countryCode">
+                            <div class="phone-input-container">
+                                <select class="country-code-select" id="countryCode">
                                     <option value="+20" selected>🇪🇬 +20</option>
                                     <option value="+966">🇸🇦 +966</option>
                                     <option value="+971">🇦🇪 +971</option>
@@ -77,7 +77,7 @@
                                     <option value="+961">🇱🇧 +961</option>
                                     <option value="+1">🇺🇸 +1</option>
                                 </select>
-                                <input type="tel" id="phoneLogin" placeholder="1001470449" required>
+                                <input type="tel" id="phoneLogin" class="phone-number-input" placeholder="1001470449" required>
                             </div>
                         </div>
                         
@@ -114,7 +114,13 @@
                         <div class="otp-header">
                             <i class="fas fa-sms"></i>
                             <h3>كود التحقق</h3>
-                            <p>تم إرسال كود التحقق إلى <span id="sentToNumber"></span></p>
+                            <p>تم إرسال كود التحقق المكون من 6 أرقام إلى</p>
+                            <div class="phone-display">
+                                <span id="sentToNumber"></span>
+                            </div>
+                            <div class="otp-info">
+                                <p><strong>ملحوظة:</strong> سيصل الكود خلال دقيقة واحدة</p>
+                            </div>
                         </div>
                         <form id="otpForm">
                             <div class="otp-inputs">
@@ -157,8 +163,8 @@
                                 <i class="fas fa-mobile-alt"></i>
                                 رقم الموبايل
                             </label>
-                            <div class="phone-input">
-                                <select class="country-code" id="countryCodeRegister">
+                            <div class="phone-input-container">
+                                <select class="country-code-select" id="countryCodeRegister">
                                     <option value="+20" selected>🇪🇬 +20</option>
                                     <option value="+966">🇸🇦 +966</option>
                                     <option value="+971">🇦🇪 +971</option>
@@ -170,7 +176,7 @@
                                     <option value="+961">🇱🇧 +961</option>
                                     <option value="+1">🇺🇸 +1</option>
                                 </select>
-                                <input type="tel" id="phoneRegister" placeholder="1001470449" required>
+                                <input type="tel" id="phoneRegister" class="phone-number-input" placeholder="1001470449" required>
                             </div>
                         </div>
 
@@ -243,13 +249,7 @@
                         <span>متابعة مع جوجل</span>
                     </button>
 
-                    <!-- Guest Continue -->
-                    <button class="social-btn guest-btn" onclick="continueAsGuest()">
-                        <div class="social-icon">
-                            <i class="fas fa-user-secret"></i>
-                        </div>
-                        <span>متابعة كضيف</span>
-                    </button>
+
                 </div>
             </div>
 

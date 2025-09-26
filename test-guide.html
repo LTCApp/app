@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل اختبار صفحة حسابي</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #dc2626;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 15px;
+            border-right: 4px solid #dc2626;
+        }
+        .section h2 {
+            color: #dc2626;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .section p, .section li {
+            color: #374151;
+            line-height: 1.6;
+        }
+        .section ul {
+            padding-right: 20px;
+        }
+        .test-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+            transition: all 0.3s ease;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+        }
+        .code-block {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            direction: ltr;
+            text-align: left;
+        }
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #92400e;
+            font-weight: 600;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .status.fixed {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .status.improved {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .status.removed {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ دليل اختبار صفحة حسابي</h1>
+            <p>تم إصلاح جميع المشاكل وتطوير الميزات كما طلبت</p>
+            <a href="account.html" class="test-button">🚀 افتح صفحة حسابي للاختبار</a>
+        </div>
+
+        <div class="section">
+            <h2>🔧 الإصلاحات المنجزة</h2>
+            <ul>
+                <li><span class="status fixed">تم الإصلاح</span><strong>تصميم مربعات الإدخال:</strong> تحسين المظهر والحجم والتفاعل</li>
+                <li><span class="status removed">تم الإزالة</span><strong>زر "متابعة كضيف":</strong> تم حذفه نهائياً كما طلبت</li>
+                <li><span class="status improved">تم التطوير</span><strong>Google Login:</strong> يعرض الآن أسماء عربية واقعية</li>
+                <li><span class="status fixed">تم الإصلاح</span><strong>كود OTP:</strong> يظهر الكود بوضوح للاختبار</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📱 كيفية اختبار OTP</h2>
+            <p><strong>خطوات الاختبار:</strong></p>
+            <ol>
+                <li>ادخل أي رقم موبايل صحيح (مثل: 1001470449)</li>
+                <li>اختر رمز البلد (مثل: +20 مصر)</li>
+                <li>اضغط <span class="highlight">"إرسال كود التحقق"</span></li>
+                <li>ستظهر رسالة إشعار تحتوي على كود OTP</li>
+                <li>افتح Console المتصفح (F12) لرؤية الكود أيضاً</li>
+                <li>ادخل الكود في المربعات الستة</li>
+            </ol>
+            <div class="code-block">
+                مثال: سيظهر لك كود مثل "123456"<br>
+                🔐 كود التحقق للدخول: 123456
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🌟 كيفية اختبار Google Login</h2>
+            <p><strong>الميزات الجديدة:</strong></p>
+            <ul>
+                <li>أسماء عربية واقعية: أحمد محمد العلي، فاطمة سعد الشامي، إلخ</li>
+                <li>صور شخصية تلقائية ملونة</li>
+                <li>مكافأة ترحيب 50 جنيه في المحفظة</li>
+            </ul>
+            <p><strong>خطوات الاختبار:</strong></p>
+            <ol>
+                <li>اضغط زر <span class="highlight">"متابعة مع جوجل"</span></li>
+                <li>انتظر محاكاة تسجيل الدخول</li>
+                <li>سيتم عرض اسم عربي واقعي</li>
+                <li>ادخل لصفحة الملف الشخصي</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🎨 تحسينات التصميم</h2>
+            <p><strong>ما تم تحسينه:</strong></p>
+            <ul>
+                <li><strong>مربعات الإدخال:</strong> padding أكبر، shadow أجمل، focus effects محسنة</li>
+                <li><strong>مربع كود البلد:</strong> عرض ثابت 110px للوضوح</li>
+                <li><strong>عرض رقم الهاتف في OTP:</strong> مربع ملون ومميز</li>
+                <li><strong>نظام إشعارات جديد:</strong> متعدد الأنواع مع animations محسنة</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📋 نصائح للاختبار</h2>
+            <p><strong>للحصول على أفضل تجربة:</strong></p>
+            <ul>
+                <li>افتح Developer Tools (F12) لرؤية أكواد OTP في Console</li>
+                <li>جرب التنقل بين تسجيل الدخول وإنشاء حساب جديد</li>
+                <li>اختبر إعادة إرسال كود OTP</li>
+                <li>جرب Google Login عدة مرات لرؤية أسماء مختلفة</li>
+                <li>لاحظ رسائل الإشعارات الجديدة والأنيقة</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>✅ قائمة المراجعة</h2>
+            <p><strong>تأكد من اختبار:</strong></p>
+            <ul>
+                <li>☑️ تسجيل دخول بالموبايل + OTP</li>
+                <li>☑️ إنشاء حساب جديد + OTP</li>
+                <li>☑️ تسجيل الدخول بـ Google</li>
+                <li>☑️ إعادة إرسال كود OTP</li>
+                <li>☑️ التنقل في صفحة الملف الشخصي</li>
+                <li>☑️ تسجيل الخروج</li>
+            </ul>
+        </div>
+
+        <div class="header" style="margin-top: 40px; text-align: center;">
+            <a href="account.html" class="test-button">🎯 ابدأ الاختبار الآن</a>
+            <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                📞 للدعم الفني: 01001470449 | 👨‍💻 تطوير: MiniMax Agent
+            </p>
+        </div>
+    </div>
+</body>
+</html>
