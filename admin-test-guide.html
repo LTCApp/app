@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل اختبار لوحة تحكم الإدارة - سوق الجملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fff0f0 0%, #ffe5e5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(220, 38, 38, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-right: 5px solid #dc2626;
+        }
+
+        .section h2 {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+        }
+
+        .credentials {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .credentials h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+        }
+
+        .test-steps {
+            counter-reset: step-counter;
+        }
+
+        .test-step {
+            counter-increment: step-counter;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .test-step::before {
+            content: counter(step-counter);
+            background: #dc2626;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .feature-list li i {
+            color: #10b981;
+            font-size: 16px;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning i {
+            font-size: 20px;
+        }
+
+        .quick-access {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .admin-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(220, 38, 38, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .tips h4 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .tips ul {
+            padding-right: 20px;
+        }
+
+        .tips li {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .credential-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-cogs"></i> دليل اختبار لوحة التحكم</h1>
+            <p>دليل شامل لاختبار جميع ميزات لوحة تحكم إدارة سوق الجملة</p>
+        </div>
+
+        <div class="content">
+            <div class="quick-access">
+                <a href="admin.html" class="admin-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    فتح لوحة التحكم
+                </a>
+            </div>
+
+            <div class="credentials">
+                <h3><i class="fas fa-key"></i> بيانات تسجيل الدخول</h3>
+                <div class="credential-item">
+                    <span>اسم المستخدم:</span>
+                    <strong>admin</strong>
+                </div>
+                <div class="credential-item">
+                    <span>كلمة المرور:</span>
+                    <strong>admin123</strong>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-play-circle"></i> البدء السريع</h2>
+                <div class="test-steps">
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">فتح لوحة التحكم</div>
+                            <div class="step-description">اضغط على الزر أعلاه أو افتح ملف admin.html مباشرة</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">تسجيل الدخول</div>
+                            <div class="step-description">أدخل: admin كاسم مستخدم و admin123 كلمة مرور</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">استكشاف اللوحة</div>
+                            <div class="step-description">ستظهر لوحة الإحصائيات الرئيسية مع البيانات التجريبية</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-chart-pie"></i> اختبار لوحة الإحصائيات</h2>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> عرض بطاقات الإحصائيات الأربع (المبيعات، الطلبات، العملاء، المنتجات)</li>
+                    <li><i class="fas fa-check"></i> الرسم البياني الخطي للمبيعات الشهرية</li>
+                    <li><i class="fas fa-check"></i> الرسم البياني الدائري لتوزيع المنتجات</li>
+                    <li><i class="fas fa-check"></i> قائمة الطلبات الحديثة مع الحالات المختلفة</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-boxes"></i> اختبار إدارة المنتجات</h2>
+                
+                <h3>الميزات المتاحة:</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> عرض جميع المنتجات في شبكة منظمة</li>
+                    <li><i class="fas fa-check"></i> البحث في المنتجات بالاسم أو الوصف</li>
+                    <li><i class="fas fa-check"></i> تصفية حسب الفئة (خضروات، فواكه، لحوم، ألبان)</li>
+                    <li><i class="fas fa-check"></i> تصفية حسب حالة المخزون</li>
+                    <li><i class="fas fa-check"></i> إضافة منتج جديد</li>
+                    <li><i class="fas fa-check"></i> تعديل المنتجات الموجودة</li>
+                    <li><i class="fas fa-check"></i> حذف المنتجات</li>
+                </ul>
+
+                <div class="test-steps">
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">اختبار البحث</div>
+                            <div class="step-description">جرب البحث عن "طماطم" أو "تفاح" في مربع البحث</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">اختبار التصفية</div>
+                            <div class="step-description">استخدم قوائم التصفية لعرض فئة معينة أو حالة مخزون محددة</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">إضافة منتج جديد</div>
+                            <div class="step-description">اضغط "إضافة منتج جديد" واملأ النموذج بالبيانات المطلوبة</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">تعديل منتج</div>
+                            <div class="step-description">اضغط "تعديل" على أي منتج وغيّر البيانات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-shopping-cart"></i> اختبار إدارة الطلبات</h2>
+                
+                <h3>الميزات المتاحة:</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> عرض جميع الطلبات مع التفاصيل الكاملة</li>
+                    <li><i class="fas fa-check"></i> البحث برقم الطلب أو اسم العميل</li>
+                    <li><i class="fas fa-check"></i> تصفية حسب حالة الطلب</li>
+                    <li><i class="fas fa-check"></i> تصفية حسب التاريخ</li>
+                    <li><i class="fas fa-check"></i> تغيير حالة الطلبات</li>
+                    <li><i class="fas fa-check"></i> عرض تفاصيل الطلب كاملة</li>
+                </ul>
+
+                <div class="test-steps">
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">تغيير حالة الطلب</div>
+                            <div class="step-description">استخدم القائمة المنسدلة لتغيير حالة أي طلب (مثلاً من "قيد المراجعة" إلى "مؤكد")</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">عرض تفاصيل الطلب</div>
+                            <div class="step-description">اضغط "التفاصيل" لرؤية النافذة المنبثقة مع جميع معلومات الطلب</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">اختبار البحث والتصفية</div>
+                            <div class="step-description">جرب البحث برقم الطلب "12345" أو اسم العميل "أحمد"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-users"></i> اختبار إدارة المستخدمين</h2>
+                
+                <h3>الميزات المتاحة:</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> عرض جميع المستخدمين مع إحصائياتهم</li>
+                    <li><i class="fas fa-check"></i> أنواع المستخدمين (عادي، مميز، جملة)</li>
+                    <li><i class="fas fa-check"></i> حالات المستخدمين (نشط، غير نشط، محظور)</li>
+                    <li><i class="fas fa-check"></i> حظر وإلغاء حظر المستخدمين</li>
+                    <li><i class="fas fa-check"></i> البحث والتصفية</li>
+                </ul>
+
+                <div class="test-steps">
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">حظر مستخدم</div>
+                            <div class="step-description">اضغط "حظر" على أي مستخدم نشط وأكد العملية</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">إلغاء الحظر</div>
+                            <div class="step-description">اضغط "إلغاء الحظر" على المستخدم المحظور</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">التصفية حسب النوع</div>
+                            <div class="step-description">استخدم فلتر "نوع المستخدم" لعرض فئة معينة فقط</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-cog"></i> اختبار الميزات الإضافية</h2>
+                
+                <div class="test-steps">
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">قائمة الملف الشخصي</div>
+                            <div class="step-description">اضغط على صورة الملف الشخصي في أعلى اليمين لفتح القائمة</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">الإشعارات</div>
+                            <div class="step-description">لاحظ رمز الجرس مع عدد الإشعارات في الرأس</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">الرسائل التوضيحية</div>
+                            <div class="step-description">ستظهر رسائل نجاح/خطأ عند تنفيذ العمليات</div>
+                        </div>
+                    </div>
+                    <div class="test-step">
+                        <div class="step-content">
+                            <div class="step-title">تسجيل الخروج</div>
+                            <div class="step-description">من قائمة الملف الشخصي، اضغط "تسجيل الخروج"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>ملاحظة مهمة:</strong> جميع البيانات المعروضة هي بيانات تجريبية وهمية. أي تغييرات تجريها سيتم فقدانها عند إعادة تحميل الصفحة.
+                </div>
+            </div>
+
+            <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> نصائح للاختبار الأمثل:</h4>
+                <ul>
+                    <li>جرب جميع الميزات في تبويبات مختلفة</li>
+                    <li>استخدم البحث والتصفية لاختبار الاستجابة</li>
+                    <li>تأكد من عمل الرسوم البيانية والإحصائيات</li>
+                    <li>اختبر اللوحة على أحجام شاشات مختلفة</li>
+                    <li>تأكد من ظهور الرسائل التوضيحية</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 40px 0; color: #666;">
+                <p><i class="fas fa-heart" style="color: #dc2626;"></i> تم تطوير هذه اللوحة خصيصاً لسوق الجملة</p>
+                <p style="font-size: 14px; margin-top: 10px;">إصدار 1.0.0 - سبتمبر 2025</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
