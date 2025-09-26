@@ -105,8 +105,8 @@
                         <span>المنتجات</span>
                     </button>
                     <button class="nav-tab" data-tab="orders">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>الطلبات</span>
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>تجهيز الطلبات</span>
                     </button>
                     <button class="nav-tab" data-tab="users">
                         <i class="fas fa-users"></i>
@@ -280,42 +280,81 @@
                     </div>
                 </div>
 
-                <!-- Orders Tab -->
+                <!-- Order Preparation Tab -->
                 <div class="tab-content" id="orders">
-                    <div class="section-header">
-                        <h2>إدارة الطلبات</h2>
-                        <div class="order-stats">
-                            <span class="stat-badge pending">قيد المراجعة: 12</span>
-                            <span class="stat-badge confirmed">مؤكد: 25</span>
-                            <span class="stat-badge delivered">تم التسليم: 156</span>
+                    <!-- Notification Sound -->
+                    <audio id="newOrderNotification" preload="auto" style="display:none;">
+                        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp4aZVFApGn+DyvmwhBiWC1fTMeiEHGXe+5+GqTAYPVoTb7MlmHA0gXpzT5ahcGAIlbMjF4oA7BgAASUVSRSUJjF1hdAEBYgEyAJEBTAHJAAAAAAABIQIAVgEKAUwBsAC1AAAOAAlOADwBQgCNAFMAAQE2AMkAZgE/AUQAFAEQAXAA2AAAzwAOAFYARgEAAEYANwDJAGYBPwFDABQBDwFxAAEBNAA="" type="audio/wav">
+                        <source src="data:audio/mpeg;base64,//uQRAAAAWMSLwUIMAAsZ8WeZUEj4yKvMkJqIAAREQEAKCCUYwEACAkKDEgAAAJiQS2AEAAADAQAIAEAAUECAAOAAEQYAAOECw/EO4KKoFAgAAGQAAAhAGAAEAAJAQAIAAAAAkACAAAOACAAFAAAMAAAGAAAIAAAQAAAAAEAAAAGAAAAAAAAgAOAOAOAOAOAOAAAhAAAAwAAAwAAAwAAAwAAAwAAAwAAAAAAkAAAAAEAAAAIAAAAAAAAAAAAAAAGAAJGRAOUBAAAAAAAgAsIAAMOAAAGAAEIAAAAAAJAQ="" type="audio/mpeg">
+                    </audio>
+                    
+                    <!-- Sound Control -->
+                    <div class="sound-control">
+                        <button id="soundToggle" class="sound-btn active" onclick="toggleNotificationSound()">
+                            <i class="fas fa-volume-up" id="soundIcon"></i>
+                            <span id="soundText">الصوت مفعل</span>
+                        </button>
+                    </div>
+
+                    <!-- Preparation Header -->
+                    <div class="preparation-header">
+                        <div class="section-header">
+                            <h2><i class="fas fa-clipboard-list"></i> تجهيز الطلبات</h2>
+                            <div class="order-counters">
+                                <div class="counter-card new">
+                                    <span class="count" id="newOrdersCount">3</span>
+                                    <span class="label">طلبات جديدة</span>
+                                </div>
+                                <div class="counter-card preparing">
+                                    <span class="count" id="preparingOrdersCount">5</span>
+                                    <span class="label">قيد التجهيز</span>
+                                </div>
+                                <div class="counter-card completed">
+                                    <span class="count" id="completedOrdersCount">12</span>
+                                    <span class="label">مكتملة اليوم</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Orders Filters -->
-                    <div class="filters-section">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="orderSearch" placeholder="البحث برقم الطلب أو اسم العميل...">
-                        </div>
-                        
-                        <div class="filter-buttons">
-                            <select id="orderStatusFilter">
-                                <option value="">جميع الحالات</option>
-                                <option value="pending">قيد المراجعة</option>
-                                <option value="confirmed">مؤكد</option>
-                                <option value="preparing">قيد التحضير</option>
-                                <option value="out-for-delivery">خارج للتوصيل</option>
-                                <option value="delivered">تم التسليم</option>
-                                <option value="cancelled">ملغي</option>
-                            </select>
-                            
-                            <input type="date" id="orderDateFilter">
+                    <!-- Orders Tabs -->
+                    <div class="order-tabs">
+                        <button class="order-tab active" onclick="switchOrderTab('new')">
+                            <i class="fas fa-bell"></i>
+                            طلبات جديدة
+                            <span class="tab-count" id="newTabCount">3</span>
+                        </button>
+                        <button class="order-tab" onclick="switchOrderTab('preparing')">
+                            <i class="fas fa-hourglass-half"></i>
+                            قيد التجهيز
+                            <span class="tab-count" id="preparingTabCount">5</span>
+                        </button>
+                        <button class="order-tab" onclick="switchOrderTab('completed')">
+                            <i class="fas fa-check-circle"></i>
+                            طلبات مكتملة
+                            <span class="tab-count" id="completedTabCount">12</span>
+                        </button>
+                    </div>
+
+                    <!-- New Orders Section -->
+                    <div class="order-section active" id="newOrdersSection">
+                        <div class="orders-grid" id="newOrdersGrid">
+                            <!-- New orders will be loaded here -->
                         </div>
                     </div>
 
-                    <!-- Orders List -->
-                    <div class="orders-list" id="ordersList">
-                        <!-- Orders will be loaded here dynamically -->
+                    <!-- Preparing Orders Section -->
+                    <div class="order-section" id="preparingOrdersSection">
+                        <div class="orders-grid" id="preparingOrdersGrid">
+                            <!-- Preparing orders will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Completed Orders Section -->
+                    <div class="order-section" id="completedOrdersSection">
+                        <div class="orders-grid" id="completedOrdersGrid">
+                            <!-- Completed orders will be loaded here -->
+                        </div>
                     </div>
                 </div>
 
@@ -498,6 +537,116 @@
             
             <div class="order-details-content" id="orderDetailsContent">
                 <!-- Order details will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal order-details-modal" id="orderDetailsModal">
+        <div class="modal-content order-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-clipboard-list"></i> تفاصيل الطلب</h3>
+                <button class="close-modal" onclick="closeModal('orderDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="customer-info" id="customerInfo">
+                    <!-- Customer info will be loaded here -->
+                </div>
+                
+                <div class="order-items" id="orderItems">
+                    <!-- Order items will be loaded here -->
+                </div>
+                
+                <div class="order-actions">
+                    <button class="btn-primary" onclick="startPreparingOrder()">بدء التجهيز</button>
+                    <button class="btn-secondary" onclick="closeModal('orderDetailsModal')">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Replace Product Modal -->
+    <div class="modal replace-product-modal" id="replaceProductModal">
+        <div class="modal-content replace-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exchange-alt"></i> البحث عن منتج بديل</h3>
+                <button class="close-modal" onclick="closeModal('replaceProductModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="original-product" id="originalProduct">
+                    <!-- Original product info -->
+                </div>
+                
+                <div class="search-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="replaceProductSearch" placeholder="البحث عن منتج بديل...">
+                    </div>
+                    
+                    <div class="product-category-filter">
+                        <select id="replaceCategoryFilter">
+                            <option value="">جميع الفئات</option>
+                            <option value="vegetables">خضروات</option>
+                            <option value="fruits">فواكه</option>
+                            <option value="meat">لحوم</option>
+                            <option value="dairy">ألبان</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="replacement-products" id="replacementProducts">
+                    <!-- Available replacement products -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Confirmation Modal -->
+    <div class="modal customer-confirmation-modal" id="customerConfirmationModal">
+        <div class="modal-content confirmation-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-phone"></i> في انتظار موافقة العميل</h3>
+            </div>
+            
+            <div class="modal-body">
+                <div class="confirmation-info">
+                    <div class="customer-contact">
+                        <p><strong>العميل:</strong> <span id="confirmationCustomerName"></span></p>
+                        <p><strong>رقم الهاتف:</strong> <span id="confirmationCustomerPhone"></span></p>
+                    </div>
+                    
+                    <div class="replacement-details">
+                        <div class="product-comparison">
+                            <div class="original">
+                                <h4>المنتج الأصلي:</h4>
+                                <div id="confirmationOriginalProduct"></div>
+                            </div>
+                            <div class="replacement">
+                                <h4>المنتج البديل:</h4>
+                                <div id="confirmationReplacementProduct"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-status">
+                        <div class="sound-playing">
+                            <i class="fas fa-volume-up animate-pulse"></i>
+                            <span>جارِ تشغيل التنبيه الصوتي للعميل...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="confirmation-actions">
+                    <button class="btn-success" onclick="customerApproved()">العميل وافق</button>
+                    <button class="btn-danger" onclick="customerRejected()">العميل رفض</button>
+                    <button class="btn-secondary" onclick="cancelReplacement()">إلغاء</button>
+                </div>
             </div>
         </div>
     </div>

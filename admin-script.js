@@ -71,53 +71,125 @@ const sampleProducts = [
     }
 ];
 
-const sampleOrders = [
+// Order Preparation System Variables
+let currentOrderTab = 'new';
+let soundEnabled = true;
+let currentReplacementContext = null;
+let customerConfirmationTimer = null;
+
+// Enhanced Sample Orders Data for Order Preparation
+const samplePreparationOrders = [
+    // New Orders
     {
-        id: 12345,
+        id: 15001,
         customerName: 'أحمد محمد العلي',
         customerPhone: '0501234567',
         customerEmail: 'ahmed@example.com',
-        orderDate: '2025-09-26T10:30:00',
-        status: 'pending',
+        orderDate: '2025-09-26T13:30:00',
+        status: 'new',
         total: 450.00,
+        paymentMethod: 'cash',
         items: [
-            { name: 'طماطم طازجة', quantity: 5, price: 8.50 },
-            { name: 'تفاح أحمر', quantity: 3, price: 12.00 },
-            { name: 'لحم بقري', quantity: 10, price: 45.00 }
+            { id: 1, name: 'طماطم طازجة', quantity: 5, price: 8.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=طماطم', status: 'pending' },
+            { id: 2, name: 'تفاح أحمر', quantity: 3, price: 12.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=تفاح', status: 'pending' },
+            { id: 3, name: 'لحم بقري', quantity: 2, price: 45.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=لحم', status: 'pending' }
         ],
-        address: 'الرياض، حي النخيل، شارع الملك فهد'
+        address: 'الرياض، حي النخيل، شارع الملك فهد',
+        urgent: true
     },
     {
-        id: 12344,
+        id: 15002,
         customerName: 'سارة أحمد محمد',
         customerPhone: '0501234568',
         customerEmail: 'sara@example.com',
-        orderDate: '2025-09-26T10:05:00',
-        status: 'confirmed',
-        total: 780.50,
+        orderDate: '2025-09-26T13:20:00',
+        status: 'new',
+        total: 280.50,
+        paymentMethod: 'instapay',
         items: [
-            { name: 'حليب كامل الدسم', quantity: 12, price: 6.50 },
-            { name: 'خيار طازج', quantity: 8, price: 4.25 },
-            { name: 'موز', quantity: 20, price: 7.50 }
+            { id: 4, name: 'حليب كامل الدسم', quantity: 4, price: 6.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=حليب', status: 'pending' },
+            { id: 5, name: 'خيار طازج', quantity: 8, price: 4.25, image: 'https://via.placeholder.com/150x150/dc2626/white?text=خيار', status: 'pending' }
         ],
-        address: 'جدة، حي الحمراء، طريق الملك عبد العزيز'
+        address: 'جدة، حي الحمراء، طريق الملك عبد العزيز',
+        urgent: false
     },
     {
-        id: 12343,
-        customerName: 'محمد علي السلمان',
+        id: 15003,
+        customerName: 'خالد عبد الله القحطاني',
         customerPhone: '0501234569',
-        customerEmail: 'mohammed@example.com',
-        orderDate: '2025-09-26T09:20:00',
-        status: 'delivered',
-        total: 325.75,
+        customerEmail: 'khalid@example.com',
+        orderDate: '2025-09-26T13:15:00',
+        status: 'new',
+        total: 175.25,
+        paymentMethod: 'cash',
         items: [
-            { name: 'طماطم طازجة', quantity: 10, price: 8.50 },
-            { name: 'خيار طازج', quantity: 15, price: 4.25 },
-            { name: 'تفاح أحمر', quantity: 8, price: 12.00 }
+            { id: 6, name: 'موز', quantity: 10, price: 7.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=موز', status: 'pending' },
+            { id: 1, name: 'طماطم طازجة', quantity: 12, price: 8.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=طماطم', status: 'pending' }
         ],
-        address: 'الدمام، حي الشاطئ، شارع الخليج'
+        address: 'الدمام، حي الشاطئ، شارع الخليج',
+        urgent: false
+    },
+    
+    // Preparing Orders
+    {
+        id: 14998,
+        customerName: 'مريم علي الناصر',
+        customerPhone: '0501234570',
+        customerEmail: 'mariam@example.com',
+        orderDate: '2025-09-26T12:45:00',
+        status: 'preparing',
+        total: 320.75,
+        paymentMethod: 'instapay',
+        items: [
+            { id: 2, name: 'تفاح أحمر', quantity: 5, price: 12.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=تفاح', status: 'prepared' },
+            { id: 5, name: 'خيار طازج', quantity: 15, price: 4.25, image: 'https://via.placeholder.com/150x150/dc2626/white?text=خيار', status: 'preparing' },
+            { id: 3, name: 'لحم بقري', quantity: 3, price: 45.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=لحم', status: 'pending' }
+        ],
+        address: 'مكة المكرمة، حي العزيزية، شارع الحرم',
+        urgent: false
+    },
+    
+    // More preparing orders...
+    {
+        id: 14999,
+        customerName: 'فهد محمد العتيبي',
+        customerPhone: '0501234571',
+        customerEmail: 'fahad@example.com',
+        orderDate: '2025-09-26T12:30:00',
+        status: 'preparing',
+        total: 195.50,
+        paymentMethod: 'cash',
+        items: [
+            { id: 4, name: 'حليب كامل الدسم', quantity: 6, price: 6.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=حليب', status: 'prepared' },
+            { id: 6, name: 'موز', quantity: 8, price: 7.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=موز', status: 'preparing' },
+            { id: 1, name: 'طماطم طازجة', quantity: 10, price: 8.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=طماطم', status: 'replaced' }
+        ],
+        address: 'المدينة المنورة، حي قباء، شارع قباء',
+        urgent: false
+    },
+    
+    // Completed Orders
+    {
+        id: 14995,
+        customerName: 'نورة عبد الرحمن',
+        customerPhone: '0501234572',
+        customerEmail: 'nora@example.com',
+        orderDate: '2025-09-26T11:15:00',
+        status: 'completed',
+        total: 540.25,
+        paymentMethod: 'instapay',
+        items: [
+            { id: 2, name: 'تفاح أحمر', quantity: 8, price: 12.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=تفاح', status: 'prepared' },
+            { id: 3, name: 'لحم بقري', quantity: 5, price: 45.00, image: 'https://via.placeholder.com/150x150/dc2626/white?text=لحم', status: 'prepared' },
+            { id: 4, name: 'حليب كامل الدسم', quantity: 10, price: 6.50, image: 'https://via.placeholder.com/150x150/dc2626/white?text=حليب', status: 'prepared' }
+        ],
+        address: 'الطائف، حي الشهداء، شارع الملك فيصل',
+        urgent: false
     }
 ];
+
+// Initialize preparation orders
+let preparationOrders = [...samplePreparationOrders];
 
 const sampleUsers = [
     {
@@ -188,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     // Load sample data
     products = [...sampleProducts];
-    orders = [...sampleOrders];
+    preparationOrders = [...samplePreparationOrders];
     users = [...sampleUsers];
     
     // Setup event listeners
@@ -396,7 +468,7 @@ function switchTab(tabName) {
 function initializeDashboard() {
     loadDashboardData();
     loadProductsData();
-    loadOrdersData();
+    loadOrdersData();  // This will now load the order preparation system
     loadUsersData();
 }
 
@@ -654,149 +726,280 @@ function handleEditProduct(e) {
     }
 }
 
+// ============================================
+// Order Preparation System Functions
+// ============================================
+
+// Load Orders Data for Preparation System
 function loadOrdersData() {
-    const ordersList = document.getElementById('ordersList');
-    if (!ordersList) return;
-    
-    ordersList.innerHTML = '';
-    
-    orders.forEach(order => {
-        const orderCard = createOrderCard(order);
-        ordersList.appendChild(orderCard);
-    });
+    loadPreparationData();
+    updateOrderCounters();
+    loadOrderSections();
 }
 
-function createOrderCard(order) {
-    const card = document.createElement('div');
-    card.className = 'order-card';
+// Load all preparation data
+function loadPreparationData() {
+    // This will be called when switching to orders tab
+    switchOrderTab(currentOrderTab);
+}
+
+// Update order counters
+function updateOrderCounters() {
+    const newOrders = preparationOrders.filter(order => order.status === 'new');
+    const preparingOrders = preparationOrders.filter(order => order.status === 'preparing');
+    const completedOrders = preparationOrders.filter(order => {
+        const today = new Date();
+        const orderDate = new Date(order.orderDate);
+        return order.status === 'completed' && 
+               today.toDateString() === orderDate.toDateString();
+    });
     
-    const orderDate = new Date(order.orderDate);
-    const formattedDate = orderDate.toLocaleDateString('ar-SA') + ' ' + orderDate.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    // Update counter displays
+    const newCountElement = document.getElementById('newOrdersCount');
+    const preparingCountElement = document.getElementById('preparingOrdersCount');
+    const completedCountElement = document.getElementById('completedOrdersCount');
+    const newTabCountElement = document.getElementById('newTabCount');
+    const preparingTabCountElement = document.getElementById('preparingTabCount');
+    const completedTabCountElement = document.getElementById('completedTabCount');
+    
+    if (newCountElement) newCountElement.textContent = newOrders.length;
+    if (preparingCountElement) preparingCountElement.textContent = preparingOrders.length;
+    if (completedCountElement) completedCountElement.textContent = completedOrders.length;
+    if (newTabCountElement) newTabCountElement.textContent = newOrders.length;
+    if (preparingTabCountElement) preparingTabCountElement.textContent = preparingOrders.length;
+    if (completedTabCountElement) completedTabCountElement.textContent = completedOrders.length;
+}
+
+// Switch between order tabs
+function switchOrderTab(tabName) {
+    currentOrderTab = tabName;
+    
+    // Update active tab
+    const tabs = document.querySelectorAll('.order-tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.onclick && tab.onclick.toString().includes(tabName)) {
+            tab.classList.add('active');
+        }
+    });
+    
+    // Update active section
+    const sections = document.querySelectorAll('.order-section');
+    sections.forEach(section => section.classList.remove('active'));
+    
+    const activeSection = document.getElementById(`${tabName}OrdersSection`);
+    if (activeSection) {
+        activeSection.classList.add('active');
+    }
+    
+    // Load orders for the selected tab
+    loadOrderSections();
+}
+
+// Load order sections
+function loadOrderSections() {
+    loadNewOrders();
+    loadPreparingOrders();
+    loadCompletedOrders();
+}
+
+// Load new orders
+function loadNewOrders() {
+    const newOrdersGrid = document.getElementById('newOrdersGrid');
+    if (!newOrdersGrid) return;
+    
+    const newOrders = preparationOrders.filter(order => order.status === 'new');
+    newOrdersGrid.innerHTML = '';
+    
+    newOrders.forEach(order => {
+        const orderCard = createPreparationOrderCard(order);
+        newOrdersGrid.appendChild(orderCard);
+    });
+    
+    if (newOrders.length === 0) {
+        newOrdersGrid.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">لا توجد طلبات جديدة</p>';
+    }
+}
+
+// Load preparing orders
+function loadPreparingOrders() {
+    const preparingOrdersGrid = document.getElementById('preparingOrdersGrid');
+    if (!preparingOrdersGrid) return;
+    
+    const preparingOrders = preparationOrders.filter(order => order.status === 'preparing');
+    preparingOrdersGrid.innerHTML = '';
+    
+    preparingOrders.forEach(order => {
+        const orderCard = createPreparationOrderCard(order);
+        preparingOrdersGrid.appendChild(orderCard);
+    });
+    
+    if (preparingOrders.length === 0) {
+        preparingOrdersGrid.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">لا توجد طلبات قيد التجهيز</p>';
+    }
+}
+
+// Load completed orders
+function loadCompletedOrders() {
+    const completedOrdersGrid = document.getElementById('completedOrdersGrid');
+    if (!completedOrdersGrid) return;
+    
+    const today = new Date();
+    const completedOrders = preparationOrders.filter(order => {
+        const orderDate = new Date(order.orderDate);
+        return order.status === 'completed' && 
+               today.toDateString() === orderDate.toDateString();
+    });
+    
+    completedOrdersGrid.innerHTML = '';
+    
+    completedOrders.forEach(order => {
+        const orderCard = createPreparationOrderCard(order);
+        completedOrdersGrid.appendChild(orderCard);
+    });
+    
+    if (completedOrders.length === 0) {
+        completedOrdersGrid.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">لا توجد طلبات مكتملة اليوم</p>';
+    }
+}
+
+// Create preparation order card
+function createPreparationOrderCard(order) {
+    const card = document.createElement('div');
+    card.className = `order-card ${order.status} ${order.urgent ? 'urgent' : ''}`;
+    card.onclick = () => showOrderDetailsModal(order.id);
+    
+    const orderTime = getTimeAgo(order.orderDate);
+    const paymentMethodClass = order.paymentMethod === 'cash' ? 'cash' : 'instapay';
+    const paymentMethodText = order.paymentMethod === 'cash' ? 'نقدي' : 'إنستاباي';
+    const paymentMethodIcon = order.paymentMethod === 'cash' ? 'fas fa-money-bill' : 'fab fa-cc-visa';
     
     card.innerHTML = `
         <div class="order-header">
-            <div class="order-basic-info">
-                <h3>طلب رقم #${order.id}</h3>
-                <div class="order-customer-info">
-                    <i class="fas fa-user"></i> ${order.customerName}<br>
-                    <i class="fas fa-phone"></i> ${order.customerPhone}<br>
-                    <i class="fas fa-calendar"></i> ${formattedDate}
-                </div>
+            <div class="order-id">#${order.id}</div>
+            <div class="order-time">${orderTime}</div>
+        </div>
+        
+        <div class="customer-details">
+            <div class="customer-name">
+                <i class="fas fa-user"></i>
+                ${order.customerName}
             </div>
-            <div class="order-status-section">
-                <div class="order-total">${order.total.toFixed(2)} ر.س</div>
-                <div class="order-status ${order.status}">${getOrderStatusName(order.status)}</div>
+            <div class="customer-contact">
+                <span><i class="fas fa-phone"></i> ${order.customerPhone}</span>
+                <span><i class="fas fa-envelope"></i> ${order.customerEmail}</span>
+            </div>
+            <div class="customer-address">
+                <i class="fas fa-map-marker-alt"></i>
+                ${order.address}
             </div>
         </div>
         
-        <div class="order-body">
-            <div class="order-items">
-                <h4>المنتجات المطلوبة:</h4>
-                <div class="order-item-list">
-                    ${order.items.map(item => `
-                        <div class="order-item-row">
-                            <span class="order-item-name">${item.name}</span>
-                            <span class="order-item-details">${item.quantity} × ${item.price.toFixed(2)} ر.س</span>
-                        </div>
-                    `).join('')}
-                </div>
+        <div class="order-summary">
+            <div class="order-total">
+                <span>المجموع:</span>
+                <span>${order.total.toFixed(2)} ر.س</span>
             </div>
-            
-            <div class="order-address">
-                <h4>عنوان التوصيل:</h4>
-                <p><i class="fas fa-map-marker-alt"></i> ${order.address}</p>
+            <div class="payment-method ${paymentMethodClass}">
+                <i class="${paymentMethodIcon}"></i>
+                ${paymentMethodText}
+            </div>
+            <div class="order-items-count">
+                <i class="fas fa-shopping-basket"></i>
+                ${order.items.length} منتج (${order.items.reduce((sum, item) => sum + item.quantity, 0)} قطعة)
             </div>
         </div>
         
-        <div class="order-actions">
-            <select class="status-select" onchange="updateOrderStatus(${order.id}, this.value)">
-                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>مؤكد</option>
-                <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>قيد التحضير</option>
-                <option value="out-for-delivery" ${order.status === 'out-for-delivery' ? 'selected' : ''}>خارج للتوصيل</option>
-                <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>تم التسليم</option>
-                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>ملغي</option>
-            </select>
-            <button class="btn-view" onclick="viewOrderDetails(${order.id})">
-                <i class="fas fa-eye"></i> التفاصيل
-            </button>
-        </div>
+        ${order.status === 'new' ? `
+            <div class="order-actions">
+                <button class="btn-prepare" onclick="event.stopPropagation(); showOrderDetailsModal(${order.id})">
+                    <i class="fas fa-play"></i> بدء التجهيز
+                </button>
+            </div>
+        ` : ''}
     `;
     
     return card;
 }
 
-function getOrderStatusName(status) {
-    const statuses = {
-        'pending': 'قيد المراجعة',
-        'confirmed': 'مؤكد',
-        'preparing': 'قيد التحضير',
-        'out-for-delivery': 'خارج للتوصيل',
-        'delivered': 'تم التسليم',
-        'cancelled': 'ملغي'
-    };
-    return statuses[status] || status;
-}
-
-function updateOrderStatus(orderId, newStatus) {
-    const orderIndex = orders.findIndex(o => o.id === orderId);
-    if (orderIndex !== -1) {
-        orders[orderIndex].status = newStatus;
-        loadOrdersData();
-        showToast('تم تحديث حالة الطلب بنجاح', 'success');
-    }
-}
-
-function viewOrderDetails(orderId) {
-    const order = orders.find(o => o.id === orderId);
+// Show order details modal
+function showOrderDetailsModal(orderId) {
+    const order = preparationOrders.find(o => o.id === orderId);
     if (!order) return;
     
-    const modal = document.getElementById('orderDetailsModal');
-    const idSpan = document.getElementById('orderDetailsId');
-    const content = document.getElementById('orderDetailsContent');
-    
-    if (idSpan) {
-        idSpan.textContent = `#${order.id}`;
+    // Update customer info
+    const customerInfo = document.getElementById('customerInfo');
+    if (customerInfo) {
+        customerInfo.innerHTML = `
+            <h4><i class="fas fa-user"></i> معلومات العميل</h4>
+            <div class="customer-details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">الاسم:</span>
+                    <span class="detail-value">${order.customerName}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">الهاتف:</span>
+                    <span class="detail-value">${order.customerPhone}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">الإيميل:</span>
+                    <span class="detail-value">${order.customerEmail}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">العنوان:</span>
+                    <span class="detail-value">${order.address}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">المجموع:</span>
+                    <span class="detail-value">${order.total.toFixed(2)} ر.س</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">طريقة الدفع:</span>
+                    <span class="detail-value">${order.paymentMethod === 'cash' ? 'نقدي' : 'إنستاباي'}</span>
+                </div>
+            </div>
+        `;
     }
     
-    if (content) {
-        const orderDate = new Date(order.orderDate);
-        const formattedDate = orderDate.toLocaleDateString('ar-SA') + ' ' + orderDate.toLocaleTimeString('ar-SA');
+    // Update order items
+    const orderItems = document.getElementById('orderItems');
+    if (orderItems) {
+        const itemsHtml = order.items.map(item => {
+            const itemStatusClass = item.status === 'prepared' ? 'prepared' : 
+                                   item.status === 'replaced' ? 'replaced' : '';
+            
+            return `
+                <div class="order-item ${itemStatusClass}" data-item-id="${item.id}">
+                    <div class="item-info">
+                        <img src="${item.image}" alt="${item.name}" class="item-image">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">الكمية: ${item.quantity} | السعر: ${item.price.toFixed(2)} ر.س</div>
+                        </div>
+                        <div class="item-quantity">×${item.quantity}</div>
+                    </div>
+                    
+                    ${item.status === 'pending' || item.status === 'preparing' ? `
+                        <div class="item-actions">
+                            <button class="btn-item-ready" onclick="markItemReady(${order.id}, ${item.id})">
+                                <i class="fas fa-check"></i> تم
+                            </button>
+                            <button class="btn-item-replace" onclick="showReplaceProductModal(${order.id}, ${item.id})">
+                                <i class="fas fa-exchange-alt"></i> استبدال
+                            </button>
+                            <button class="btn-item-delete" onclick="deleteOrderItem(${order.id}, ${item.id})">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
         
-        content.innerHTML = `
-            <div class="order-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <div class="order-customer-details">
-                    <h4>تفاصيل العميل</h4>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-top: 15px;">
-                        <p><strong>الاسم:</strong> ${order.customerName}</p>
-                        <p><strong>الهاتف:</strong> ${order.customerPhone}</p>
-                        <p><strong>البريد الإلكتروني:</strong> ${order.customerEmail}</p>
-                        <p><strong>تاريخ الطلب:</strong> ${formattedDate}</p>
-                        <p><strong>العنوان:</strong> ${order.address}</p>
-                    </div>
-                </div>
-                
-                <div class="order-summary">
-                    <h4>ملخص الطلب</h4>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-top: 15px;">
-                        <div class="order-items-detailed">
-                            ${order.items.map(item => `
-                                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
-                                    <span>${item.name}</span>
-                                    <span>${item.quantity} × ${item.price.toFixed(2)} = ${(item.quantity * item.price).toFixed(2)} ر.س</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #dc2626; font-weight: bold; font-size: 18px;">
-                            الإجمالي: ${order.total.toFixed(2)} ر.س
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <span class="order-status ${order.status}" style="padding: 10px 20px; border-radius: 20px; font-weight: 700;">
-                                ${getOrderStatusName(order.status)}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+        orderItems.innerHTML = `
+            <h4><i class="fas fa-shopping-basket"></i> منتجات الطلب</h4>
+            <div class="item-list">
+                ${itemsHtml}
             </div>
         `;
     }
@@ -804,41 +1007,366 @@ function viewOrderDetails(orderId) {
     showModal('orderDetailsModal');
 }
 
-function filterOrders() {
-    const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
-    const statusFilter = document.getElementById('orderStatusFilter').value;
-    const dateFilter = document.getElementById('orderDateFilter').value;
-    
-    let filteredOrders = orders.filter(order => {
-        const matchesSearch = order.id.toString().includes(searchTerm) || 
-                            order.customerName.toLowerCase().includes(searchTerm);
-        const matchesStatus = !statusFilter || order.status === statusFilter;
-        
-        let matchesDate = true;
-        if (dateFilter) {
-            const orderDate = new Date(order.orderDate).toISOString().split('T')[0];
-            matchesDate = orderDate === dateFilter;
-        }
-        
-        return matchesSearch && matchesStatus && matchesDate;
-    });
-    
-    displayFilteredOrders(filteredOrders);
+// Start preparing order
+function startPreparingOrder() {
+    const modal = document.getElementById('orderDetailsModal');
+    if (modal && modal.style.display !== 'none') {
+        // Get the order ID from the currently opened modal
+        // This is a simplified approach - in a real app, you'd store the current order ID
+        showToast('تم بدء تجهيز الطلب', 'success');
+        closeModal('orderDetailsModal');
+    }
 }
 
-function displayFilteredOrders(filteredOrders) {
-    const ordersList = document.getElementById('ordersList');
-    if (!ordersList) return;
+// ============================================
+// Sound System Functions
+// ============================================
+
+// Toggle notification sound
+function toggleNotificationSound() {
+    soundEnabled = !soundEnabled;
+    const soundBtn = document.getElementById('soundToggle');
+    const soundIcon = document.getElementById('soundIcon');
+    const soundText = document.getElementById('soundText');
     
-    ordersList.innerHTML = '';
+    if (soundEnabled) {
+        soundBtn.classList.add('active');
+        soundBtn.classList.remove('inactive');
+        soundIcon.className = 'fas fa-volume-up';
+        soundText.textContent = 'الصوت مفعل';
+    } else {
+        soundBtn.classList.remove('active');
+        soundBtn.classList.add('inactive');
+        soundIcon.className = 'fas fa-volume-mute';
+        soundText.textContent = 'الصوت معطل';
+    }
+}
+
+// Play new order notification
+function playNewOrderNotification() {
+    if (!soundEnabled) return;
     
-    filteredOrders.forEach(order => {
-        const orderCard = createOrderCard(order);
-        ordersList.appendChild(orderCard);
+    const audio = document.getElementById('newOrderNotification');
+    if (audio) {
+        audio.play().catch(e => {
+            console.log('Could not play notification sound:', e);
+        });
+    }
+}
+
+// ============================================
+// Order Item Management Functions
+// ============================================
+
+// Mark item as ready
+function markItemReady(orderId, itemId) {
+    const orderIndex = preparationOrders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) return;
+    
+    const itemIndex = preparationOrders[orderIndex].items.findIndex(i => i.id === itemId);
+    if (itemIndex === -1) return;
+    
+    // Mark item as prepared
+    preparationOrders[orderIndex].items[itemIndex].status = 'prepared';
+    
+    // Check if all items are prepared
+    const allItemsPrepared = preparationOrders[orderIndex].items.every(item => item.status === 'prepared');
+    if (allItemsPrepared) {
+        preparationOrders[orderIndex].status = 'completed';
+        showToast('تم إكمال تجهيز الطلب بالكامل! 🎉', 'success');
+    } else {
+        // Update order status to preparing if not already
+        if (preparationOrders[orderIndex].status === 'new') {
+            preparationOrders[orderIndex].status = 'preparing';
+        }
+        showToast('تم تجهيز المنتج بنجاح', 'success');
+    }
+    
+    // Refresh the modal and counters
+    showOrderDetailsModal(orderId);
+    updateOrderCounters();
+    loadOrderSections();
+}
+
+// Delete order item
+function deleteOrderItem(orderId, itemId) {
+    if (!confirm('هل أنت متأكد من حذف هذا المنتج من الطلب؟')) {
+        return;
+    }
+    
+    const orderIndex = preparationOrders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) return;
+    
+    const itemIndex = preparationOrders[orderIndex].items.findIndex(i => i.id === itemId);
+    if (itemIndex === -1) return;
+    
+    // Remove item from order
+    const removedItem = preparationOrders[orderIndex].items.splice(itemIndex, 1)[0];
+    
+    // Update order total
+    preparationOrders[orderIndex].total -= removedItem.price * removedItem.quantity;
+    
+    // Check if order has no items left
+    if (preparationOrders[orderIndex].items.length === 0) {
+        if (confirm('لا توجد منتجات متبقية في الطلب. هل تريد إلغاء الطلب بالكامل؟')) {
+            preparationOrders[orderIndex].status = 'cancelled';
+            closeModal('orderDetailsModal');
+        }
+    }
+    
+    showToast('تم حذف المنتج من الطلب', 'success');
+    
+    // Refresh the modal and data
+    showOrderDetailsModal(orderId);
+    updateOrderCounters();
+    loadOrderSections();
+}
+
+// Show replace product modal
+function showReplaceProductModal(orderId, itemId) {
+    const order = preparationOrders.find(o => o.id === orderId);
+    const item = order?.items.find(i => i.id === itemId);
+    
+    if (!order || !item) return;
+    
+    // Store current replacement context
+    currentReplacementContext = { orderId, itemId };
+    
+    // Show original product info
+    const originalProduct = document.getElementById('originalProduct');
+    if (originalProduct) {
+        originalProduct.innerHTML = `
+            <h4>المنتج المطلوب استبداله:</h4>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; border-radius: 8px;">
+                <div>
+                    <div style="font-weight: 700; margin-bottom: 5px;">${item.name}</div>
+                    <div style="color: #666; font-size: 12px;">الكمية: ${item.quantity} | السعر: ${item.price.toFixed(2)} ر.س</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Load replacement products
+    loadReplacementProducts();
+    
+    showModal('replaceProductModal');
+}
+
+// Load replacement products
+function loadReplacementProducts() {
+    const replacementProductsContainer = document.getElementById('replacementProducts');
+    if (!replacementProductsContainer) return;
+    
+    replacementProductsContainer.innerHTML = '';
+    
+    // Filter available products (excluding current item)
+    const availableProducts = products.filter(product => product.stock > 0);
+    
+    availableProducts.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.className = 'replacement-item';
+        productElement.onclick = () => selectReplacement(product);
+        
+        productElement.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" style="width: 60px; height: 60px; border-radius: 8px;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; margin-bottom: 5px;">${product.name}</div>
+                <div style="color: #666; font-size: 12px;">السعر: ${product.price.toFixed(2)} ر.س | المتوفر: ${product.stock}</div>
+                <div style="color: #666; font-size: 12px;">${getCategoryName(product.category)}</div>
+            </div>
+            <div style="color: #10b981; font-weight: 600;">
+                <i class="fas fa-plus"></i> اختيار
+            </div>
+        `;
+        
+        replacementProductsContainer.appendChild(productElement);
+    });
+}
+
+// Select replacement product
+function selectReplacement(replacementProduct) {
+    if (!currentReplacementContext) return;
+    
+    const { orderId, itemId } = currentReplacementContext;
+    const order = preparationOrders.find(o => o.id === orderId);
+    const originalItem = order?.items.find(i => i.id === itemId);
+    
+    if (!order || !originalItem) return;
+    
+    // Show customer confirmation modal
+    showCustomerConfirmationModal(order, originalItem, replacementProduct);
+    closeModal('replaceProductModal');
+}
+
+// Show customer confirmation modal
+function showCustomerConfirmationModal(order, originalItem, replacementProduct) {
+    // Update customer info
+    document.getElementById('confirmationCustomerName').textContent = order.customerName;
+    document.getElementById('confirmationCustomerPhone').textContent = order.customerPhone;
+    
+    // Update product comparison
+    const originalProductDiv = document.getElementById('confirmationOriginalProduct');
+    const replacementProductDiv = document.getElementById('confirmationReplacementProduct');
+    
+    if (originalProductDiv) {
+        originalProductDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${originalItem.image}" alt="${originalItem.name}" style="width: 50px; height: 50px; border-radius: 8px;">
+                <div>
+                    <div style="font-weight: 600;">${originalItem.name}</div>
+                    <div style="font-size: 12px; color: #92400e;">الكمية: ${originalItem.quantity} | ${originalItem.price.toFixed(2)} ر.س</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    if (replacementProductDiv) {
+        replacementProductDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${replacementProduct.image}" alt="${replacementProduct.name}" style="width: 50px; height: 50px; border-radius: 8px;">
+                <div>
+                    <div style="font-weight: 600;">${replacementProduct.name}</div>
+                    <div style="font-size: 12px; color: #059669;">الكمية: ${originalItem.quantity} | ${replacementProduct.price.toFixed(2)} ر.س</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Store replacement data for later use
+    window.currentReplacementData = { order, originalItem, replacementProduct };
+    
+    // Start playing notification sound
+    startCustomerConfirmationSound();
+    
+    showModal('customerConfirmationModal');
+}
+
+// Start customer confirmation sound loop
+function startCustomerConfirmationSound() {
+    if (!soundEnabled) return;
+    
+    playNewOrderNotification();
+    
+    // Play notification every 3 seconds until user responds
+    customerConfirmationTimer = setInterval(() => {
+        playNewOrderNotification();
+    }, 3000);
+}
+
+// Stop customer confirmation sound
+function stopCustomerConfirmationSound() {
+    if (customerConfirmationTimer) {
+        clearInterval(customerConfirmationTimer);
+        customerConfirmationTimer = null;
+    }
+}
+
+// Customer approved replacement
+function customerApproved() {
+    if (!window.currentReplacementData) return;
+    
+    const { order, originalItem, replacementProduct } = window.currentReplacementData;
+    
+    // Find order and item
+    const orderIndex = preparationOrders.findIndex(o => o.id === order.id);
+    const itemIndex = preparationOrders[orderIndex].items.findIndex(i => i.id === originalItem.id);
+    
+    if (orderIndex !== -1 && itemIndex !== -1) {
+        // Update the item with replacement
+        preparationOrders[orderIndex].items[itemIndex] = {
+            ...originalItem,
+            name: replacementProduct.name,
+            price: replacementProduct.price,
+            image: replacementProduct.image,
+            status: 'replaced'
+        };
+        
+        // Update order total
+        const priceDifference = (replacementProduct.price - originalItem.price) * originalItem.quantity;
+        preparationOrders[orderIndex].total += priceDifference;
+        
+        showToast('تم قبول الاستبدال وتحديث الطلب', 'success');
+    }
+    
+    // Clean up
+    stopCustomerConfirmationSound();
+    closeModal('customerConfirmationModal');
+    currentReplacementContext = null;
+    window.currentReplacementData = null;
+    
+    // Refresh data
+    updateOrderCounters();
+    loadOrderSections();
+}
+
+// Customer rejected replacement
+function customerRejected() {
+    showToast('العميل رفض الاستبدال', 'warning');
+    
+    // Clean up
+    stopCustomerConfirmationSound();
+    closeModal('customerConfirmationModal');
+    currentReplacementContext = null;
+    window.currentReplacementData = null;
+}
+
+// Cancel replacement
+function cancelReplacement() {
+    // Clean up
+    stopCustomerConfirmationSound();
+    closeModal('customerConfirmationModal');
+    currentReplacementContext = null;
+    window.currentReplacementData = null;
+}
+
+// Search replacement products
+function searchReplacementProducts() {
+    const searchTerm = document.getElementById('replaceProductSearch').value.toLowerCase();
+    const categoryFilter = document.getElementById('replaceCategoryFilter').value;
+    
+    let filteredProducts = products.filter(product => {
+        if (product.stock <= 0) return false;
+        
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                             product.description.toLowerCase().includes(searchTerm);
+        const matchesCategory = !categoryFilter || product.category === categoryFilter;
+        
+        return matchesSearch && matchesCategory;
     });
     
-    if (filteredOrders.length === 0) {
-        ordersList.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">لم يتم العثور على طلبات مطابقة للبحث</p>';
+    displayFilteredReplacements(filteredProducts);
+}
+
+// Display filtered replacement products
+function displayFilteredReplacements(filteredProducts) {
+    const replacementProductsContainer = document.getElementById('replacementProducts');
+    if (!replacementProductsContainer) return;
+    
+    replacementProductsContainer.innerHTML = '';
+    
+    filteredProducts.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.className = 'replacement-item';
+        productElement.onclick = () => selectReplacement(product);
+        
+        productElement.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" style="width: 60px; height: 60px; border-radius: 8px;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; margin-bottom: 5px;">${product.name}</div>
+                <div style="color: #666; font-size: 12px;">السعر: ${product.price.toFixed(2)} ر.س | المتوفر: ${product.stock}</div>
+                <div style="color: #666; font-size: 12px;">${getCategoryName(product.category)}</div>
+            </div>
+            <div style="color: #10b981; font-weight: 600;">
+                <i class="fas fa-plus"></i> اختيار
+            </div>
+        `;
+        
+        replacementProductsContainer.appendChild(productElement);
+    });
+    
+    if (filteredProducts.length === 0) {
+        replacementProductsContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: #999;">لم يتم العثور على منتجات مطابقة للبحث</p>';
     }
 }
 
@@ -1082,3 +1610,19 @@ function getTimeAgo(date) {
         return `منذ ${days} يوم`;
     }
 }
+
+// Add event listeners for replacement search when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Replace product search - use setTimeout to ensure modal elements are created
+    setTimeout(() => {
+        const replaceProductSearch = document.getElementById('replaceProductSearch');
+        if (replaceProductSearch) {
+            replaceProductSearch.addEventListener('input', searchReplacementProducts);
+        }
+        
+        const replaceCategoryFilter = document.getElementById('replaceCategoryFilter');
+        if (replaceCategoryFilter) {
+            replaceCategoryFilter.addEventListener('change', searchReplacementProducts);
+        }
+    }, 1000); // Delay to ensure elements are created
+});

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تجهيز الطلبات - سوق الجملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fff0f0 0%, #ffe5e5 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .demo-header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .demo-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .demo-notice {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #fbbf24;
+        }
+
+        .demo-notice i {
+            margin-left: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Order Preparation Styles */
+        .sound-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .sound-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .sound-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .sound-btn.inactive {
+            background: #ef4444;
+        }
+
+        .preparation-section {
+            padding: 30px 0;
+        }
+
+        .order-counters {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .counter-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-card.new {
+            border-top: 4px solid #ef4444;
+        }
+
+        .counter-card.preparing {
+            border-top: 4px solid #f59e0b;
+        }
+
+        .counter-card.completed {
+            border-top: 4px solid #10b981;
+        }
+
+        .counter-card .count {
+            display: block;
+            font-size: 28px;
+            font-weight: 900;
+            color: #333;
+        }
+
+        .counter-card .label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .order-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .order-tab {
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .order-tab.active {
+            color: #dc2626;
+            background: white;
+            border-bottom: 3px solid #dc2626;
+        }
+
+        .tab-count {
+            background: #dc2626;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .order-card.new {
+            border-left: 4px solid #ef4444;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            font-size: 18px;
+            font-weight: 900;
+            color: #dc2626;
+        }
+
+        .order-time {
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .customer-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .customer-contact {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .customer-address {
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .order-total {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .payment-method {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .payment-method.cash {
+            color: #10b981;
+        }
+
+        .payment-method.instapay {
+            color: #3b82f6;
+        }
+
+        .btn-prepare {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-prepare:hover {
+            background: #059669;
+        }
+
+        .order-section {
+            display: none;
+        }
+
+        .order-section.active {
+            display: block;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-counters {
+                justify-content: space-around;
+            }
+
+            .counter-card {
+                min-width: 100px;
+            }
+
+            .order-tabs {
+                overflow-x: auto;
+            }
+        }
+
+        .demo-footer {
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-footer h3 {
+            color: #dc2626;
+            margin-bottom: 15px;
+        }
+
+        .demo-footer p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="demo-header">
+        <h1><i class="fas fa-clipboard-list"></i> نظام تجهيز الطلبات المتقدم</h1>
+        <p>نموذج تفاعلي لإدارة وتجهيز طلبات العملاء - سوق الجملة</p>
+    </header>
+
+    <!-- Demo Notice -->
+    <div class="demo-notice">
+        <i class="fas fa-info-circle"></i>
+        <strong>نظام تجريبي:</strong> جميع البيانات والطلبات المعروضة هي بيانات تجريبية لأغراض العرض والاختبار
+    </div>
+
+    <!-- Sound Control -->
+    <div class="sound-control">
+        <button id="soundToggle" class="sound-btn active" onclick="toggleSound()">
+            <i class="fas fa-volume-up" id="soundIcon"></i>
+            <span id="soundText">الصوت مفعل</span>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="preparation-section">
+        <div class="container">
+            
+            <!-- Order Counters -->
+            <div class="order-counters">
+                <div class="counter-card new">
+                    <span class="count">3</span>
+                    <span class="label">طلبات جديدة</span>
+                </div>
+                <div class="counter-card preparing">
+                    <span class="count">5</span>
+                    <span class="label">قيد التجهيز</span>
+                </div>
+                <div class="counter-card completed">
+                    <span class="count">12</span>
+                    <span class="label">مكتملة اليوم</span>
+                </div>
+            </div>
+
+            <!-- Order Tabs -->
+            <div class="order-tabs">
+                <button class="order-tab active" onclick="switchTab('new')">
+                    <i class="fas fa-bell"></i>
+                    طلبات جديدة
+                    <span class="tab-count">3</span>
+                </button>
+                <button class="order-tab" onclick="switchTab('preparing')">
+                    <i class="fas fa-hourglass-half"></i>
+                    قيد التجهيز
+                    <span class="tab-count">5</span>
+                </button>
+                <button class="order-tab" onclick="switchTab('completed')">
+                    <i class="fas fa-check-circle"></i>
+                    مكتملة
+                    <span class="tab-count">12</span>
+                </button>
+            </div>
+
+            <!-- New Orders Section -->
+            <div class="order-section active" id="new-orders">
+                <div class="orders-grid">
+                    <div class="order-card new">
+                        <div class="order-header">
+                            <div class="order-id">#15001</div>
+                            <div class="order-time">منذ 15 دقيقة</div>
+                        </div>
+                        
+                        <div class="customer-name">
+                            <i class="fas fa-user"></i> أحمد محمد العلي
+                        </div>
+                        <div class="customer-contact">
+                            <i class="fas fa-phone"></i> 0501234567
+                        </div>
+                        <div class="customer-address">
+                            <i class="fas fa-map-marker-alt"></i> الرياض، حي النخيل، شارع الملك فهد
+                        </div>
+                        
+                        <div class="order-total">
+                            <span>المجموع:</span>
+                            <span>450.00 ر.س</span>
+                        </div>
+                        <div class="payment-method cash">
+                            <i class="fas fa-money-bill"></i> نقدي
+                        </div>
+                        
+                        <button class="btn-prepare" onclick="showAlert()">
+                            <i class="fas fa-play"></i> بدء التجهيز
+                        </button>
+                    </div>
+
+                    <div class="order-card new">
+                        <div class="order-header">
+                            <div class="order-id">#15002</div>
+                            <div class="order-time">منذ 25 دقيقة</div>
+                        </div>
+                        
+                        <div class="customer-name">
+                            <i class="fas fa-user"></i> سارة أحمد محمد
+                        </div>
+                        <div class="customer-contact">
+                            <i class="fas fa-phone"></i> 0501234568
+                        </div>
+                        <div class="customer-address">
+                            <i class="fas fa-map-marker-alt"></i> جدة، حي الحمراء، طريق الملك عبد العزيز
+                        </div>
+                        
+                        <div class="order-total">
+                            <span>المجموع:</span>
+                            <span>280.50 ر.س</span>
+                        </div>
+                        <div class="payment-method instapay">
+                            <i class="fab fa-cc-visa"></i> إنستاباي
+                        </div>
+                        
+                        <button class="btn-prepare" onclick="showAlert()">
+                            <i class="fas fa-play"></i> بدء التجهيز
+                        </button>
+                    </div>
+
+                    <div class="order-card new">
+                        <div class="order-header">
+                            <div class="order-id">#15003</div>
+                            <div class="order-time">منذ 35 دقيقة</div>
+                        </div>
+                        
+                        <div class="customer-name">
+                            <i class="fas fa-user"></i> خالد عبد الله القحطاني
+                        </div>
+                        <div class="customer-contact">
+                            <i class="fas fa-phone"></i> 0501234569
+                        </div>
+                        <div class="customer-address">
+                            <i class="fas fa-map-marker-alt"></i> الدمام، حي الشاطئ، شارع الخليج
+                        </div>
+                        
+                        <div class="order-total">
+                            <span>المجموع:</span>
+                            <span>175.25 ر.س</span>
+                        </div>
+                        <div class="payment-method cash">
+                            <i class="fas fa-money-bill"></i> نقدي
+                        </div>
+                        
+                        <button class="btn-prepare" onclick="showAlert()">
+                            <i class="fas fa-play"></i> بدء التجهيز
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparing Orders Section -->
+            <div class="order-section" id="preparing-orders">
+                <div class="orders-grid">
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <i class="fas fa-hourglass-half" style="font-size: 48px; margin-bottom: 20px; color: #f59e0b;"></i>
+                        <h3>طلبات قيد التجهيز</h3>
+                        <p>الطلبات التي يجري العمل على تجهيزها حالياً</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Orders Section -->
+            <div class="order-section" id="completed-orders">
+                <div class="orders-grid">
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <i class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 20px; color: #10b981;"></i>
+                        <h3>طلبات مكتملة</h3>
+                        <p>الطلبات التي تم تجهيزها وإنجازها اليوم</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="demo-footer">
+        <h3>🎉 النظام الكامل متوفر الآن!</h3>
+        <p>لتجربة جميع الميزات المتقدمة، قم بفتح النظام الكامل مع جميع الوظائف التفاعلية</p>
+        <a href="admin.html" class="demo-button">
+            <i class="fas fa-rocket"></i> فتح النظام الكامل
+        </a>
+    </footer>
+
+    <script>
+        let soundEnabled = true;
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggle');
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            
+            if (soundEnabled) {
+                btn.classList.add('active');
+                btn.classList.remove('inactive');
+                icon.className = 'fas fa-volume-up';
+                text.textContent = 'الصوت مفعل';
+            } else {
+                btn.classList.remove('active');
+                btn.classList.add('inactive');
+                icon.className = 'fas fa-volume-mute';
+                text.textContent = 'الصوت معطل';
+            }
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.order-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all sections
+            document.querySelectorAll('.order-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show corresponding section
+            document.getElementById(tabName + '-orders').classList.add('active');
+        }
+
+        function showAlert() {
+            alert('🎉 تم بدء تجهيز الطلب!\n\nللحصول على جميع الميزات التفاعلية:\n- إدارة المنتجات (تم، استبدال، حذف)\n- نظام الإشعار الصوتي\n- واجهة البحث عن البدائل\n- تأكيد العميل\n\nافتح النظام الكامل من خلال الضغط على الرابط في الأسفل!');
+        }
+
+        // Simulate notification sound
+        if (soundEnabled) {
+            console.log('🔊 نظام الإشعار الصوتي جاهز!');
+        }
+    </script>
+</body>
+</html>
