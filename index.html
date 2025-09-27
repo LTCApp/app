@@ -27,9 +27,47 @@
                         <i class="fas fa-bell"></i>
                         <span class="notification-badge">3</span>
                     </button>
-                    <button class="profile-btn">
-                        <i class="fas fa-user-circle"></i>
-                    </button>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="login-btn" onclick="window.location.href='login.html'">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>دخول</span>
+                        </button>
+                        <button class="register-btn" onclick="window.location.href='register.html'">
+                            <i class="fas fa-user-plus"></i>
+                            <span>حساب جديد</span>
+                        </button>
+                    </div>
+                    <div class="user-profile" id="userProfile" style="display: none;">
+                        <button class="profile-btn" onclick="toggleUserMenu()">
+                            <img id="userAvatar" src="" alt="صورة المستخدم" style="display: none;">
+                            <i class="fas fa-user-circle" id="userIcon"></i>
+                            <span id="userName">المستخدم</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-menu" id="userMenu" style="display: none;">
+                            <a href="account.html" class="menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>حسابي</span>
+                            </a>
+                            <a href="orders.html" class="menu-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>طلباتي</span>
+                            </a>
+                            <a href="favorites.html" class="menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>المفضلة</span>
+                            </a>
+                            <a href="wallet.html" class="menu-item">
+                                <i class="fas fa-wallet"></i>
+                                <span>المحفظة</span>
+                            </a>
+                            <div class="menu-divider"></div>
+                            <button class="menu-item logout-btn" onclick="logoutUser()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>تسجيل الخروج</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -276,5 +314,6 @@
     </button>
 
     <script src="script.js"></script>
+    <script src="main-auth.js"></script>
 </body>
 </html>

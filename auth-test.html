@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار نظام المصادقة - سوق الجملة</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .test-sections {
+            display: grid;
+            gap: 30px;
+        }
+        
+        .section {
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        
+        .section:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .section h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 i {
+            color: #667eea;
+            font-size: 24px;
+        }
+        
+        .section p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #00C851;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #00A746;
+            transform: translateY(-2px);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .status.logged-in {
+            background: rgba(0, 200, 81, 0.1);
+            color: #00C851;
+            border: 1px solid rgba(0, 200, 81, 0.3);
+        }
+        
+        .status.logged-out {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-box h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            color: #666;
+            padding-right: 20px;
+        }
+        
+        .info-box li {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 اختبار نظام المصادقة</h1>
+            <p>اختبر جميع ميزات تسجيل الدخول وإنشاء الحساب</p>
+        </div>
+        
+        <div class="test-sections">
+            <!-- الصفحة الرئيسية -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-home"></i>
+                    الصفحة الرئيسية
+                </h3>
+                <p>ابدأ من الصفحة الرئيسية للموقع واختبر أزرار تسجيل الدخول وإنشاء الحساب</p>
+                <div class="buttons">
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i>
+                        افتح الصفحة الرئيسية
+                    </a>
+                </div>
+            </div>
+            
+            <!-- تسجيل الدخول -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </h3>
+                <p>اختبر تسجيل الدخول بالموبايل أو الإيميل مع نظام التحقق المتطور</p>
+                <div class="buttons">
+                    <a href="login.html" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        صفحة تسجيل الدخول
+                    </a>
+                </div>
+                <div class="info-box">
+                    <h4>💡 نصائح للاختبار:</h4>
+                    <ul>
+                        <li>استخدم أي رقم موبايل (مثل: +20 1234567890)</li>
+                        <li>ابحث عن كود OTP في وحدة التحكم (F12)</li>
+                        <li>جرب التبديل بين الموبايل والإيميل</li>
+                        <li>فعّل "تذكرني" لحفظ البيانات</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- إنشاء حساب -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-user-plus"></i>
+                    إنشاء حساب جديد
+                </h3>
+                <p>اختبر التسجيل بطريقتين مختلفتين مع التحقق الكامل من البيانات</p>
+                <div class="buttons">
+                    <a href="register.html" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        صفحة إنشاء الحساب
+                    </a>
+                </div>
+                <div class="info-box">
+                    <h4>✨ الميزات المتاحة:</h4>
+                    <ul>
+                        <li>التسجيل بالموبايل (مع كود OTP)</li>
+                        <li>التسجيل بالإيميل (فوري)</li>
+                        <li>مؤشر قوة كلمة المرور</li>
+                        <li>منع التسجيل المكرر</li>
+                        <li>تحقق من صحة البيانات</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- إدارة الحساب -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-user-cog"></i>
+                    إدارة الحساب
+                </h3>
+                <p>الصفحة الموجودة مسبقاً لإدارة الحساب (تتطلب تسجيل دخول)</p>
+                <div class="buttons">
+                    <a href="account.html" class="btn btn-secondary">
+                        <i class="fas fa-user-cog"></i>
+                        صفحة الحساب
+                    </a>
+                </div>
+            </div>
+            
+            <!-- حالة تسجيل الدخول -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    حالة تسجيل الدخول
+                </h3>
+                <p>تحقق من حالة تسجيل الدخول الحالية</p>
+                <div class="buttons">
+                    <button class="btn btn-success" onclick="checkAuthStatus()">
+                        <i class="fas fa-sync"></i>
+                        فحص الحالة
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearAllData()">
+                        <i class="fas fa-trash"></i>
+                        مسح جميع البيانات
+                    </button>
+                </div>
+                <div id="authStatus" class="status logged-out">
+                    <i class="fas fa-user-times"></i>
+                    لم يتم تسجيل الدخول
+                </div>
+            </div>
+            
+            <!-- الدليل الشامل -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-book"></i>
+                    الدليل الشامل
+                </h3>
+                <p>دليل كامل لجميع ميزات النظام وطريقة الاستخدام</p>
+                <div class="buttons">
+                    <a href="AUTH_SYSTEM_GUIDE.md" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-book-open"></i>
+                        فتح الدليل
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const statusDiv = document.getElementById('authStatus');
+            
+            if (currentUser) {
+                statusDiv.className = 'status logged-in';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-user-check"></i>
+                    مسجل الدخول: ${currentUser.name}
+                    <br>
+                    <small>الهاتف: ${currentUser.phone || 'غير محدد'} | الإيميل: ${currentUser.email || 'غير محدد'}</small>
+                `;
+            } else {
+                statusDiv.className = 'status logged-out';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-user-times"></i>
+                    لم يتم تسجيل الدخول
+                `;
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('هل أنت متأكد من حذف جميع البيانات؟\nسيتم حذف جميع الحسابات المحفوظة وتسجيل الخروج.')) {
+                localStorage.clear();
+                checkAuthStatus();
+                alert('تم حذف جميع البيانات بنجاح! ✅');
+            }
+        }
+        
+        // تحديث الحالة عند التحميل
+        window.addEventListener('load', checkAuthStatus);
+        
+        // تحديث الحالة عند تغيير localStorage
+        window.addEventListener('storage', checkAuthStatus);
+        
+        // تحديث الحالة كل 5 ثوانٍ
+        setInterval(checkAuthStatus, 5000);
+    </script>
+</body>
+</html>
