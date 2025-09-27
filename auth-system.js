@@ -69,19 +69,29 @@ class AuthSystem {
 
         // Password strength
         document.querySelectorAll('input[type="password"]').forEach(input => {
-            if (input.id.includes('Password') && !input.id.includes('Confirm')) {
+            if (input.id.includes('Password') && !input.id.includes('Confirm') && !input.id.includes('confirm')) {
                 input.addEventListener('input', (e) => {
                     this.checkPasswordStrength(e.target);
                 });
             }
         });
 
-        // Password confirmation
+        // Password confirmation - Enhanced to handle both camelCase and lowercase
         document.querySelectorAll('input[type="password"]').forEach(input => {
-            if (input.id.includes('Confirm')) {
+            if (input.id.includes('Confirm') || input.id.includes('confirm')) {
                 input.addEventListener('input', (e) => {
                     this.validatePasswordMatch(e.target);
                 });
+                // Also validate when the main password changes
+                const basePasswordId = input.id.replace('Confirm', '').replace('confirm', '');
+                const passwordInput = document.getElementById(basePasswordId);
+                if (passwordInput) {
+                    passwordInput.addEventListener('input', () => {
+                        if (input.value) {
+                            this.validatePasswordMatch(input);
+                        }
+                    });
+                }
             }
         });
     }
@@ -217,8 +227,18 @@ class AuthSystem {
     }
 
     validatePasswordMatch(confirmInput) {
-        const passwordInput = document.getElementById(confirmInput.id.replace('Confirm', ''));
-        const isMatch = passwordInput && passwordInput.value === confirmInput.value;
+        // Get the base password field ID by removing 'Confirm' from current field ID
+        const basePasswordId = confirmInput.id.replace('Confirm', '').replace('confirm', '');
+        const passwordInput = document.getElementById(basePasswordId);
+        
+        if (!passwordInput) {
+            console.warn('Password input not found for:', basePasswordId);
+            return false;
+        }
+        
+        const passwordValue = passwordInput.value.trim();
+        const confirmValue = confirmInput.value.trim();
+        const isMatch = passwordValue === confirmValue && passwordValue.length > 0;
         
         this.updateInputValidation(confirmInput, isMatch, isMatch ? '' : 'كلمات المرور غير متطابقة');
         return isMatch;
@@ -442,7 +462,38 @@ function showForgotPassword() {
 
 // Social Media Login Placeholders
 function loginWithGoogle() {
-    authSystem.showToast('سيتم تفعيل تسجيل الدخول بـ Google قريباً', 'info');
+    authSystem.showLoading('جاري تسجيل الدخول بحساب Google...');
+    
+    // Simulate Google OAuth
+    setTimeout(() => {
+        const existingGoogleUser = authSystem.users.find(user => user.accountType === 'google');
+        
+        if (existingGoogleUser) {
+            authSystem.hideLoading();
+            authSystem.login(existingGoogleUser);
+        } else {
+            // Create new Google user
+            const googleUser = {
+                id: authSystem.generateUserId(),
+                name: 'مستخدم Google',
+                email: 'user@gmail.com',
+                phone: null,
+                password: null,
+                avatar: 'https://via.placeholder.com/100',
+                joinDate: new Date().toISOString(),
+                isVerified: true,
+                accountType: 'google',
+                wallet: 0,
+                orders: [],
+                favorites: [],
+                addresses: []
+            };
+            
+            authSystem.hideLoading();
+            authSystem.saveUser(googleUser);
+            authSystem.login(googleUser);
+        }
+    }, 2000);
 }
 
 function loginWithFacebook() {
@@ -454,7 +505,33 @@ function loginWithApple() {
 }
 
 function registerWithGoogle() {
-    authSystem.showToast('سيتم تفعيل التسجيل بـ Google قريباً', 'info');
+    authSystem.showLoading('جاري إنشاء حساب Google...');
+    
+    // Simulate Google OAuth
+    setTimeout(() => {
+        const googleUser = {
+            id: authSystem.generateUserId(),
+            name: 'مستخدم Google جديد',
+            email: 'newuser@gmail.com',
+            phone: null,
+            password: null,
+            avatar: 'https://via.placeholder.com/100',
+            joinDate: new Date().toISOString(),
+            isVerified: true,
+            accountType: 'google',
+            wallet: 0,
+            orders: [],
+            favorites: [],
+            addresses: []
+        };
+        
+        authSystem.hideLoading();
+        authSystem.saveUser(googleUser);
+        authSystem.showToast('تم إنشاء حساب Google بنجاح! 🎉', 'success');
+        setTimeout(() => {
+            authSystem.login(googleUser);
+        }, 1500);
+    }, 2000);
 }
 
 function registerWithFacebook() {

@@ -1596,14 +1596,30 @@ body {
 }
 
 /* Additional Mobile Optimizations */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+    
     .modal-content {
         max-width: 95%;
-        margin: 10px;
+        margin: 10px auto;
+        max-height: 90vh;
+        overflow-y: auto;
     }
     
     .modal-header {
         padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
     }
     
     .modal-body {
@@ -1614,11 +1630,13 @@ body {
         flex-direction: column;
         gap: 15px;
         text-align: center;
+        padding: 15px;
     }
     
     .favorite-actions {
         width: 100%;
         justify-content: center;
+        gap: 10px;
     }
     
     .toast {
@@ -1627,9 +1645,186 @@ body {
         right: 10px;
         transform: translateY(100px);
         max-width: none;
+        font-size: 14px;
+        padding: 12px 15px;
     }
     
     .toast.show {
         transform: translateY(0);
+    }
+    
+    /* Enhanced header for mobile */
+    .header-top .container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .header-brand {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .header-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    /* Better section layout */
+    .sections-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 15px !important;
+    }
+    
+    .section-item {
+        padding: 15px 10px !important;
+        border-radius: 12px !important;
+        min-height: 100px !important;
+    }
+    
+    .section-icon {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 20px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .section-title {
+        font-size: 14px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .section-subtitle {
+        font-size: 11px !important;
+    }
+    
+    /* Better navigation */
+    .bottom-nav {
+        padding: 10px 5px !important;
+        height: 70px !important;
+    }
+    
+    .nav-item {
+        padding: 8px 5px !important;
+        gap: 4px !important;
+    }
+    
+    .nav-icon {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 16px !important;
+    }
+    
+    .nav-label {
+        font-size: 11px !important;
+    }
+    
+    /* Voice search improvements */
+    .voice-search-btn {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 20px !important;
+    }
+    
+    /* Cart improvements */
+    .add-to-cart-btn,
+    .view-product-btn {
+        padding: 10px 15px !important;
+        font-size: 13px !important;
+        border-radius: 8px !important;
+        min-height: 40px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .sections-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        padding: 10px !important;
+    }
+    
+    .section-item {
+        padding: 12px 8px !important;
+        min-height: 85px !important;
+    }
+    
+    .section-icon {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 18px !important;
+    }
+    
+    .section-title {
+        font-size: 13px !important;
+    }
+    
+    .section-subtitle {
+        font-size: 10px !important;
+    }
+    
+    .modal-content {
+        margin: 5px;
+        max-width: calc(100% - 10px);
+        border-radius: 15px;
+    }
+    
+    .bottom-nav {
+        height: 65px !important;
+        padding: 8px 3px !important;
+    }
+    
+    .nav-item {
+        padding: 6px 3px !important;
+    }
+    
+    .nav-icon {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 14px !important;
+    }
+    
+    .nav-label {
+        font-size: 10px !important;
+    }
+}
+
+/* Force mobile-friendly touch targets */
+@media (max-width: 768px) {
+    /* Ensure all interactive elements are at least 44px tall */
+    button,
+    .btn,
+    .nav-item,
+    .section-item,
+    a[role="button"] {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* Prevent text scaling issues on mobile */
+    input,
+    textarea,
+    select {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    /* Better modal positioning */
+    .modal {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    
+    /* Improved scrolling */
+    .modal-body {
+        -webkit-overflow-scrolling: touch;
+        max-height: 60vh;
+        overflow-y: auto;
     }
 }
