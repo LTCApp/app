@@ -77,10 +77,14 @@
             <div class="container">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="ابحث عن المنتجات...">
-                    <button class="voice-search">
-                        <i class="fas fa-microphone"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن المنتجات...">
+                    <button class="voice-search" id="voiceSearchBtn" onclick="startVoiceSearch()">
+                        <i class="fas fa-microphone" id="voiceIcon"></i>
+                        <div class="voice-animation" id="voiceAnimation" style="display: none;"></div>
                     </button>
+                    <div class="voice-status" id="voiceStatus" style="display: none;">
+                        <span>يمكنك التحدث الآن...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,29 +118,71 @@
                     <button class="see-all">عرض الكل</button>
                 </div>
                 <div class="categories-grid">
-                    <div class="category-card">
+                    <div class="category-card" onclick="openCategory('supermarket')">
                         <div class="category-icon">
                             <i class="fas fa-shopping-basket"></i>
                         </div>
                         <h4>السوبر ماركت</h4>
                         <p>جميع احتياجاتك اليومية</p>
                         <span class="item-count">+500 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="openCategory('cleaning')">
                         <div class="category-icon">
                             <i class="fas fa-spray-can"></i>
                         </div>
                         <h4>المنظفات</h4>
                         <p>أفضل منتجات التنظيف</p>
                         <span class="item-count">+150 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="openCategory('fruits')">
                         <div class="category-icon">
                             <i class="fas fa-apple-alt"></i>
                         </div>
                         <h4>الخضروات والفاكهة</h4>
                         <p>طازجة وعالية الجودة</p>
                         <span class="item-count">+200 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </div>
+                    <div class="category-card" onclick="openCategory('dairy')">
+                        <div class="category-icon">
+                            <i class="fas fa-cheese"></i>
+                        </div>
+                        <h4>الألبان والأجبان</h4>
+                        <p>منتجات طازجة يومياً</p>
+                        <span class="item-count">+80 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </div>
+                    <div class="category-card" onclick="openCategory('meat')">
+                        <div class="category-icon">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                        <h4>اللحوم والدواجن</h4>
+                        <p>لحوم طازجة ومبردة</p>
+                        <span class="item-count">+120 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </div>
+                    <div class="category-card" onclick="openCategory('beverages')">
+                        <div class="category-icon">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <h4>المشروبات</h4>
+                        <p>مشروبات باردة وساخنة</p>
+                        <span class="item-count">+180 منتج</span>
+                        <div class="category-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -259,6 +305,35 @@
             </div>
         </section>
 
+        <!-- Favorites Section -->
+        <section class="favorites-section" id="favoritesSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h3>
+                        <i class="fas fa-heart"></i>
+                        المنتجات المفضلة
+                    </h3>
+                    <button class="clear-favorites" onclick="clearAllFavorites()">
+                        <i class="fas fa-trash"></i>
+                        مسح الكل
+                    </button>
+                </div>
+                <div class="favorites-grid" id="favoritesGrid">
+                    <div class="empty-favorites">
+                        <div class="empty-icon">
+                            <i class="fas fa-heart-broken"></i>
+                        </div>
+                        <h4>لا توجد منتجات مفضلة</h4>
+                        <p>ابدأ بإضافة منتجاتك المفضلة من خلال النقر على <i class="fas fa-heart"></i></p>
+                        <button class="browse-btn" onclick="scrollToCategories()">
+                            <i class="fas fa-shopping-bag"></i>
+                            تصفح المنتجات
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section class="contact-section">
             <div class="container">
@@ -284,33 +359,33 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active">
+        <div class="nav-item active" onclick="setActiveNavItem(this, 'home')">
             <i class="fas fa-home"></i>
             <span>الرئيسية</span>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="setActiveNavItem(this, 'categories'); scrollToCategories()">
             <i class="fas fa-th-large"></i>
             <span>الأقسام</span>
         </div>
-        <div class="nav-item cart-nav">
+        <div class="nav-item cart-nav" onclick="setActiveNavItem(this, 'cart'); openCart()">
             <i class="fas fa-shopping-cart"></i>
             <span>السلة</span>
-            <div class="cart-badge">2</div>
+            <div class="cart-badge" id="cartBadge">0</div>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="setActiveNavItem(this, 'favorites'); toggleFavorites()">
             <i class="fas fa-heart"></i>
             <span>المفضلة</span>
         </div>
-        <div class="nav-item" onclick="goToAccount()">
+        <div class="nav-item" onclick="setActiveNavItem(this, 'account'); goToAccount()">
             <i class="fas fa-user"></i>
             <span>حسابي</span>
         </div>
     </nav>
 
     <!-- Shopping Cart Floating Button -->
-    <button class="floating-cart">
+    <button class="floating-cart" onclick="openCart()">
         <i class="fas fa-shopping-cart"></i>
-        <span class="cart-count">2</span>
+        <span class="cart-count" id="floatingCartCount">0</span>
     </button>
 
     <script src="script.js"></script>

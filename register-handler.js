@@ -20,20 +20,12 @@ class RegisterHandler {
     setupEventListeners() {
         // Form submissions
         const phoneRegisterForm = document.getElementById('phoneRegisterForm');
-        const emailRegisterForm = document.getElementById('emailRegisterForm');
         const otpRegisterVerifyForm = document.getElementById('otpRegisterVerifyForm');
         
         if (phoneRegisterForm) {
             phoneRegisterForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.handlePhoneRegistration();
-            });
-        }
-        
-        if (emailRegisterForm) {
-            emailRegisterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleEmailRegistration();
             });
         }
         
@@ -86,25 +78,18 @@ class RegisterHandler {
     }
 
     switchRegisterMethod(method) {
-        this.currentRegisterMethod = method;
+        this.currentRegisterMethod = 'phone'; // فقط رقم الموبايل مدعوم الآن
         
-        // Update tab buttons
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.method === method);
-        });
-        
-        // Show/hide forms
-        document.querySelectorAll('.auth-form').forEach(form => {
-            form.classList.toggle('active', 
-                (method === 'phone' && form.id === 'phoneRegisterForm') ||
-                (method === 'email' && form.id === 'emailRegisterForm')
-            );
-        });
+        // تأكد من أن نموذج الموبايل نشط
+        const phoneForm = document.getElementById('phoneRegisterForm');
+        if (phoneForm) {
+            phoneForm.classList.add('active');
+        }
         
         // Reset forms
         this.resetForms();
         
-        console.log(`🔄 تم التبديل إلى التسجيل بـ ${method === 'phone' ? 'الموبايل' : 'الإيميل'}`);
+        console.log('🔄 تم تعيين التسجيل بالموبايل فقط');
     }
 
     async checkDuplicatePhone(input) {
@@ -169,64 +154,7 @@ class RegisterHandler {
         }
     }
 
-    async handleEmailRegistration() {
-        try {
-            // Get form data
-            const formData = this.getEmailRegistrationData();
-            
-            // Validate form
-            if (!this.validateEmailRegistrationData(formData)) {
-                return;
-            }
-            
-            this.toggleSubmitLoading(true, 'email');
-            
-            // Check for duplicates
-            const duplicateCheck = await this.checkDuplicateRegistration(formData);
-            if (!duplicateCheck.success) {
-                this.toggleSubmitLoading(false, 'email');
-                authSystem.showToast(duplicateCheck.message, 'error');
-                return;
-            }
-            
-            // Create account immediately for email registration
-            const hashedPassword = await authSystem.hashPassword(formData.password);
-            
-            const userData = {
-                id: authSystem.generateUserId(),
-                name: formData.fullName,
-                email: formData.email,
-                phone: formData.phone || null,
-                password: hashedPassword,
-                avatar: null,
-                joinDate: new Date().toISOString(),
-                isVerified: true, // Auto-verify for email registration
-                accountType: 'email',
-                wallet: 0,
-                orders: [],
-                favorites: [],
-                addresses: []
-            };
-            
-            // Simulate account creation delay
-            await authSystem.simulateDelay(2000);
-            
-            await authSystem.saveUser(userData);
-            
-            this.toggleSubmitLoading(false, 'email');
-            
-            authSystem.showToast('تم إنشاء الحساب بنجاح! 🎉', 'success');
-            
-            // Auto login
-            setTimeout(() => {
-                authSystem.login(userData);
-            }, 1500);
-            
-        } catch (error) {
-            this.toggleSubmitLoading(false, 'email');
-            authSystem.handleError(error, 'التسجيل بالإيميل');
-        }
-    }
+
 
     getPhoneRegistrationData() {
         return {
@@ -241,20 +169,7 @@ class RegisterHandler {
         };
     }
 
-    getEmailRegistrationData() {
-        const phone = document.getElementById('emailRegisterPhone').value.trim();
-        const countryCode = document.getElementById('emailCountryCode').value;
-        
-        return {
-            fullName: document.getElementById('emailFullName').value.trim(),
-            email: document.getElementById('emailRegisterAddress').value.trim(),
-            phone: phone ? countryCode + phone : null,
-            password: document.getElementById('emailRegisterPassword').value,
-            confirmPassword: document.getElementById('emailConfirmPassword').value,
-            acceptTerms: document.getElementById('emailAcceptTerms').checked,
-            method: 'email'
-        };
-    }
+
 
     validatePhoneRegistrationData(data) {
         if (!data.fullName) {

@@ -682,3 +682,424 @@ const imageObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('img[data-src]').forEach(img => {
     imageObserver.observe(img);
 });
+
+// إنشاء مثيل للتطبيق
+const app = new SuperMarketApp();
+
+// ===== الوظائف الجديدة المطلوبة =====
+
+// البحث الصوتي المحسن
+function startVoiceSearch() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        showToast('البحث الصوتي غير مدعوم في متصفحك', 'error');
+        return;
+    }
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    const voiceBtn = document.getElementById('voiceSearchBtn');
+    const voiceIcon = document.getElementById('voiceIcon');
+    const voiceAnimation = document.getElementById('voiceAnimation');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const searchInput = document.getElementById('searchInput');
+
+    recognition.lang = 'ar-SA';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = function() {
+        voiceBtn.classList.add('listening');
+        voiceIcon.style.display = 'none';
+        voiceAnimation.style.display = 'block';
+        voiceStatus.style.display = 'block';
+        
+        // تأثير الاهتزاز إذا كان مدعوماً
+        if (navigator.vibrate) {
+            navigator.vibrate(100);
+        }
+    };
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        searchInput.value = transcript;
+        
+        // تشغيل البحث
+        if (window.app && window.app.handleSearch) {
+            window.app.handleSearch(transcript);
+        }
+        
+        showToast(`تم البحث عن: ${transcript}`, 'success');
+    };
+
+    recognition.onerror = function(event) {
+        let errorMessage = 'حدث خطأ في البحث الصوتي';
+        
+        switch(event.error) {
+            case 'no-speech':
+                errorMessage = 'لم يتم رصد أي كلام، حاول مرة أخرى';
+                break;
+            case 'audio-capture':
+                errorMessage = 'لم يتم العثور على ميكروفون';
+                break;
+            case 'not-allowed':
+                errorMessage = 'يرجى السماح بالوصول للميكروفون';
+                break;
+        }
+        
+        showToast(errorMessage, 'error');
+    };
+
+    recognition.onend = function() {
+        voiceBtn.classList.remove('listening');
+        voiceIcon.style.display = 'block';
+        voiceAnimation.style.display = 'none';
+        voiceStatus.style.display = 'none';
+    };
+
+    recognition.start();
+}
+
+// فتح الأقسام
+function openCategory(categoryId) {
+    // تأثير بصري للنقر
+    const categoryCard = event.currentTarget;
+    categoryCard.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        categoryCard.style.transform = '';
+    }, 150);
+
+    // تأثير الاهتزاز
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+
+    // توجيه لصفحة الفئة
+    showToast(`فتح قسم: ${getCategoryName(categoryId)}`, 'info');
+    
+    // في التطبيق الحقيقي، يمكن توجيه المستخدم لصفحة منفصلة
+    // window.location.href = `category.html?id=${categoryId}`;
+    
+    // للعرض التوضيحي، سنعرض منتجات وهمية
+    setTimeout(() => {
+        showCategoryProducts(categoryId);
+    }, 300);
+}
+
+// الحصول على اسم الفئة
+function getCategoryName(categoryId) {
+    const names = {
+        'supermarket': 'السوبر ماركت',
+        'cleaning': 'المنظفات',
+        'fruits': 'الخضروات والفاكهة',
+        'dairy': 'الألبان والأجبان',
+        'meat': 'اللحوم والدواجن',
+        'beverages': 'المشروبات'
+    };
+    return names[categoryId] || 'قسم غير معروف';
+}
+
+// عرض منتجات الفئة
+function showCategoryProducts(categoryId) {
+    const categoryName = getCategoryName(categoryId);
+    const products = generateCategoryProducts(categoryId);
+    
+    // إنشاء مودال لعرض المنتجات
+    const modal = document.createElement('div');
+    modal.className = 'category-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>${categoryName}</h3>
+                <button class="close-modal" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="products-grid">
+                    ${products.map(product => `
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="${product.icon}"></i>
+                            </div>
+                            <h4>${product.name}</h4>
+                            <p class="price">${product.price} جنيه</p>
+                            <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
+                                <i class="fas fa-plus"></i>
+                                إضافة
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('show'), 10);
+}
+
+// إغلاق مودال الفئة
+function closeCategoryModal() {
+    const modal = document.querySelector('.category-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 300);
+    }
+}
+
+// إنشاء منتجات وهمية للفئة
+function generateCategoryProducts(categoryId) {
+    const productsByCategory = {
+        'supermarket': [
+            { id: 'sp1', name: 'أرز مصري', price: '45', icon: 'fas fa-seedling' },
+            { id: 'sp2', name: 'زيت طبخ', price: '35', icon: 'fas fa-oil-can' },
+            { id: 'sp3', name: 'سكر أبيض', price: '25', icon: 'fas fa-cube' }
+        ],
+        'cleaning': [
+            { id: 'cl1', name: 'منظف الأطباق', price: '15', icon: 'fas fa-spray-can' },
+            { id: 'cl2', name: 'منظف الأرضيات', price: '20', icon: 'fas fa-broom' },
+            { id: 'cl3', name: 'مناديل مبللة', price: '12', icon: 'fas fa-tissue' }
+        ],
+        'fruits': [
+            { id: 'fr1', name: 'تفاح أحمر', price: '30', icon: 'fas fa-apple-alt' },
+            { id: 'fr2', name: 'موز طازج', price: '20', icon: 'fas fa-seedling' },
+            { id: 'fr3', name: 'برتقال', price: '25', icon: 'fas fa-orange' }
+        ],
+        'dairy': [
+            { id: 'da1', name: 'جبن أبيض', price: '40', icon: 'fas fa-cheese' },
+            { id: 'da2', name: 'زبادي طبيعي', price: '15', icon: 'fas fa-glass-whiskey' },
+            { id: 'da3', name: 'حليب طازج', price: '18', icon: 'fas fa-glass-whiskey' }
+        ],
+        'meat': [
+            { id: 'me1', name: 'لحم بقري', price: '180', icon: 'fas fa-drumstick-bite' },
+            { id: 'me2', name: 'دجاج كامل', price: '65', icon: 'fas fa-drumstick-bite' },
+            { id: 'me3', name: 'سمك فيليه', price: '120', icon: 'fas fa-fish' }
+        ],
+        'beverages': [
+            { id: 'be1', name: 'عصير برتقال', price: '12', icon: 'fas fa-coffee' },
+            { id: 'be2', name: 'شاي أخضر', price: '25', icon: 'fas fa-leaf' },
+            { id: 'be3', name: 'قهوة تركية', price: '35', icon: 'fas fa-coffee' }
+        ]
+    };
+    
+    return productsByCategory[categoryId] || [];
+}
+
+// تبديل المفضلة
+function toggleFavorites() {
+    const favoritesSection = document.getElementById('favoritesSection');
+    const isVisible = favoritesSection.style.display !== 'none';
+    
+    if (isVisible) {
+        favoritesSection.style.display = 'none';
+        showToast('تم إخفاء المفضلة', 'info');
+    } else {
+        favoritesSection.style.display = 'block';
+        loadFavorites();
+        showToast('تم عرض المفضلة', 'info');
+        
+        // التمرير للمفضلة
+        setTimeout(() => {
+            favoritesSection.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+}
+
+// تحميل المفضلة
+function loadFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    
+    if (favorites.length === 0) {
+        favoritesGrid.innerHTML = `
+            <div class="empty-favorites">
+                <div class="empty-icon">
+                    <i class="fas fa-heart-broken"></i>
+                </div>
+                <h4>لا توجد منتجات مفضلة</h4>
+                <p>ابدأ بإضافة منتجاتك المفضلة من خلال النقر على <i class="fas fa-heart"></i></p>
+                <button class="browse-btn" onclick="scrollToCategories()">
+                    <i class="fas fa-shopping-bag"></i>
+                    تصفح المنتجات
+                </button>
+            </div>
+        `;
+    } else {
+        favoritesGrid.innerHTML = favorites.map(item => `
+            <div class="favorite-item">
+                <div class="product-info">
+                    <h4>${item.name}</h4>
+                    <p class="price">${item.price} جنيه</p>
+                </div>
+                <div class="favorite-actions">
+                    <button class="remove-favorite" onclick="removeFromFavorites('${item.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="add-to-cart-btn" onclick="addToCart('${item.id}')">
+                        <i class="fas fa-plus"></i>
+                        إضافة للسلة
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// مسح جميع المفضلة
+function clearAllFavorites() {
+    if (confirm('هل أنت متأكد من مسح جميع المفضلة؟')) {
+        localStorage.removeItem('favorites');
+        loadFavorites();
+        showToast('تم مسح جميع المفضلة', 'success');
+    }
+}
+
+// حذف من المفضلة
+function removeFromFavorites(itemId) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites = favorites.filter(item => item.id !== itemId);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    loadFavorites();
+    showToast('تم حذف المنتج من المفضلة', 'success');
+}
+
+// التمرير للأقسام
+function scrollToCategories() {
+    const categoriesSection = document.querySelector('.categories-section');
+    if (categoriesSection) {
+        categoriesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// تفعيل عنصر التنقل السفلي
+function setActiveNavItem(element, section) {
+    // إزالة الفئة النشطة من جميع العناصر
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // إضافة الفئة النشطة للعنصر المحدد
+    element.classList.add('active');
+    
+    // تأثير بصري
+    if (navigator.vibrate) {
+        navigator.vibrate(30);
+    }
+}
+
+// فتح السلة
+function openCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        showToast('السلة فارغة', 'info');
+        return;
+    }
+    
+    // في التطبيق الحقيقي، يتم التوجيه لصفحة السلة
+    showToast(`لديك ${cart.length} منتج في السلة`, 'info');
+    // window.location.href = 'cart.html';
+}
+
+// الذهاب للحساب
+function goToAccount() {
+    const isLoggedIn = localStorage.getItem('authUser');
+    
+    if (isLoggedIn) {
+        // window.location.href = 'account.html';
+        showToast('فتح صفحة الحساب', 'info');
+    } else {
+        showToast('يرجى تسجيل الدخول أولاً', 'warning');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1000);
+    }
+}
+
+// إضافة للسلة
+function addToCart(productId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // البحث عن المنتج في السلة
+    const existingItem = cart.find(item => item.id === productId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        // إضافة منتج جديد
+        cart.push({
+            id: productId,
+            name: `منتج ${productId}`,
+            price: Math.floor(Math.random() * 100) + 10,
+            quantity: 1
+        });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadges();
+    
+    showToast('تم إضافة المنتج للسلة', 'success');
+    
+    // تأثير بصري
+    if (navigator.vibrate) {
+        navigator.vibrate(100);
+    }
+}
+
+// تحديث شارات السلة
+function updateCartBadges() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    const cartBadge = document.getElementById('cartBadge');
+    const floatingCartCount = document.getElementById('floatingCartCount');
+    
+    if (cartBadge) {
+        cartBadge.textContent = totalItems;
+        cartBadge.style.display = totalItems > 0 ? 'block' : 'none';
+    }
+    
+    if (floatingCartCount) {
+        floatingCartCount.textContent = totalItems;
+        floatingCartCount.style.display = totalItems > 0 ? 'block' : 'none';
+    }
+}
+
+// عرض رسالة تنبيه
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="toast-icon fas ${getToastIcon(type)}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// الحصول على أيقونة التنبيه
+function getToastIcon(type) {
+    const icons = {
+        'success': 'fa-check-circle',
+        'error': 'fa-exclamation-circle',
+        'warning': 'fa-exclamation-triangle',
+        'info': 'fa-info-circle'
+    };
+    return icons[type] || 'fa-info-circle';
+}
+
+// تهيئة التطبيق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartBadges();
+    
+    // إخفاء قسم المفضلة افتراضياً
+    const favoritesSection = document.getElementById('favoritesSection');
+    if (favoritesSection) {
+        favoritesSection.style.display = 'none';
+    }
+});

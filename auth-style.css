@@ -1020,3 +1020,101 @@ body {
         display: none !important;
     }
 }
+
+/* Method Indicator (New Simplified Design) */
+.login-method-info,
+.register-method-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    animation: fadeSlide 0.5s ease-out;
+}
+
+.method-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.method-indicator i {
+    font-size: 20px;
+}
+
+/* Enhanced Mobile Responsive Design */
+@media (max-width: 480px) {
+    .auth-container {
+        max-width: 95%;
+        padding: 0 10px;
+    }
+    
+    .auth-card {
+        padding: 20px 15px;
+        margin: 10px 0;
+    }
+    
+    .register-btn,
+    .submit-btn {
+        padding: 16px 20px !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+        transform: translateY(0) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .register-btn:hover,
+    .submit-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5) !important;
+    }
+    
+    .social-btn {
+        padding: 14px 20px !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        border-radius: 12px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .google-btn {
+        background: linear-gradient(135deg, #4285f4 0%, #34a853 100%) !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: 0 6px 20px rgba(66, 133, 244, 0.3) !important;
+    }
+    
+    .google-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 30px rgba(66, 133, 244, 0.4) !important;
+    }
+    
+    .phone-input-wrapper {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .country-code {
+        width: 100%;
+    }
+    
+    .otp-inputs {
+        gap: 8px !important;
+    }
+    
+    .otp-digit,
+    .otp-digit-register {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 18px !important;
+    }
+}

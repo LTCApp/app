@@ -20,20 +20,12 @@ class LoginHandler {
     setupEventListeners() {
         // Form submissions
         const phoneLoginForm = document.getElementById('phoneLoginForm');
-        const emailLoginForm = document.getElementById('emailLoginForm');
         const otpVerifyForm = document.getElementById('otpVerifyForm');
         
         if (phoneLoginForm) {
             phoneLoginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.handlePhoneLogin();
-            });
-        }
-        
-        if (emailLoginForm) {
-            emailLoginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleEmailLogin();
             });
         }
         
@@ -67,25 +59,18 @@ class LoginHandler {
     }
 
     switchLoginMethod(method) {
-        this.currentLoginMethod = method;
+        this.currentLoginMethod = 'phone'; // فقط رقم الموبايل مدعوم الآن
         
-        // Update tab buttons
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.method === method);
-        });
-        
-        // Show/hide forms
-        document.querySelectorAll('.auth-form').forEach(form => {
-            form.classList.toggle('active', 
-                (method === 'phone' && form.id === 'phoneLoginForm') ||
-                (method === 'email' && form.id === 'emailLoginForm')
-            );
-        });
+        // تأكد من أن نموذج الموبايل نشط
+        const phoneForm = document.getElementById('phoneLoginForm');
+        if (phoneForm) {
+            phoneForm.classList.add('active');
+        }
         
         // Reset forms
         this.resetForms();
         
-        console.log(`🔄 تم التبديل إلى تسجيل الدخول بـ ${method === 'phone' ? 'الموبايل' : 'الإيميل'}`);
+        console.log('🔄 تم تعيين تسجيل الدخول بالموبايل فقط');
     }
 
     async checkExistingUser() {
@@ -172,47 +157,7 @@ class LoginHandler {
         }
     }
 
-    async handleEmailLogin() {
-        try {
-            const email = document.getElementById('emailAddress').value.trim();
-            const password = document.getElementById('emailPassword').value;
-            
-            if (!email || !password) {
-                authSystem.showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
-                return;
-            }
-            
-            if (!authSystem.validateEmail(document.getElementById('emailAddress'))) {
-                authSystem.showToast('البريد الإلكتروني غير صحيح', 'error');
-                return;
-            }
-            
-            this.toggleSubmitLoading(true, 'email');
-            
-            // Simulate API call
-            await authSystem.simulateDelay(2000);
-            
-            const user = await authSystem.verifyCredentials(email, password, 'email');
-            
-            if (user) {
-                // Remember user if checkbox is checked
-                const rememberMe = document.getElementById('rememberEmail').checked;
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', email);
-                }
-                
-                this.toggleSubmitLoading(false, 'email');
-                authSystem.login(user);
-            } else {
-                this.toggleSubmitLoading(false, 'email');
-                authSystem.showToast('البريد الإلكتروني أو كلمة المرور غير صحيحة', 'error');
-            }
-            
-        } catch (error) {
-            this.toggleSubmitLoading(false, 'email');
-            authSystem.handleError(error, 'تسجيل الدخول بالإيميل');
-        }
-    }
+
 
     async sendPhoneOTP(phone, existingUser = null) {
         try {
@@ -398,9 +343,10 @@ class LoginHandler {
         });
     }
 
-    toggleSubmitLoading(isLoading, method) {
-        const btnSelector = method === 'phone' ? '.phone-submit' : '.email-submit';
-        const btn = document.querySelector(btnSelector);
+    toggleSubmitLoading(isLoading, method = 'phone') {
+        const btn = document.querySelector('.phone-submit'); // فقط زر الموبايل
+        if (!btn) return;
+        
         const loader = btn.querySelector('.btn-loader');
         const span = btn.querySelector('span');
         const icon = btn.querySelector('i');
@@ -408,15 +354,15 @@ class LoginHandler {
         if (isLoading) {
             btn.disabled = true;
             btn.classList.add('loading');
-            loader.style.display = 'block';
-            span.style.opacity = '0';
-            icon.style.opacity = '0';
+            if (loader) loader.style.display = 'block';
+            if (span) span.style.opacity = '0';
+            if (icon) icon.style.opacity = '0';
         } else {
             btn.disabled = false;
             btn.classList.remove('loading');
-            loader.style.display = 'none';
-            span.style.opacity = '1';
-            icon.style.opacity = '1';
+            if (loader) loader.style.display = 'none';
+            if (span) span.style.opacity = '1';
+            if (icon) icon.style.opacity = '1';
         }
     }
 

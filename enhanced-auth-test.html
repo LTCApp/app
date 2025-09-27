@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار النظام المحدث - سوق الجملة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* تصميم خاص لصفحة الاختبار */
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .test-section h3 {
+            color: #dc2626;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-buttons {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        .test-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+        }
+        
+        .test-btn.secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        
+        .test-btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+        }
+        
+        .demo-features {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .status-updated {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .status-new {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <div class="test-header">
+                <h1>
+                    <i class="fas fa-rocket"></i>
+                    اختبار النظام المحدث
+                </h1>
+                <p>تم تحديث النظام وفقاً للمتطلبات الجديدة</p>
+            </div>
+
+            <!-- الميزات المحدثة -->
+            <div class="test-section">
+                <h3>
+                    <i class="fas fa-star"></i>
+                    التحديثات الجديدة
+                </h3>
+                <div class="demo-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>تسجيل الدخول المبسط</h4>
+                        <p>فقط رقم الموبايل أو Google</p>
+                        <span class="status-indicator status-updated">محدث</span>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h4>البحث الصوتي المحسن</h4>
+                        <p>بحث صوتي تفاعلي بمؤثرات بصرية</p>
+                        <span class="status-indicator status-new">جديد</span>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-th-large"></i>
+                        </div>
+                        <h4>أقسام تفاعلية</h4>
+                        <p>أقسام قابلة للنقر مع تأثيرات</p>
+                        <span class="status-indicator status-new">جديد</span>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h4>نظام المفضلة</h4>
+                        <p>إدارة المنتجات المفضلة</p>
+                        <span class="status-indicator status-new">جديد</span>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-screen"></i>
+                        </div>
+                        <h4>تصميم متجاوب</h4>
+                        <p>محسن للموبايل والتابلت</p>
+                        <span class="status-indicator status-updated">محدث</span>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h4>تسجيل دخول Google</h4>
+                        <p>سهولة الدخول بحساب Google</p>
+                        <span class="status-indicator status-updated">محدث</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- اختبار المصادقة -->
+            <div class="test-section">
+                <h3>
+                    <i class="fas fa-user-lock"></i>
+                    اختبار نظام المصادقة المحدث
+                </h3>
+                <div class="test-buttons">
+                    <button class="test-btn" onclick="window.location.href='login.html'">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تجربة تسجيل الدخول
+                    </button>
+                    <button class="test-btn" onclick="window.location.href='register.html'">
+                        <i class="fas fa-user-plus"></i>
+                        تجربة إنشاء حساب
+                    </button>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;">
+                    <strong>ملاحظة:</strong> تم إزالة خيار الإيميل وإبقاء فقط رقم الموبايل وGoogle كما طلبت
+                </div>
+            </div>
+
+            <!-- اختبار الصفحة الرئيسية -->
+            <div class="test-section">
+                <h3>
+                    <i class="fas fa-home"></i>
+                    اختبار الصفحة الرئيسية المحدثة
+                </h3>
+                <div class="test-buttons">
+                    <button class="test-btn" onclick="window.location.href='index.html'">
+                        <i class="fas fa-eye"></i>
+                        فتح الصفحة الرئيسية
+                    </button>
+                    <button class="test-btn secondary" onclick="testVoiceSearch()">
+                        <i class="fas fa-microphone"></i>
+                        اختبار البحث الصوتي
+                    </button>
+                    <button class="test-btn secondary" onclick="testCategories()">
+                        <i class="fas fa-th-large"></i>
+                        اختبار الأقسام
+                    </button>
+                    <button class="test-btn secondary" onclick="testFavorites()">
+                        <i class="fas fa-heart"></i>
+                        اختبار المفضلة
+                    </button>
+                </div>
+            </div>
+
+            <!-- إرشادات الاختبار -->
+            <div class="test-section">
+                <h3>
+                    <i class="fas fa-list-check"></i>
+                    إرشادات الاختبار
+                </h3>
+                <div style="background: white; padding: 20px; border-radius: 10px;">
+                    <h4>اختبار المصادقة:</h4>
+                    <ul style="margin: 10px 0; padding-right: 20px;">
+                        <li>جرب تسجيل الدخول برقم الموبايل (استخدم أي رقم للتجربة)</li>
+                        <li>جرب إنشاء حساب جديد</li>
+                        <li>اختبر زر Google (محاكاة فقط)</li>
+                    </ul>
+                    
+                    <h4>اختبار الصفحة الرئيسية:</h4>
+                    <ul style="margin: 10px 0; padding-right: 20px;">
+                        <li>اضغط على أيقونة الميكروفون لتجربة البحث الصوتي</li>
+                        <li>انقر على أي قسم من الأقسام</li>
+                        <li>اضغط على زر المفضلة في التنقل السفلي</li>
+                        <li>جرب التنقل بين الأقسام المختلفة</li>
+                    </ul>
+                    
+                    <h4>اختبار التصميم المتجاوب:</h4>
+                    <ul style="margin: 10px 0; padding-right: 20px;">
+                        <li>افتح الموقع على الموبايل أو غير حجم النافذة</li>
+                        <li>تأكد من أن جميع الأزرار سهلة الضغط</li>
+                        <li>اختبر زر "حساب جديد" المحسن</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- معلومات التحديث -->
+            <div class="test-section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    معلومات التحديث
+                </h3>
+                <div style="background: white; padding: 20px; border-radius: 10px;">
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم إزالة خيار تسجيل الدخول بالإيميل</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم الإبقاء فقط على رقم الموبايل وGoogle</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم تحسين البحث الصوتي مع مؤثرات بصرية</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم تفعيل جميع الأقسام والمفضلة</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم تحسين زر "حساب جديد" للموبايل</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i>
+                            <span>تم تحسين التصميم والاستجابة للموبايل</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testVoiceSearch() {
+            alert('لاختبار البحث الصوتي:\n1. اذهب للصفحة الرئيسية\n2. اضغط على أيقونة الميكروفون\n3. اسمح بالوصول للميكروفون\n4. تحدث بما تريد البحث عنه');
+        }
+
+        function testCategories() {
+            alert('لاختبار الأقسام:\n1. اذهب للصفحة الرئيسية\n2. انقر على أي قسم من الأقسام\n3. ستظهر منتجات القسم في نافذة منبثقة\n4. يمكنك إضافة المنتجات للسلة');
+        }
+
+        function testFavorites() {
+            alert('لاختبار المفضلة:\n1. اذهب للصفحة الرئيسية\n2. اضغط على زر "المفضلة" في التنقل السفلي\n3. ستظهر قائمة المفضلة\n4. يمكنك إضافة منتجات للمفضلة من الأقسام');
+        }
+    </script>
+</body>
+</html>

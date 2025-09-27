@@ -39,16 +39,12 @@
                 <p>انضم إلينا واستمتع بأفضل تجربة تسوق</p>
             </div>
 
-            <!-- Registration Method Tabs -->
-            <div class="method-tabs">
-                <button class="tab-btn active" data-method="phone" onclick="switchRegisterMethod('phone')">
+            <!-- Registration Method Info -->
+            <div class="register-method-info">
+                <div class="method-indicator">
                     <i class="fas fa-mobile-alt"></i>
-                    <span>رقم الموبايل</span>
-                </button>
-                <button class="tab-btn" data-method="email" onclick="switchRegisterMethod('email')">
-                    <i class="fas fa-envelope"></i>
-                    <span>البريد الإلكتروني</span>
-                </button>
+                    <span>إنشاء حساب برقم الموبايل</span>
+                </div>
             </div>
 
             <!-- Phone Registration Form -->
@@ -141,95 +137,7 @@
                 </button>
             </form>
 
-            <!-- Email Registration Form -->
-            <form id="emailRegisterForm" class="auth-form">
-                <div class="form-group">
-                    <label for="emailFullName">
-                        <i class="fas fa-user"></i>
-                        الاسم الكامل
-                    </label>
-                    <input type="text" id="emailFullName" placeholder="أدخل اسمك الكامل" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="emailRegisterAddress">
-                        <i class="fas fa-envelope"></i>
-                        البريد الإلكتروني
-                    </label>
-                    <input type="email" id="emailRegisterAddress" placeholder="example@gmail.com" required>
-                    <span class="input-hint">سنرسل لك رابط تأكيد عبر البريد</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="emailRegisterPhone">
-                        <i class="fas fa-mobile-alt"></i>
-                        رقم الموبايل (اختياري)
-                    </label>
-                    <div class="phone-input-wrapper">
-                        <select class="country-code" id="emailCountryCode">
-                            <option value="+20" selected>🇪🇬 +20</option>
-                            <option value="+966">🇸🇦 +966</option>
-                            <option value="+971">🇦🇪 +971</option>
-                            <option value="+965">🇰🇼 +965</option>
-                            <option value="+974">🇶🇦 +974</option>
-                            <option value="+973">🇧🇭 +973</option>
-                            <option value="+968">🇴🇲 +968</option>
-                            <option value="+962">🇯🇴 +962</option>
-                            <option value="+961">🇱🇧 +961</option>
-                            <option value="+1">🇺🇸 +1</option>
-                        </select>
-                        <input type="tel" id="emailRegisterPhone" class="phone-input" placeholder="1001470449">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="emailRegisterPassword">
-                        <i class="fas fa-lock"></i>
-                        كلمة المرور
-                    </label>
-                    <div class="password-wrapper">
-                        <input type="password" id="emailRegisterPassword" placeholder="أدخل كلمة المرور" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('emailRegisterPassword')">
-                            <i class="far fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-bar">
-                            <div class="strength-fill" id="emailStrengthFill"></div>
-                        </div>
-                        <span class="strength-text" id="emailStrengthText">ضعيفة</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="emailConfirmPassword">
-                        <i class="fas fa-lock-open"></i>
-                        تأكيد كلمة المرور
-                    </label>
-                    <div class="password-wrapper">
-                        <input type="password" id="emailConfirmPassword" placeholder="أعد كتابة كلمة المرور" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('emailConfirmPassword')">
-                            <i class="far fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group terms-group">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="emailAcceptTerms" required>
-                        <span class="checkmark"></span>
-                        <span class="checkbox-label">
-                            أوافق على <a href="#" onclick="showTerms(); return false;">الشروط والأحكام</a> و <a href="#" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
-                        </span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-btn register-btn">
-                    <i class="fas fa-user-plus"></i>
-                    <span>إنشاء حساب</span>
-                    <div class="btn-loader" style="display: none;"></div>
-                </button>
-            </form>
 
             <!-- OTP Verification Section -->
             <div id="otpRegisterSection" class="otp-section" style="display: none;">
@@ -277,21 +185,13 @@
             <!-- Social Register -->
             <div class="social-login">
                 <div class="divider">
-                    <span>أو التسجيل بواسطة</span>
+                    <span>أو إنشاء حساب بـ Google</span>
                 </div>
 
                 <div class="social-buttons">
                     <button class="social-btn google-btn" onclick="registerWithGoogle()">
                         <i class="fab fa-google"></i>
-                        <span>Google</span>
-                    </button>
-                    <button class="social-btn facebook-btn" onclick="registerWithFacebook()">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>Facebook</span>
-                    </button>
-                    <button class="social-btn apple-btn" onclick="registerWithApple()">
-                        <i class="fab fa-apple"></i>
-                        <span>Apple</span>
+                        <span>إنشاء حساب بـ Google</span>
                     </button>
                 </div>
             </div>
