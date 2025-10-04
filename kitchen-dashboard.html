@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المطبخ - تجهيز الطلبات</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="kitchen-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="kitchen-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <span>لوحة تحكم المطبخ</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="current-time" id="current-time"></div>
+                <div class="active-orders-summary">
+                    <span>الطلبات النشطة: <strong id="total-active-orders">0</strong></span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="kitchen-user-name">موظف المطبخ</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <button class="logout-btn" onclick="kitchenLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    خروج
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="kitchen-main">
+        <!-- Order Status Navigation -->
+        <div class="order-status-nav">
+            <button class="status-nav-btn active" data-status="new">
+                <i class="fas fa-bell"></i>
+                <span>طلبات جديدة</span>
+                <span class="badge" id="new-orders-count">0</span>
+            </button>
+            
+            <button class="status-nav-btn" data-status="preparing">
+                <i class="fas fa-box-open"></i>
+                <span>يتم تجهيزها</span>
+                <span class="badge" id="preparing-orders-count">0</span>
+            </button>
+            
+            <button class="status-nav-btn" data-status="ready">
+                <i class="fas fa-check-circle"></i>
+                <span>جاهزة للتسليم</span>
+                <span class="badge" id="ready-orders-count">0</span>
+            </button>
+            
+            <button class="status-nav-btn" data-status="completed">
+                <i class="fas fa-archive"></i>
+                <span>مكتملة</span>
+                <span class="badge" id="completed-orders-count">0</span>
+            </button>
+        </div>
+
+        <!-- Orders Container -->
+        <div class="orders-container">
+            <!-- New Orders Section -->
+            <section id="new-orders-section" class="orders-section active">
+                <div class="section-header">
+                    <h2>طلبات جديدة</h2>
+                    <div class="section-actions">
+                        <button class="btn-refresh" onclick="refreshOrders()">
+                            <i class="fas fa-sync-alt"></i>
+                            تحديث
+                        </button>
+                        <button class="btn-filter" onclick="toggleOrderFilters()">
+                            <i class="fas fa-filter"></i>
+                            تصفية
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="orders-grid" id="new-orders-grid">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Preparing Orders Section -->
+            <section id="preparing-orders-section" class="orders-section">
+                <div class="section-header">
+                    <h2>طلبات يتم تجهيزها</h2>
+                </div>
+                
+                <div class="orders-grid" id="preparing-orders-grid">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Ready Orders Section -->
+            <section id="ready-orders-section" class="orders-section">
+                <div class="section-header">
+                    <h2>طلبات جاهزة للتسليم</h2>
+                </div>
+                
+                <div class="orders-grid" id="ready-orders-grid">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Completed Orders Section -->
+            <section id="completed-orders-section" class="orders-section">
+                <div class="section-header">
+                    <h2>طلبات مكتملة</h2>
+                </div>
+                
+                <div class="orders-grid" id="completed-orders-grid">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Order Details Modal -->
+    <div id="order-details-modal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>تفاصيل الطلب</h3>
+                <button class="close-modal" onclick="closeOrderDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="order-details-content">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Action Modal -->
+    <div id="product-action-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إجراءات المنتج</h3>
+                <button class="close-modal" onclick="closeProductActionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="product-info" id="current-product-info">
+                    <!-- Product info will be populated -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-success" onclick="markProductReady()">
+                        <i class="fas fa-check"></i>
+                        جاهز
+                    </button>
+                    
+                    <button class="btn-warning" onclick="markProductOutOfStock()">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        غير متاح
+                    </button>
+                    
+                    <button class="btn-info" onclick="requestReplacement()">
+                        <i class="fas fa-exchange-alt"></i>
+                        استبدال
+                    </button>
+                    
+                    <button class="btn-danger" onclick="cancelProduct()">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                </div>
+                
+                <div class="notes-section">
+                    <label>ملاحظات للعميل:</label>
+                    <textarea id="customer-notes" placeholder="اكتب ملاحظة للعميل..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Notification Modal -->
+    <div id="customer-notification-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إشعار العميل</h3>
+                <button class="close-modal" onclick="closeCustomerNotificationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>سيتم إرسال إشعار للعميل بالتغييرات</p>
+                <div class="notification-message">
+                    <textarea id="notification-message" placeholder="رسالة إضافية (اختياري)..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-primary" onclick="sendCustomerNotification()">إرسال الإشعار</button>
+                    <button class="btn-secondary" onclick="closeCustomerNotificationModal()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Filters Modal -->
+    <div id="order-filters-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تصفية الطلبات</h3>
+                <button class="close-modal" onclick="closeOrderFiltersModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="filter-group">
+                    <label>ترتيب حسب:</label>
+                    <select id="sort-orders">
+                        <option value="time-desc">الوقت (الأحدث أولاً)</option>
+                        <option value="time-asc">الوقت (الأقدم أولاً)</option>
+                        <option value="priority">الأولوية</option>
+                        <option value="items-count">عدد الأصناف</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>نوع الطلب:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="dine-in" checked> تناول في المطعم</label>
+                        <label><input type="checkbox" value="takeaway" checked> استلام</label>
+                        <label><input type="checkbox" value="delivery" checked> توصيل</label>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-primary" onclick="applyOrderFilters()">تطبيق التصفية</button>
+                    <button class="btn-secondary" onclick="resetOrderFilters()">إعادة تعيين</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Notification -->
+    <audio id="new-order-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwgBDWDzfPJdi4DJ2nA7+KJPQ0VaLXx3J1TGw1PqOHwrEYaDF6x5O+bSAQDAEhx"></source>
+    </audio>
+
+    <!-- Scripts -->
+    <script src="kitchen-functions.js"></script>
+    <script>
+        // Initialize kitchen dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            checkKitchenAuthentication();
+            
+            // Initialize dashboard
+            initializeKitchenDashboard();
+            
+            // Set up event listeners
+            setupKitchenEventListeners();
+            
+            // Start real-time updates
+            startRealTimeUpdates();
+        });
+        
+        function checkKitchenAuthentication() {
+            const kitchenUser = localStorage.getItem('kitchenUser');
+            const loginTime = localStorage.getItem('kitchenLoginTime');
+            
+            if (!kitchenUser || !loginTime) {
+                window.location.href = 'kitchen-login.html';
+                return;
+            }
+            
+            // Check if login is still valid (24 hours)
+            const loginDate = new Date(loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginDate) / (1000 * 60 * 60);
+            
+            if (hoursDiff >= 24) {
+                kitchenLogout();
+                return;
+            }
+            
+            // Update user display
+            document.getElementById('kitchen-user-name').textContent = kitchenUser;
+        }
+        
+        function kitchenLogout() {
+            localStorage.removeItem('kitchenUser');
+            localStorage.removeItem('kitchenLoginTime');
+            window.location.href = 'kitchen-login.html';
+        }
+        
+        function setupKitchenEventListeners() {
+            // Status navigation buttons
+            document.querySelectorAll('.status-nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const status = this.getAttribute('data-status');
+                    switchOrderStatus(status);
+                });
+            });
+            
+            // Update current time
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+        }
+        
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('ar-EG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        function switchOrderStatus(status) {
+            // Update active button
+            document.querySelectorAll('.status-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-status="${status}"]`).classList.add('active');
+            
+            // Update active section
+            document.querySelectorAll('.orders-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${status}-orders-section`).classList.add('active');
+            
+            // Load orders for this status
+            loadOrdersByStatus(status);
+        }
+        
+        function startRealTimeUpdates() {
+            // Check for new orders every 30 seconds
+            setInterval(function() {
+                refreshOrders();
+            }, 30000);
+        }
+    </script>
+</body>
+</html>
