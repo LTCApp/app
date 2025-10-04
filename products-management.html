@@ -1,0 +1,350 @@
+<!-- Products Management Tab Content -->
+<section id="products-tab" class="tab-content">
+    <div class="products-header">
+        <div class="header-top">
+            <h2>إدارة المنتجات</h2>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openAddProductModal()">
+                    <i class="fas fa-plus"></i>
+                    إضافة منتج
+                </button>
+                <button class="btn-secondary" onclick="openBulkActionsModal()">
+                    <i class="fas fa-tasks"></i>
+                    تعديل المنتجات
+                </button>
+                <button class="btn-secondary" onclick="openImportModal()">
+                    <i class="fas fa-file-import"></i>
+                    استيراد
+                </button>
+                <button class="btn-secondary" onclick="exportProducts()">
+                    <i class="fas fa-file-export"></i>
+                    تصدير
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>الصنف</label>
+                <select id="categoryFilter" onchange="filterProducts()">
+                    <option value="">الكل</option>
+                    <option value="فواكه">فواكه</option>
+                    <option value="خضروات">خضروات</option>
+                    <option value="لحوم">لحوم</option>
+                    <option value="أسماك">أسماك</option>
+                    <option value="مخبوزات">مخبوزات</option>
+                    <option value="مشروبات">مشروبات</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>العلامة التجارية</label>
+                <select id="brandFilter" onchange="filterProducts()">
+                    <option value="">الكل</option>
+                    <option value="محلي">محلي</option>
+                    <option value="مستورد">مستورد</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>الحالة</label>
+                <select id="statusFilter" onchange="filterProducts()">
+                    <option value="active">نشط</option>
+                    <option value="inactive">غير نشط</option>
+                    <option value="all">الكل</option>
+                </select>
+            </div>
+
+            <div class="filter-group search-group">
+                <label>البحث</label>
+                <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الباركود..." onkeyup="filterProducts()">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <!-- View Options -->
+        <div class="view-options">
+            <div class="view-toggle">
+                <button class="view-btn" data-view="grid" onclick="changeView('grid')">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn active" data-view="list" onclick="changeView('list')">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+            <div class="bulk-actions">
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                <label for="selectAll">اختر الكل</label>
+                <button class="btn-small" onclick="bulkActivate()" id="bulkActivateBtn" style="display:none;">
+                    <i class="fas fa-check"></i> تنشيط المحدد
+                </button>
+                <button class="btn-small" onclick="bulkDeactivate()" id="bulkDeactivateBtn" style="display:none;">
+                    <i class="fas fa-times"></i> إلغاء تنشيط المحدد
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid/List -->
+    <div id="productsContainer" class="products-list">
+        <!-- Products will be loaded here dynamically -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button onclick="previousPage()" id="prevBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <span id="pageInfo">صفحة 1 من 1</span>
+        <button onclick="nextPage()" id="nextBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+</section>
+
+<!-- Add/Edit Product Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3 id="modalTitle">إضافة منتج جديد</h3>
+            <button class="close-btn" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم المنتج *</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الباركود *</label>
+                        <input type="text" id="productBarcode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>السعر *</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>وحدة القياس</label>
+                        <select id="productUnit">
+                            <option value="قطعة">قطعة</option>
+                            <option value="كيلو">كيلو</option>
+                            <option value="جرام">جرام</option>
+                            <option value="لتر">لتر</option>
+                            <option value="علبة">علبة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الصنف *</label>
+                        <select id="productCategory" required>
+                            <option value="">اختر الصنف</option>
+                            <option value="فواكه">فواكه</option>
+                            <option value="خضروات">خضروات</option>
+                            <option value="لحوم">لحوم</option>
+                            <option value="أسماك">أسماك</option>
+                            <option value="مخبوزات">مخبوزات</option>
+                            <option value="مشروبات">مشروبات</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>العلامة التجارية</label>
+                        <input type="text" id="productBrand">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="form-group image-upload-section">
+                    <label>صورة المنتج</label>
+                    <div class="image-upload-options">
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-upload"></i>
+                                رفع من الجهاز
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="openAIImageSearch()">
+                                <i class="fas fa-robot"></i>
+                                بحث بالذكاء الاصطناعي
+                            </button>
+                        </div>
+                        <div class="upload-option">
+                            <input type="text" id="imageUrl" placeholder="أو أدخل رابط الصورة">
+                            <button type="button" class="btn-small" onclick="loadImageFromUrl()">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="imagePreview" class="image-preview">
+                        <img id="previewImg" src="" alt="معاينة الصورة" style="display:none">
+                        <button type="button" class="remove-image" onclick="removeImage()" style="display:none">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productActive" checked>
+                        <span>منتج نشط</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeProductModal()">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- AI Image Search Modal -->
+<div id="aiImageModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3>البحث عن صورة بالذكاء الاصطناعي</h3>
+            <button class="close-btn" onclick="closeAIImageModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="ai-search-section">
+                <div class="search-input-group">
+                    <input type="text" id="aiSearchQuery" placeholder="اكتب وصف المنتج... مثال: تفاح أحمر طازج">
+                    <button class="btn-primary" onclick="searchAIImages()">
+                        <i class="fas fa-search"></i>
+                        بحث
+                    </button>
+                </div>
+                <div id="aiImagesResults" class="ai-images-grid">
+                    <!-- AI generated images will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Actions Modal -->
+<div id="bulkActionsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تعديل المنتجات</h3>
+            <button class="close-btn" onclick="closeBulkActionsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="bulk-actions-tabs">
+                <button class="tab-btn active" onclick="switchBulkTab('barcodes')">
+                    <i class="fas fa-barcode"></i>
+                    تنشيط/إلغاء تنشيط
+                </button>
+                <button class="tab-btn" onclick="switchBulkTab('prices')">
+                    <i class="fas fa-dollar-sign"></i>
+                    تعديل الأسعار
+                </button>
+            </div>
+
+            <!-- Barcodes Tab -->
+            <div id="barcodesTab" class="bulk-tab-content active">
+                <div class="barcodes-input-section">
+                    <label>أدخل الباركودات (كل باركود في سطر)</label>
+                    <textarea id="barcodesInput" rows="10" placeholder="0055&#10;0079&#10;0082"></textarea>
+                    <div class="barcode-counter">
+                        <span id="barcodeCount">0</span> باركود
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-success" onclick="bulkActivateBarcodes()">
+                        <i class="fas fa-check"></i>
+                        تنشيط المنتجات
+                    </button>
+                    <button class="btn-danger" onclick="bulkDeactivateBarcodes()">
+                        <i class="fas fa-times"></i>
+                        إلغاء تنشيط المنتجات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prices Tab -->
+            <div id="pricesTab" class="bulk-tab-content">
+                <div class="prices-input-section">
+                    <label>أدخل الباركودات والأسعار (باركود,سعر في كل سطر)</label>
+                    <textarea id="pricesInput" rows="10" placeholder="0055,25.50&#10;0079,30.00&#10;0082,15.75"></textarea>
+                    <div class="price-counter">
+                        <span id="priceCount">0</span> منتج
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-primary" onclick="bulkUpdatePrices()">
+                        <i class="fas fa-save"></i>
+                        تحديث الأسعار
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>استيراد المنتجات من Excel</h3>
+            <button class="close-btn" onclick="closeImportModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="import-section">
+                <div class="import-instructions">
+                    <h4>تعليمات الاستيراد:</h4>
+                    <ul>
+                        <li>يجب أن يحتوي الملف على الأعمدة التالية: الاسم، الباركود، السعر، الصنف</li>
+                        <li>الأعمدة الاختيارية: العلامة التجارية، الوصف، الوحدة، الحالة، رابط الصورة</li>
+                        <li>استخدم القالب المرفق لضمان التنسيق الصحيح</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="downloadTemplate()">
+                        <i class="fas fa-download"></i>
+                        تحميل القالب
+                    </button>
+                </div>
+                <div class="import-upload">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>اسحب وأفلت ملف Excel هنا</p>
+                        <p>أو</p>
+                        <button class="btn-primary" onclick="document.getElementById('excelUpload').click()">
+                            اختر ملف
+                        </button>
+                        <input type="file" id="excelUpload" accept=".xlsx,.xls" style="display:none" onchange="handleExcelUpload(event)">
+                    </div>
+                    <div id="importProgress" style="display:none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="importProgressFill"></div>
+                        </div>
+                        <p id="importStatus">جاري الاستيراد...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

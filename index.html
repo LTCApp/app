@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="سوبر ماركت - أفضل الأسعار والعروض على جميع المنتجات">
+    <meta name="theme-color" content="#E53935">
+    <title>سوبر ماركت - التسوق الذكي</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="app-header">
+        <div class="header-top">
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <div class="logo">
+                <span class="logo-icon">🛒</span>
+                <span>سوبر ماركت</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-button" onclick="toggleNotifications()">
+                    🔔
+                    <span class="badge">3</span>
+                </button>
+                <button class="icon-button" onclick="viewCart()">
+                    🛍️
+                    <span class="badge" id="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- شريط البحث -->
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="ابحث عن المنتجات..." id="searchInput">
+            <span class="search-icon">🔍</span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- البانر الترويجي -->
+        <section class="promo-banner fade-in">
+            <div class="banner-slide">
+                <h2>🎉 عروض خاصة اليوم</h2>
+                <p>خصم يصل إلى 50% على منتجات مختارة</p>
+                <button class="banner-button ripple" onclick="showDeals()">تسوق الآن</button>
+            </div>
+        </section>
+
+        <!-- الفئات -->
+        <section class="categories-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">الفئات</h2>
+                <a href="#" class="see-all">عرض الكل ←</a>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card ripple" onclick="filterByCategory('fruits')">
+                    <div class="category-icon">🍎</div>
+                    <div class="category-name">فواكه</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('vegetables')">
+                    <div class="category-icon">🥬</div>
+                    <div class="category-name">خضروات</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('dairy')">
+                    <div class="category-icon">🥛</div>
+                    <div class="category-name">ألبان</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('meat')">
+                    <div class="category-icon">🥩</div>
+                    <div class="category-name">لحوم</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('bakery')">
+                    <div class="category-icon">🍞</div>
+                    <div class="category-name">مخبوزات</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('beverages')">
+                    <div class="category-icon">🥤</div>
+                    <div class="category-name">مشروبات</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('snacks')">
+                    <div class="category-icon">🍿</div>
+                    <div class="category-name">وجبات خفيفة</div>
+                </div>
+                <div class="category-card ripple" onclick="filterByCategory('frozen')">
+                    <div class="category-icon">🧊</div>
+                    <div class="category-name">مجمدات</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- العروض الخاصة -->
+        <section class="deals-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">⚡ عروض محدودة</h2>
+                <a href="#" class="see-all">عرض الكل ←</a>
+            </div>
+            <div class="deals-grid">
+                <div class="deal-card">
+                    <div class="deal-header">
+                        <div class="deal-title">عرض اليوم</div>
+                        <div class="deal-timer">⏰ 5 ساعات متبقية</div>
+                    </div>
+                    <div class="deal-description">
+                        اشتري 2 واحصل على الثالث مجاناً على جميع منتجات الألبان
+                    </div>
+                    <button class="deal-button ripple" onclick="showDealProducts('dairy')">تسوق الآن</button>
+                </div>
+                <div class="deal-card">
+                    <div class="deal-header">
+                        <div class="deal-title">عرض الأسبوع</div>
+                        <div class="deal-timer">⏰ 3 أيام متبقية</div>
+                    </div>
+                    <div class="deal-description">
+                        خصم 40% على جميع الفواكه والخضروات الطازجة
+                    </div>
+                    <button class="deal-button ripple" onclick="showDealProducts('fresh')">تسوق الآن</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- المنتجات المميزة -->
+        <section class="products-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">⭐ منتجات مميزة</h2>
+                <a href="#" class="see-all">عرض الكل ←</a>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- المنتج 1 -->
+                <div class="product-card" data-category="fruits">
+                    <div class="product-image">🍎</div>
+                    <span class="product-badge">خصم 25%</span>
+                    <div class="product-info">
+                        <div class="product-name">تفاح أحمر طازج</div>
+                        <div class="product-weight">1 كجم</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">15 ج.م</span>
+                                <span class="old-price">20 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('تفاح أحمر', 15)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 2 -->
+                <div class="product-card" data-category="vegetables">
+                    <div class="product-image">🥕</div>
+                    <span class="product-badge">جديد</span>
+                    <div class="product-info">
+                        <div class="product-name">جزر عضوي طازج</div>
+                        <div class="product-weight">500 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">8 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('جزر عضوي', 8)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 3 -->
+                <div class="product-card" data-category="dairy">
+                    <div class="product-image">🥛</div>
+                    <span class="product-badge">عرض 2+1</span>
+                    <div class="product-info">
+                        <div class="product-name">حليب كامل الدسم</div>
+                        <div class="product-weight">1 لتر</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">12 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('حليب كامل الدسم', 12)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 4 -->
+                <div class="product-card" data-category="meat">
+                    <div class="product-image">🥩</div>
+                    <div class="product-info">
+                        <div class="product-name">لحم بقري طازج</div>
+                        <div class="product-weight">1 كجم</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">65 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('لحم بقري', 65)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 5 -->
+                <div class="product-card" data-category="bakery">
+                    <div class="product-image">🍞</div>
+                    <span class="product-badge">طازج</span>
+                    <div class="product-info">
+                        <div class="product-name">خبز أبيض طازج</div>
+                        <div class="product-weight">500 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">5 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('خبز أبيض', 5)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 6 -->
+                <div class="product-card" data-category="beverages">
+                    <div class="product-image">🥤</div>
+                    <span class="product-badge">خصم 15%</span>
+                    <div class="product-info">
+                        <div class="product-name">عصير برتقال طبيعي</div>
+                        <div class="product-weight">1 لتر</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">17 ج.م</span>
+                                <span class="old-price">20 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('عصير برتقال', 17)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 7 -->
+                <div class="product-card" data-category="fruits">
+                    <div class="product-image">🍌</div>
+                    <div class="product-info">
+                        <div class="product-name">موز طازج</div>
+                        <div class="product-weight">1 كجم</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">10 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('موز', 10)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 8 -->
+                <div class="product-card" data-category="vegetables">
+                    <div class="product-image">🥬</div>
+                    <span class="product-badge">عضوي</span>
+                    <div class="product-info">
+                        <div class="product-name">خس طازج</div>
+                        <div class="product-weight">حزمة واحدة</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">6 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('خس', 6)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 9 -->
+                <div class="product-card" data-category="dairy">
+                    <div class="product-image">🧀</div>
+                    <span class="product-badge">خصم 30%</span>
+                    <div class="product-info">
+                        <div class="product-name">جبنة شيدر</div>
+                        <div class="product-weight">250 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">21 ج.م</span>
+                                <span class="old-price">30 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('جبنة شيدر', 21)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 10 -->
+                <div class="product-card" data-category="snacks">
+                    <div class="product-image">🍿</div>
+                    <div class="product-info">
+                        <div class="product-name">فشار بالزبدة</div>
+                        <div class="product-weight">200 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">9 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('فشار', 9)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 11 -->
+                <div class="product-card" data-category="frozen">
+                    <div class="product-image">🧊</div>
+                    <span class="product-badge">جديد</span>
+                    <div class="product-info">
+                        <div class="product-name">خضار مجمدة مشكلة</div>
+                        <div class="product-weight">1 كجم</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">18 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('خضار مجمدة', 18)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنتج 12 -->
+                <div class="product-card" data-category="fruits">
+                    <div class="product-image">🍊</div>
+                    <span class="product-badge">خصم 20%</span>
+                    <div class="product-info">
+                        <div class="product-name">برتقال طازج</div>
+                        <div class="product-weight">1 كجم</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">12 ج.م</span>
+                                <span class="old-price">15 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('برتقال', 12)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- منتجات إضافية -->
+        <section class="products-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">🔥 الأكثر مبيعاً</h2>
+                <a href="#" class="see-all">عرض الكل ←</a>
+            </div>
+            <div class="products-grid">
+                <div class="product-card" data-category="beverages">
+                    <div class="product-image">☕</div>
+                    <div class="product-info">
+                        <div class="product-name">قهوة عربية فاخرة</div>
+                        <div class="product-weight">250 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">35 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('قهوة عربية', 35)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="snacks">
+                    <div class="product-image">🍫</div>
+                    <span class="product-badge">خصم 10%</span>
+                    <div class="product-info">
+                        <div class="product-name">شوكولاتة داكنة</div>
+                        <div class="product-weight">100 جرام</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">18 ج.م</span>
+                                <span class="old-price">20 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('شوكولاتة', 18)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="bakery">
+                    <div class="product-image">🥐</div>
+                    <span class="product-badge">طازج</span>
+                    <div class="product-info">
+                        <div class="product-name">كرواسون بالزبدة</div>
+                        <div class="product-weight">6 قطع</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">22 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('كرواسون', 22)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="dairy">
+                    <div class="product-image">🥚</div>
+                    <div class="product-info">
+                        <div class="product-name">بيض طازج</div>
+                        <div class="product-weight">30 بيضة</div>
+                        <div class="product-footer">
+                            <div>
+                                <span class="product-price">25 ج.م</span>
+                            </div>
+                            <button class="add-to-cart-btn ripple" onclick="addToCart('بيض', 25)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- سلة التسوق العائمة -->
+    <div class="floating-cart" onclick="viewCart()" id="floatingCart" style="display: none;">
+        <span class="cart-count" id="floatingCartCount">0</span>
+        <span class="cart-total" id="floatingCartTotal">0 ج.م</span>
+    </div>
+
+    <!-- القائمة السفلية -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">الرئيسية</span>
+        </a>
+        <a href="account.html" class="nav-item">
+            <span class="nav-icon">🔍</span>
+            <span class="nav-label">البحث</span>
+        </a>
+        <a href="account.html" class="nav-item">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-label">العروض</span>
+        </a>
+        <a href="account.html" class="nav-item">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-label">المفضلة</span>
+        </a>
+        <a href="account.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">حسابي</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
