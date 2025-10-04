@@ -1,0 +1,509 @@
+{
+  "systemInfo": {
+    "name": "Smart Kitchen Management System",
+    "version": "2.0.0-pro",
+    "build": "20250105",
+    "type": "professional-supermarket",
+    "license": "commercial",
+    "author": "MiniMax Agent",
+    "lastUpdate": "2025-01-05T02:03:31Z"
+  },
+  
+  "features": {
+    "aiPowered": true,
+    "voiceCommands": true,
+    "qrScanner": true,
+    "realtimeAnalytics": true,
+    "multiStation": true,
+    "advancedNotifications": true,
+    "offlineMode": true,
+    "multiLanguage": true,
+    "holographicUI": true,
+    "predictiveAnalytics": true
+  },
+  
+  "stations": {
+    "chicken": {
+      "id": "STN001",
+      "name": "محطة الدجاج",
+      "nameEn": "Chicken Station",
+      "icon": "fas fa-drumstick-bite",
+      "color": "#e74c3c",
+      "capacity": 50,
+      "equipment": [
+        "oven-industrial-001",
+        "fryer-deep-001",
+        "prep-table-001",
+        "refrigerator-001"
+      ],
+      "specialties": [
+        "grilled-chicken",
+        "fried-chicken",
+        "chicken-tenders",
+        "chicken-wings"
+      ],
+      "averageTime": 12,
+      "priority": 1
+    },
+    
+    "fish": {
+      "id": "STN002",
+      "name": "محطة الأسماك",
+      "nameEn": "Fish Station",
+      "icon": "fas fa-fish",
+      "color": "#3498db",
+      "capacity": 30,
+      "equipment": [
+        "grill-001",
+        "steamer-001",
+        "prep-table-002",
+        "ice-display-001"
+      ],
+      "specialties": [
+        "grilled-fish",
+        "fried-fish",
+        "fish-fillet",
+        "seafood-mix"
+      ],
+      "averageTime": 15,
+      "priority": 2
+    },
+    
+    "bakery": {
+      "id": "STN003",
+      "name": "المخبز",
+      "nameEn": "Bakery Station",
+      "icon": "fas fa-bread-slice",
+      "color": "#f39c12",
+      "capacity": 40,
+      "equipment": [
+        "oven-bakery-001",
+        "mixer-industrial-001",
+        "proofing-cabinet-001",
+        "display-case-001"
+      ],
+      "specialties": [
+        "fresh-bread",
+        "croissants",
+        "pastries",
+        "cakes"
+      ],
+      "averageTime": 25,
+      "priority": 3
+    },
+    
+    "salads": {
+      "id": "STN004",
+      "name": "السلطات",
+      "nameEn": "Salads Station",
+      "icon": "fas fa-leaf",
+      "color": "#27ae60",
+      "capacity": 60,
+      "equipment": [
+        "prep-table-003",
+        "refrigerator-002",
+        "slicer-001",
+        "washing-station-001"
+      ],
+      "specialties": [
+        "green-salad",
+        "caesar-salad",
+        "fruit-salad",
+        "mixed-vegetables"
+      ],
+      "averageTime": 8,
+      "priority": 4
+    },
+    
+    "desserts": {
+      "id": "STN005",
+      "name": "الحلويات",
+      "nameEn": "Desserts Station",
+      "icon": "fas fa-birthday-cake",
+      "color": "#9b59b6",
+      "capacity": 35,
+      "equipment": [
+        "oven-pastry-001",
+        "mixer-001",
+        "display-cooler-001",
+        "decoration-station-001"
+      ],
+      "specialties": [
+        "cakes",
+        "ice-cream",
+        "puddings",
+        "arabic-sweets"
+      ],
+      "averageTime": 20,
+      "priority": 5
+    },
+    
+    "main": {
+      "id": "STN006",
+      "name": "المحطة الرئيسية",
+      "nameEn": "Main Station",
+      "icon": "fas fa-utensils",
+      "color": "#2c3e50",
+      "capacity": 100,
+      "equipment": [
+        "pos-system-001",
+        "order-display-001",
+        "coordination-center-001"
+      ],
+      "specialties": [
+        "order-coordination",
+        "quality-control",
+        "final-assembly",
+        "customer-service"
+      ],
+      "averageTime": 5,
+      "priority": 0
+    }
+  },
+  
+  "userRoles": {
+    "admin": {
+      "name": "مدير عام",
+      "nameEn": "System Administrator",
+      "permissions": ["all"],
+      "accessLevel": 10,
+      "stations": ["all"],
+      "canManage": ["users", "stations", "settings", "reports", "analytics"]
+    },
+    
+    "manager": {
+      "name": "مدير مطبخ",
+      "nameEn": "Kitchen Manager", 
+      "permissions": ["manage_orders", "manage_staff", "view_analytics", "manage_inventory"],
+      "accessLevel": 8,
+      "stations": ["all"],
+      "canManage": ["orders", "staff", "inventory", "quality"]
+    },
+    
+    "chef": {
+      "name": "شيف رئيسي",
+      "nameEn": "Head Chef",
+      "permissions": ["manage_orders", "view_analytics", "manage_station"],
+      "accessLevel": 6,
+      "stations": ["assigned"],
+      "canManage": ["station_orders", "station_inventory", "station_quality"]
+    },
+    
+    "supervisor": {
+      "name": "مشرف",
+      "nameEn": "Supervisor",
+      "permissions": ["view_orders", "manage_quality", "view_analytics"],
+      "accessLevel": 5,
+      "stations": ["assigned"],
+      "canManage": ["quality_control", "staff_coordination"]
+    },
+    
+    "staff": {
+      "name": "موظف",
+      "nameEn": "Staff Member",
+      "permissions": ["view_orders", "update_status"],
+      "accessLevel": 3,
+      "stations": ["assigned"],
+      "canManage": ["order_preparation"]
+    },
+    
+    "prep": {
+      "name": "معد طعام",
+      "nameEn": "Food Prep",
+      "permissions": ["view_orders", "update_status", "manage_prep"],
+      "accessLevel": 4,
+      "stations": ["assigned"],
+      "canManage": ["food_preparation", "inventory_prep"]
+    }
+  },
+  
+  "notifications": {
+    "sound": {
+      "enabled": true,
+      "volume": 0.7,
+      "types": {
+        "newOrder": {
+          "frequency": 800,
+          "duration": 0.5,
+          "repeat": 1
+        },
+        "urgent": {
+          "frequency": 1000,
+          "duration": 0.3,
+          "repeat": 3
+        },
+        "complete": {
+          "frequency": 600,
+          "duration": 0.4,
+          "repeat": 1
+        },
+        "error": {
+          "frequency": 400,
+          "duration": 0.6,
+          "repeat": 2
+        }
+      }
+    },
+    
+    "visual": {
+      "enabled": true,
+      "duration": 5000,
+      "animations": true,
+      "colors": {
+        "info": "#3498db",
+        "success": "#27ae60",
+        "warning": "#f39c12",
+        "error": "#e74c3c"
+      }
+    },
+    
+    "vibration": {
+      "enabled": true,
+      "patterns": {
+        "newOrder": [200, 100, 200],
+        "urgent": [400, 200, 400, 200, 400],
+        "complete": [300],
+        "error": [500, 300, 500]
+      }
+    }
+  },
+  
+  "performance": {
+    "autoRefresh": {
+      "enabled": true,
+      "interval": 30000,
+      "backgroundOnly": false
+    },
+    
+    "caching": {
+      "enabled": true,
+      "maxAge": 300000,
+      "strategies": ["memory", "localStorage", "indexedDB"]
+    },
+    
+    "optimization": {
+      "lazyLoading": true,
+      "imageCompression": true,
+      "gzipCompression": true,
+      "minification": true
+    },
+    
+    "limits": {
+      "maxOrders": 1000,
+      "maxLogs": 100,
+      "maxNotifications": 50,
+      "sessionTimeout": 43200000
+    }
+  },
+  
+  "ai": {
+    "enabled": true,
+    "features": {
+      "demandPrediction": true,
+      "optimizeScheduling": true,
+      "qualityAnalysis": true,
+      "costOptimization": true,
+      "staffOptimization": true
+    },
+    
+    "settings": {
+      "learningRate": 0.01,
+      "analysisInterval": 3600000,
+      "predictionHorizon": 86400000,
+      "confidenceThreshold": 0.8
+    }
+  },
+  
+  "analytics": {
+    "realtime": {
+      "enabled": true,
+      "updateInterval": 5000,
+      "metrics": [
+        "activeOrders",
+        "completionRate",
+        "averageTime",
+        "efficiency",
+        "customerSatisfaction"
+      ]
+    },
+    
+    "historical": {
+      "enabled": true,
+      "retentionDays": 365,
+      "aggregation": ["hourly", "daily", "weekly", "monthly"],
+      "export": ["json", "csv", "pdf"]
+    },
+    
+    "predictive": {
+      "enabled": true,
+      "algorithms": ["linear", "polynomial", "neural"],
+      "accuracy": 0.85,
+      "horizon": ["1h", "4h", "24h", "7d"]
+    }
+  },
+  
+  "security": {
+    "authentication": {
+      "method": "password",
+      "minPasswordLength": 6,
+      "sessionTimeout": 43200000,
+      "maxFailedAttempts": 3,
+      "lockoutDuration": 900000
+    },
+    
+    "encryption": {
+      "enabled": true,
+      "algorithm": "AES-256",
+      "keyRotation": 2592000000
+    },
+    
+    "audit": {
+      "enabled": true,
+      "logActions": true,
+      "retentionDays": 90,
+      "alertOnSuspicious": true
+    }
+  },
+  
+  "integration": {
+    "pos": {
+      "enabled": true,
+      "protocol": "REST",
+      "endpoint": "/api/pos",
+      "syncInterval": 10000
+    },
+    
+    "inventory": {
+      "enabled": true,
+      "autoUpdate": true,
+      "thresholds": {
+        "low": 10,
+        "critical": 5,
+        "reorder": 20
+      }
+    },
+    
+    "delivery": {
+      "enabled": true,
+      "providers": ["internal", "external"],
+      "tracking": true,
+      "notifications": true
+    }
+  },
+  
+  "localization": {
+    "defaultLanguage": "ar",
+    "supportedLanguages": ["ar", "en", "fr"],
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "HH:mm:ss",
+    "currency": "SAR",
+    "timezone": "Asia/Riyadh"
+  },
+  
+  "ui": {
+    "theme": "dark",
+    "animations": {
+      "enabled": true,
+      "duration": 300,
+      "easing": "ease-in-out"
+    },
+    
+    "layout": {
+      "sidebarWidth": 280,
+      "headerHeight": 80,
+      "cardSpacing": 20,
+      "borderRadius": 15
+    },
+    
+    "accessibility": {
+      "highContrast": false,
+      "largeText": false,
+      "screenReader": true,
+      "keyboardNavigation": true
+    }
+  },
+  
+  "monitoring": {
+    "health": {
+      "enabled": true,
+      "checkInterval": 60000,
+      "endpoints": [
+        "/health",
+        "/api/status",
+        "/database/ping"
+      ]
+    },
+    
+    "performance": {
+      "enabled": true,
+      "metrics": [
+        "responseTime",
+        "throughput",
+        "errorRate",
+        "resourceUsage"
+      ],
+      "alertThresholds": {
+        "responseTime": 1000,
+        "errorRate": 0.05,
+        "cpuUsage": 0.8,
+        "memoryUsage": 0.9
+      }
+    },
+    
+    "logging": {
+      "level": "info",
+      "outputs": ["console", "file", "remote"],
+      "rotation": {
+        "enabled": true,
+        "maxSize": "10MB",
+        "maxFiles": 5
+      }
+    }
+  },
+  
+  "backup": {
+    "enabled": true,
+    "schedule": "0 2 * * *",
+    "retention": {
+      "daily": 7,
+      "weekly": 4,
+      "monthly": 12
+    },
+    "storage": {
+      "local": true,
+      "cloud": false,
+      "encryption": true
+    }
+  },
+  
+  "compliance": {
+    "standards": [
+      "ISO-22000",
+      "HACCP",
+      "FDA",
+      "SFDA"
+    ],
+    "auditing": {
+      "enabled": true,
+      "frequency": "monthly",
+      "autoGenerate": true
+    },
+    "certifications": {
+      "required": true,
+      "renewal": true,
+      "tracking": true
+    }
+  },
+  
+  "development": {
+    "debug": false,
+    "verbose": false,
+    "profiling": false,
+    "testing": {
+      "unit": true,
+      "integration": true,
+      "performance": true,
+      "security": true
+    }
+  }
+}

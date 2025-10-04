@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>اختبار ميزات الموبايل - المطبخ الذكي</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a252f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4facfe;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .demo-area {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .swipe-demo {
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: grab;
+            transition: transform 0.2s ease;
+            position: relative;
+        }
+
+        .swipe-demo:active {
+            cursor: grabbing;
+        }
+
+        .swipe-demo.swiped-right {
+            transform: translateX(80px);
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .swipe-demo.swiped-left {
+            transform: translateX(-80px);
+            background: linear-gradient(135deg, #e74c3c 0%, #ec7063 100%);
+        }
+
+        .haptic-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .haptic-btn:active {
+            transform: scale(0.95);
+        }
+
+        .pull-refresh-demo {
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(79, 172, 254, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .refresh-indicator {
+            font-size: 24px;
+            color: #4facfe;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .refresh-indicator.spinning {
+            animation: spin 1s linear infinite;
+        }
+
+        .navigation-demo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .nav-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+            background: rgba(79, 172, 254, 0.3);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #27ae60;
+            animation: pulse 2s infinite;
+        }
+
+        .instructions {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .instructions h3 {
+            color: #f39c12;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .instructions p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .gesture-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-5px); }
+            60% { transform: translateX(-50%) translateY(-3px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-mobile-alt"></i> اختبار ميزات الموبايل</h1>
+            <p>جرب جميع الميزات المتطورة للمطبخ الذكي على الموبايل</p>
+        </div>
+
+        <!-- Swipe Gestures Demo -->
+        <div class="feature-card">
+            <div class="status-indicator"></div>
+            <div class="feature-title">
+                <div class="feature-icon"><i class="fas fa-hand-pointer"></i></div>
+                إيماءات السحب
+            </div>
+            <div class="feature-description">
+                اسحب البطاقة يميناً للإكمال أو يساراً للإيقاف المؤقت
+            </div>
+            <div class="demo-area">
+                <div class="swipe-demo" id="swipeDemo">
+                    <span id="swipeText">اسحب يمين أو يسار</span>
+                </div>
+                <div class="gesture-indicator">
+                    <i class="fas fa-arrows-alt-h"></i> اسحب هنا
+                </div>
+            </div>
+        </div>
+
+        <!-- Haptic Feedback Demo -->
+        <div class="feature-card">
+            <div class="feature-title">
+                <div class="feature-icon"><i class="fas fa-heart-pulse"></i></div>
+                ردود الفعل الحسية
+            </div>
+            <div class="feature-description">
+                اهتزاز خفيف يخبرك بنجاح العملية
+            </div>
+            <div class="demo-area">
+                <button class="haptic-btn" onclick="triggerHaptic()">
+                    <i class="fas fa-vibration"></i> جرب الاهتزاز
+                </button>
+            </div>
+        </div>
+
+        <!-- Pull to Refresh Demo -->
+        <div class="feature-card">
+            <div class="feature-title">
+                <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
+                السحب للتحديث
+            </div>
+            <div class="feature-description">
+                اسحب المنطقة لأسفل لتحديث البيانات
+            </div>
+            <div class="demo-area">
+                <div class="pull-refresh-demo" id="pullRefreshDemo">
+                    <div class="refresh-indicator" id="refreshIcon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <span>اسحب لأسفل للتحديث</span>
+                    <div class="gesture-indicator">
+                        <i class="fas fa-arrow-down"></i> اسحب هنا
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Demo -->
+        <div class="feature-card">
+            <div class="feature-title">
+                <div class="feature-icon"><i class="fas fa-compass"></i></div>
+                التنقل السريع
+            </div>
+            <div class="feature-description">
+                انقر على الأقسام للتنقل السريع مع تأثيرات بصرية
+            </div>
+            <div class="demo-area">
+                <div class="navigation-demo">
+                    <div class="nav-item active" onclick="switchNav(this)">
+                        <i class="fas fa-list"></i><br>الطلبات
+                    </div>
+                    <div class="nav-item" onclick="switchNav(this)">
+                        <i class="fas fa-chart-bar"></i><br>التحليلات
+                    </div>
+                    <div class="nav-item" onclick="switchNav(this)">
+                        <i class="fas fa-boxes"></i><br>المخزون
+                    </div>
+                    <div class="nav-item" onclick="switchNav(this)">
+                        <i class="fas fa-cog"></i><br>الإعدادات
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> كيفية الاستخدام</h3>
+            <p>
+                • اضغط واسحب العناصر لتجربة الإيماءات<br>
+                • انقر على الأزرار لتجربة الاهتزاز<br>
+                • جرب جميع الميزات للحصول على تجربة كاملة
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding: 20px;">
+            <a href="supermarket-kitchen-login.html" style="
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 25px;
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-block;
+                transition: all 0.3s ease;
+            ">
+                <i class="fas fa-rocket"></i> انتقل للنظام الكامل
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Swipe Demo
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        const swipeDemo = document.getElementById('swipeDemo');
+        const swipeText = document.getElementById('swipeText');
+
+        swipeDemo.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            swipeDemo.style.transition = 'none';
+        });
+
+        swipeDemo.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diffX = currentX - startX;
+            const constrainedDiff = Math.max(-100, Math.min(100, diffX));
+            swipeDemo.style.transform = `translateX(${constrainedDiff}px)`;
+            
+            if (constrainedDiff > 50) {
+                swipeText.textContent = 'إكمال الطلب ✓';
+            } else if (constrainedDiff < -50) {
+                swipeText.textContent = 'إيقاف مؤقت ⏸';
+            } else {
+                swipeText.textContent = 'اسحب يمين أو يسار';
+            }
+        });
+
+        swipeDemo.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            const diffX = currentX - startX;
+            isDragging = false;
+            swipeDemo.style.transition = 'transform 0.3s ease';
+
+            if (Math.abs(diffX) > 70) {
+                if (diffX > 0) {
+                    swipeDemo.classList.add('swiped-right');
+                    swipeText.textContent = 'تم الإكمال! ✅';
+                    triggerHapticFeedback('success');
+                } else {
+                    swipeDemo.classList.add('swiped-left');
+                    swipeText.textContent = 'تم الإيقاف! ⏸';
+                    triggerHapticFeedback('medium');
+                }
+                
+                setTimeout(() => {
+                    swipeDemo.style.transform = '';
+                    swipeDemo.classList.remove('swiped-right', 'swiped-left');
+                    swipeText.textContent = 'اسحب يمين أو يسار';
+                }, 2000);
+            } else {
+                swipeDemo.style.transform = '';
+                swipeText.textContent = 'اسحب يمين أو يسار';
+            }
+        });
+
+        // Pull to Refresh Demo
+        let pullStartY = 0;
+        let pullCurrentY = 0;
+        let isPulling = false;
+        const pullRefreshDemo = document.getElementById('pullRefreshDemo');
+        const refreshIcon = document.getElementById('refreshIcon');
+
+        pullRefreshDemo.addEventListener('touchstart', (e) => {
+            pullStartY = e.touches[0].clientY;
+            isPulling = true;
+        });
+
+        pullRefreshDemo.addEventListener('touchmove', (e) => {
+            if (!isPulling) return;
+            pullCurrentY = e.touches[0].clientY;
+            const diffY = pullCurrentY - pullStartY;
+            
+            if (diffY > 0) {
+                const rotation = Math.min(diffY * 2, 180);
+                refreshIcon.style.transform = `rotate(${rotation}deg)`;
+                
+                if (diffY > 50) {
+                    refreshIcon.querySelector('i').className = 'fas fa-sync-alt';
+                }
+            }
+        });
+
+        pullRefreshDemo.addEventListener('touchend', (e) => {
+            if (!isPulling) return;
+            const diffY = pullCurrentY - pullStartY;
+            isPulling = false;
+
+            if (diffY > 60) {
+                refreshIcon.classList.add('spinning');
+                pullRefreshDemo.querySelector('span').textContent = 'جاري التحديث...';
+                triggerHapticFeedback('medium');
+                
+                setTimeout(() => {
+                    refreshIcon.classList.remove('spinning');
+                    refreshIcon.style.transform = '';
+                    refreshIcon.querySelector('i').className = 'fas fa-check';
+                    pullRefreshDemo.querySelector('span').textContent = 'تم التحديث بنجاح!';
+                    triggerHapticFeedback('success');
+                    
+                    setTimeout(() => {
+                        refreshIcon.querySelector('i').className = 'fas fa-arrow-down';
+                        pullRefreshDemo.querySelector('span').textContent = 'اسحب لأسفل للتحديث';
+                    }, 2000);
+                }, 1500);
+            } else {
+                refreshIcon.style.transform = '';
+                refreshIcon.querySelector('i').className = 'fas fa-arrow-down';
+            }
+        });
+
+        // Navigation Demo
+        function switchNav(element) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+            triggerHapticFeedback('light');
+        }
+
+        // Haptic Feedback
+        function triggerHaptic() {
+            triggerHapticFeedback('medium');
+            
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-check"></i> تم التفعيل!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-vibration"></i> جرب الاهتزاز';
+            }, 1000);
+        }
+
+        function triggerHapticFeedback(type = 'light') {
+            if ('vibrate' in navigator) {
+                const patterns = {
+                    light: [10],
+                    medium: [30],
+                    heavy: [50],
+                    success: [10, 50, 10]
+                };
+                navigator.vibrate(patterns[type] || patterns.light);
+            }
+        }
+
+        // Add touch effects
+        document.querySelectorAll('.feature-card, .nav-item, .haptic-btn').forEach(element => {
+            element.addEventListener('touchstart', () => {
+                element.style.transform = 'scale(0.98)';
+            });
+            
+            element.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Show device info
+        console.log('📱 Device Info:', {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            touchPoints: navigator.maxTouchPoints,
+            vibrationSupport: 'vibrate' in navigator,
+            screenSize: `${screen.width}x${screen.height}`,
+            viewport: `${window.innerWidth}x${window.innerHeight}`
+        });
+    </script>
+</body>
+</html>

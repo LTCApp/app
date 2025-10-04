@@ -46,11 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     loadOverviewData();
     checkBranchStatus();
-    
-    // Initialize order preparation if the current tab is order-prep
-    if (currentTab === 'order-prep' && typeof initializeOrderPreparation === 'function') {
-        initializeOrderPreparation();
-    }
+
 });
 
 function initializeDashboard() {
@@ -176,13 +172,6 @@ function switchTab(tab) {
                    initializeDeliveryPrices();
                } else {
                    console.error('initializeDeliveryPrices function not found');
-               }
-               break;
-           case 'order-prep':
-               if (typeof initializeOrderPreparation === 'function') {
-                   initializeOrderPreparation();
-               } else {
-                   console.error('initializeOrderPreparation function not found');
                }
                break;
     }

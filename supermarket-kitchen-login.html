@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المطبخ الذكي - سوبر ماركت</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --dark-color: #1a252f;
+            --light-color: #ecf0f1;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-dark: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --shadow-light: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .floating-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 30%;
+            left: 25%;
+            animation-delay: 4s;
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            right: 30%;
+            animation-delay: 6s;
+        }
+
+        .floating-shape:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            bottom: 15%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translateY(15px) rotate(240deg) scale(0.9);
+            }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow-dark);
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-dark);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(79, 172, 254, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
+            }
+        }
+
+        .logo-container i {
+            font-size: 50px;
+            color: white;
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: var(--gradient-secondary);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .system-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-subtitle {
+            font-size: 18px;
+            color: #666;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .system-version {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 18px 60px 18px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            color: #999;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus + .input-icon {
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .forgot-password {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .error-message, .success-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .station-selector {
+            margin-bottom: 30px;
+        }
+
+        .station-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .station-option {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .station-option:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .station-option.selected {
+            border-color: var(--success-color);
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .station-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .station-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 14px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+
+            .system-title {
+                font-size: 24px;
+            }
+
+            .station-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-container">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h1 class="system-title">المطبخ الذكي</h1>
+            <p class="system-subtitle">نظام إدارة مطبخ السوبر ماركت المتطور</p>
+            <span class="system-version">الإصدار 2.0 Pro</span>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+
+        <form id="smart-kitchen-login-form">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <div class="input-container">
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+            </div>
+
+            <div class="station-selector">
+                <label>اختر محطة العمل</label>
+                <div class="station-grid">
+                    <div class="station-option" data-station="chicken">
+                        <div class="station-icon"><i class="fas fa-drumstick-bite"></i></div>
+                        <div class="station-name">محطة الدجاج</div>
+                    </div>
+                    <div class="station-option" data-station="fish">
+                        <div class="station-icon"><i class="fas fa-fish"></i></div>
+                        <div class="station-name">محطة الأسماك</div>
+                    </div>
+                    <div class="station-option" data-station="bakery">
+                        <div class="station-icon"><i class="fas fa-bread-slice"></i></div>
+                        <div class="station-name">المخبز</div>
+                    </div>
+                    <div class="station-option" data-station="salads">
+                        <div class="station-icon"><i class="fas fa-leaf"></i></div>
+                        <div class="station-name">السلطات</div>
+                    </div>
+                    <div class="station-option" data-station="desserts">
+                        <div class="station-icon"><i class="fas fa-birthday-cake"></i></div>
+                        <div class="station-name">الحلويات</div>
+                    </div>
+                    <div class="station-option" data-station="main">
+                        <div class="station-icon"><i class="fas fa-utensils"></i></div>
+                        <div class="station-name">المحطة الرئيسية</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember">
+                    تذكرني
+                </label>
+                <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <i class="fas fa-rocket"></i>
+                دخول إلى المطبخ الذكي
+            </button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html">
+                <i class="fas fa-arrow-right"></i>
+                العودة للصفحة الرئيسية
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Smart Kitchen Login System
+        class SmartKitchenLogin {
+            constructor() {
+                this.selectedStation = null;
+                this.credentials = {
+                    // Management Level
+                    'admin': { password: 'admin123', role: 'admin', stations: ['all'] },
+                    'manager': { password: 'manager123', role: 'manager', stations: ['all'] },
+                    
+                    // Station Chiefs
+                    'chef-chicken': { password: 'chicken123', role: 'chef', stations: ['chicken'] },
+                    'chef-fish': { password: 'fish123', role: 'chef', stations: ['fish'] },
+                    'chef-bakery': { password: 'bakery123', role: 'chef', stations: ['bakery'] },
+                    'chef-salads': { password: 'salads123', role: 'chef', stations: ['salads'] },
+                    'chef-desserts': { password: 'desserts123', role: 'chef', stations: ['desserts'] },
+                    
+                    // General Staff
+                    'kitchen': { password: 'kitchen123', role: 'staff', stations: ['main', 'chicken', 'fish'] },
+                    'prep1': { password: 'prep123', role: 'prep', stations: ['salads', 'desserts'] },
+                    'prep2': { password: 'prep456', role: 'prep', stations: ['bakery', 'main'] },
+                    'staff1': { password: 'staff123', role: 'staff', stations: ['main'] },
+                    'staff2': { password: 'staff456', role: 'staff', stations: ['main'] },
+                    
+                    // Supervisors
+                    'supervisor1': { password: 'super123', role: 'supervisor', stations: ['chicken', 'fish', 'main'] },
+                    'supervisor2': { password: 'super456', role: 'supervisor', stations: ['bakery', 'salads', 'desserts'] }
+                };
+                
+                this.initializeEventListeners();
+                this.checkExistingSession();
+            }
+
+            initializeEventListeners() {
+                // Form submission
+                document.getElementById('smart-kitchen-login-form').addEventListener('submit', (e) => {
+                    this.handleLogin(e);
+                });
+
+                // Station selection
+                document.querySelectorAll('.station-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.selectStation(option);
+                    });
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        document.getElementById('smart-kitchen-login-form').dispatchEvent(new Event('submit'));
+                    }
+                });
+            }
+
+            selectStation(stationElement) {
+                // Remove previous selection
+                document.querySelectorAll('.station-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Add selection to clicked station
+                stationElement.classList.add('selected');
+                this.selectedStation = stationElement.dataset.station;
+                
+                // Visual feedback
+                stationElement.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    stationElement.style.transform = '';
+                }, 200);
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // Validation
+                if (!username || !password) {
+                    this.showError('يرجى إدخال اسم المستخدم وكلمة المرور');
+                    return;
+                }
+
+                if (!this.selectedStation) {
+                    this.showError('يرجى اختيار محطة العمل');
+                    return;
+                }
+
+                this.showLoading(true);
+
+                // Simulate authentication delay
+                await this.delay(1500);
+
+                const user = this.credentials[username];
+                
+                if (!user || user.password !== password) {
+                    this.showLoading(false);
+                    this.showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+                    this.shakeForm();
+                    return;
+                }
+
+                // Check station access
+                if (!user.stations.includes('all') && !user.stations.includes(this.selectedStation)) {
+                    this.showLoading(false);
+                    this.showError('ليس لديك صلاحية للوصول إلى هذه المحطة');
+                    return;
+                }
+
+                // Successful login
+                const sessionData = {
+                    username: username,
+                    role: user.role,
+                    station: this.selectedStation,
+                    loginTime: new Date().toISOString(),
+                    sessionId: this.generateSessionId()
+                };
+
+                // Store session
+                localStorage.setItem('smartKitchenSession', JSON.stringify(sessionData));
+                if (remember) {
+                    localStorage.setItem('rememberUser', username);
+                }
+
+                this.showSuccess('تم تسجيل الدخول بنجاح! جاري الانتقال...');
+                
+                // Redirect after success animation
+                setTimeout(() => {
+                    window.location.href = 'supermarket-kitchen-dashboard.html';
+                }, 2000);
+            }
+
+            generateSessionId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            checkExistingSession() {
+                const session = localStorage.getItem('smartKitchenSession');
+                const rememberedUser = localStorage.getItem('rememberUser');
+                
+                if (session) {
+                    const sessionData = JSON.parse(session);
+                    const loginTime = new Date(sessionData.loginTime);
+                    const now = new Date();
+                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+                    
+                    // Session valid for 12 hours
+                    if (hoursDiff < 12) {
+                        this.showSuccess('جلسة نشطة موجودة، جاري الانتقال...');
+                        setTimeout(() => {
+                            window.location.href = 'supermarket-kitchen-dashboard.html';
+                        }, 1500);
+                        return;
+                    } else {
+                        localStorage.removeItem('smartKitchenSession');
+                    }
+                }
+
+                if (rememberedUser) {
+                    document.getElementById('username').value = rememberedUser;
+                    document.getElementById('remember').checked = true;
+                }
+            }
+
+            showError(message) {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            showSuccess(message) {
+                const successDiv = document.getElementById('success-message');
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+
+            showLoading(show) {
+                const overlay = document.getElementById('loading-overlay');
+                overlay.style.display = show ? 'flex' : 'none';
+            }
+
+            shakeForm() {
+                const container = document.querySelector('.login-container');
+                container.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    container.style.animation = '';
+                }, 500);
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize the smart kitchen login system
+        document.addEventListener('DOMContentLoaded', () => {
+            new SmartKitchenLogin();
+        });
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

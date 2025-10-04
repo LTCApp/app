@@ -52,10 +52,7 @@
                         <i class="fas fa-star"></i>
                         <span>التقييمات والآراء</span>
                     </a>
-                    <a href="#" class="nav-item" data-tab="order-prep">
-                        <i class="fas fa-box-open"></i>
-                        <span>تجهيز الطلبات</span>
-                    </a>
+
                     <a href="#" class="nav-item" data-tab="products">
                         <i class="fas fa-boxes"></i>
                         <span>إدارة المنتجات</span>
@@ -1309,195 +1306,30 @@
 </section>
 
 <!-- Tab 5: Order Preparation -->
-<section id="order-prep-tab" class="tab-content">
-                <div class="tab-header">
-                    <h2>تجهيز الطلبات</h2>
-                    <p>إدارة وتجهيز طلبات العملاء</p>
-                </div>
 
-                <!-- Order Preparation Navigation -->
-                <div class="order-prep-nav">
-                    <button class="prep-nav-btn active" data-prep-tab="new-orders">
-                        <i class="fas fa-bell"></i>
-                        طلبات جديدة
-                        <span class="badge" id="new-orders-count">0</span>
-                    </button>
-                    <button class="prep-nav-btn" data-prep-tab="preparing-orders">
-                        <i class="fas fa-box-open"></i>
-                        يتم تجهيزها
-                        <span class="badge" id="preparing-orders-count">0</span>
-                    </button>
-                    <button class="prep-nav-btn" data-prep-tab="collection-orders">
-                        <i class="fas fa-money-bill-wave"></i>
-                        تحت التحصيل
-                        <span class="badge" id="collection-orders-count">0</span>
-                    </button>
-                    <button class="prep-nav-btn" data-prep-tab="completed-orders">
-                        <i class="fas fa-check-circle"></i>
-                        مكتملة
-                        <span class="badge" id="completed-orders-count">0</span>
-                    </button>
-                </div>
 
-                <!-- New Orders Tab -->
-                <div id="new-orders-tab" class="prep-tab-content active">
-                    <div class="orders-list" id="new-orders-list">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
 
-                <!-- Preparing Orders Tab -->
-                <div id="preparing-orders-tab" class="prep-tab-content">
-                    <div class="orders-list" id="preparing-orders-list">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
 
-                <!-- Collection Orders Tab -->
-                <div id="collection-orders-tab" class="prep-tab-content">
-                    <div class="orders-list" id="collection-orders-list">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
 
-                <!-- Completed Orders Tab -->
-                <div id="completed-orders-tab" class="prep-tab-content">
-                    <div class="orders-list" id="completed-orders-list">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
 
-                <!-- Order Details Modal -->
-                <div id="order-details-modal" class="modal">
-                    <div class="modal-content large-modal">
-                        <div class="modal-header">
-                            <h3>تفاصيل الطلب</h3>
-                            <button class="close-modal" onclick="closeOrderDetailsModal()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="order-details-content">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Product Replacement Modal -->
-                <div id="product-replacement-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>استبدال الصنف</h3>
-                            <button class="close-modal" onclick="closeProductReplacementModal()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="search-box">
-                                <input type="text" id="product-search" placeholder="ابحث بالاسم أو الباركود...">
-                                <button onclick="searchProducts()">بحث</button>
-                            </div>
-                            <div class="products-grid" id="replacement-products-list">
-                                <!-- Will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Customer Notification Modal -->
-                <div id="customer-notification-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>إشعار العميل</h3>
-                            <button class="close-modal" onclick="closeCustomerNotificationModal()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>سيتم إرسال إشعار للعميل بالتغييرات</p>
-                            <div class="notification-options">
-                                <label>
-                                    <input type="radio" name="notification-type" value="sound" checked>
-                                    تنبيه صوتي
-                                </label>
-                                <label>
-                                    <input type="radio" name="notification-type" value="sms">
-                                    رسالة نصية
-                                </label>
-                                <label>
-                                    <input type="radio" name="notification-type" value="push">
-                                    إشعار داخل التطبيق
-                                </label>
-                            </div>
-                            <div class="notification-message">
-                                <textarea id="notification-message" placeholder="رسالة إضافية (اختياري)..."></textarea>
-                            </div>
-                            <button class="btn-primary" onclick="sendCustomerNotification()">إرسال الإشعار</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Out of Stock Modal -->
-                <div id="out-of-stock-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>انتهى من المخزون</h3>
-                            <button class="close-modal" onclick="closeOutOfStockModal()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>المنتج غير متاح حالياً. ماذا تريد أن تفعل؟</p>
-                            <div class="action-buttons">
-                                <button class="action-btn call-btn" onclick="callCustomer()">
-                                    <i class="fas fa-phone"></i>
-                                    الاتصال بالعميل
-                                </button>
-                                <button class="action-btn replace-btn" onclick="showProductReplacementModal()">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    استبدال الصنف
-                                </button>
-                                <button class="action-btn delete-btn" onclick="deleteProductFromOrder()">
-                                    <i class="fas fa-trash"></i>
-                                    حذف الصنف
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Order Completion Modal -->
-                <div id="order-completion-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>إكمال الطلب</h3>
-                            <button class="close-modal" onclick="closeOrderCompletionModal()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="order-summary">
-                                <h4>ملخص الطلب</h4>
-                                <div id="order-summary-content">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                            </div>
-                            <div class="payment-section">
-                                <h4>المبلغ النهائي</h4>
-                                <input type="number" id="final-amount" placeholder="أدخل المبلغ النهائي" step="0.01">
-                            </div>
-                            <div class="notes-section">
-                                <h4>ملاحظات</h4>
-                                <textarea id="order-notes" placeholder="أي ملاحظات إضافية..."></textarea>
-                            </div>
-                            <button class="btn-success" onclick="completeOrder()">إكمال الطلب</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Sound Notification -->
-                <audio id="new-order-sound" preload="auto">
-                    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmFgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-                </audio>
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
         </main>
     </div>
@@ -1533,7 +1365,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="order-preparation-functions.js"></script>
+
     <script src="products-management.js"></script>
     <script src="delivery-prices.js"></script>
     <script src="dashboard-script.js"></script>

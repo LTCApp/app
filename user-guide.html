@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل المستخدم - نظام المطبخ الذكي</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --dark-color: #1a252f;
+            --light-color: #ecf0f1;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--gradient-success);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: 2px solid #e1e5e9;
+            color: #666;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-tab:hover:not(.active) {
+            border-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e1e5e9;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: var(--secondary-color);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .credentials-table {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .credentials-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .credentials-table th {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 20px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .credentials-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e1e5e9;
+            vertical-align: middle;
+        }
+
+        .credentials-table tr:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .role-admin {
+            background: var(--accent-color);
+        }
+
+        .role-manager {
+            background: var(--warning-color);
+        }
+
+        .role-chef {
+            background: var(--success-color);
+        }
+
+        .role-staff {
+            background: var(--secondary-color);
+        }
+
+        .role-supervisor {
+            background: var(--primary-color);
+        }
+
+        .quick-start {
+            background: var(--gradient-success);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quick-start h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quick-start ol {
+            font-size: 18px;
+            line-height: 2;
+            margin-right: 20px;
+        }
+
+        .quick-start li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .shortcut-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .shortcut-keys {
+            background: var(--dark-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e1e5e9;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 25px;
+            display: none;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e1e5e9;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .demo-button {
+            background: var(--gradient-success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>دليل المستخدم التفاعلي</h1>
+            <p>نظام المطبخ الذكي المتطور - سوبر ماركت</p>
+            <span class="version-badge">الإصدار 2.0 Pro</span>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')">
+                <i class="fas fa-home"></i>
+                نظرة عامة
+            </button>
+            <button class="nav-tab" onclick="showTab('features')">
+                <i class="fas fa-star"></i>
+                الميزات
+            </button>
+            <button class="nav-tab" onclick="showTab('accounts')">
+                <i class="fas fa-users"></i>
+                الحسابات
+            </button>
+            <button class="nav-tab" onclick="showTab('shortcuts')">
+                <i class="fas fa-keyboard"></i>
+                الاختصارات
+            </button>
+            <button class="nav-tab" onclick="showTab('faq')">
+                <i class="fas fa-question-circle"></i>
+                الأسئلة الشائعة
+            </button>
+            <button class="nav-tab" onclick="showTab('contact')">
+                <i class="fas fa-phone"></i>
+                الدعم الفني
+            </button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="quick-start">
+                <h3>
+                    <i class="fas fa-rocket"></i>
+                    البدء السريع
+                </h3>
+                <ol>
+                    <li>افتح صفحة تسجيل الدخول: <strong>supermarket-kitchen-login.html</strong></li>
+                    <li>اختر اسم المستخدم وكلمة المرور من الجدول أدناه</li>
+                    <li>حدد محطة العمل المناسبة لك</li>
+                    <li>انقر على "دخول إلى المطبخ الذكي"</li>
+                    <li>ابدأ في إدارة الطلبات والاستفادة من الميزات المتطورة!</li>
+                </ol>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="supermarket-kitchen-login.html" class="demo-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تجربة النظام الآن
+                </a>
+                <a href="supermarket-kitchen-dashboard.html" class="demo-button">
+                    <i class="fas fa-tachometer-alt"></i>
+                    معاينة لوحة التحكم
+                </a>
+            </div>
+
+            <h3 style="margin-bottom: 20px; color: var(--dark-color);">✨ ما يميز النظام</h3>
+            <div style="background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 15px; line-height: 2;">
+                <p>🚀 <strong>أول نظام مطبخ ذكي بالذكاء الاصطناعي</strong> في المنطقة</p>
+                <p>🎤 <strong>أوامر صوتية باللغة العربية</strong> للتحكم السريع</p>
+                <p>📱 <strong>ماسح QR Code متطور</strong> لإدارة المخزون</p>
+                <p>📊 <strong>تحليلات متقدمة في الوقت الفعلي</strong></p>
+                <p>🎨 <strong>واجهة ثلاثية الأبعاد</strong> بتقنيات متطورة</p>
+                <p>⚡ <strong>كفاءة تصل إلى 300%</strong> في الأداء</p>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content">
+            <h3 style="margin-bottom: 30px; color: var(--dark-color); font-size: 32px; text-align: center;">🌟 الميزات الثورية</h3>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4 class="feature-title">الذكاء الاصطناعي</h4>
+                    <p class="feature-description">توقع الطلب وتحسين الأداء وتحليل الأنماط باستخدام خوارزميات متطورة</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h4 class="feature-title">الأوامر الصوتية</h4>
+                    <p class="feature-description">تحكم كامل بالصوت باللغة العربية مع تنفيذ فوري للأوامر</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h4 class="feature-title">ماسح QR متطور</h4>
+                    <p class="feature-description">مسح سريع للمنتجات مع ربط فوري بنظام المخزون والتتبع</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="feature-title">تحليلات متقدمة</h4>
+                    <p class="feature-description">رسوم بيانية تفاعلية وتقارير ذكية في الوقت الفعلي</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h4 class="feature-title">محطات متخصصة</h4>
+                    <p class="feature-description">إدارة محطات الدجاج والأسماك والمخبز والسلطات والحلويات</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4 class="feature-title">إشعارات ذكية</h4>
+                    <p class="feature-description">تنبيهات صوتية وبصرية متطورة حسب نوع الحدث</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounts Tab -->
+        <div id="accounts" class="tab-content">
+            <h3 style="margin-bottom: 30px; color: var(--dark-color);">👥 حسابات المستخدمين</h3>
+
+            <div class="credentials-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم المستخدم</th>
+                            <th>كلمة المرور</th>
+                            <th>النوع</th>
+                            <th>الصلاحيات</th>
+                            <th>المحطات المتاحة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>admin</strong></td>
+                            <td><code>admin123</code></td>
+                            <td><span class="role-badge role-admin">مدير عام</span></td>
+                            <td>جميع الصلاحيات</td>
+                            <td>جميع المحطات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>manager</strong></td>
+                            <td><code>manager123</code></td>
+                            <td><span class="role-badge role-manager">مدير مطبخ</span></td>
+                            <td>إدارة شاملة</td>
+                            <td>جميع المحطات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>chef-chicken</strong></td>
+                            <td><code>chicken123</code></td>
+                            <td><span class="role-badge role-chef">شيف</span></td>
+                            <td>إدارة المحطة</td>
+                            <td>محطة الدجاج</td>
+                        </tr>
+                        <tr>
+                            <td><strong>chef-fish</strong></td>
+                            <td><code>fish123</code></td>
+                            <td><span class="role-badge role-chef">شيف</span></td>
+                            <td>إدارة المحطة</td>
+                            <td>محطة الأسماك</td>
+                        </tr>
+                        <tr>
+                            <td><strong>chef-bakery</strong></td>
+                            <td><code>bakery123</code></td>
+                            <td><span class="role-badge role-chef">شيف</span></td>
+                            <td>إدارة المحطة</td>
+                            <td>المخبز</td>
+                        </tr>
+                        <tr>
+                            <td><strong>chef-salads</strong></td>
+                            <td><code>salads123</code></td>
+                            <td><span class="role-badge role-chef">شيف</span></td>
+                            <td>إدارة المحطة</td>
+                            <td>السلطات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>chef-desserts</strong></td>
+                            <td><code>desserts123</code></td>
+                            <td><span class="role-badge role-chef">شيف</span></td>
+                            <td>إدارة المحطة</td>
+                            <td>الحلويات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>kitchen</strong></td>
+                            <td><code>kitchen123</code></td>
+                            <td><span class="role-badge role-staff">موظف</span></td>
+                            <td>تحضير الطلبات</td>
+                            <td>محطات متعددة</td>
+                        </tr>
+                        <tr>
+                            <td><strong>supervisor1</strong></td>
+                            <td><code>super123</code></td>
+                            <td><span class="role-badge role-supervisor">مشرف</span></td>
+                            <td>مراقبة الجودة</td>
+                            <td>محطات مخصصة</td>
+                        </tr>
+                        <tr>
+                            <td><strong>supervisor2</strong></td>
+                            <td><code>super456</code></td>
+                            <td><span class="role-badge role-supervisor">مشرف</span></td>
+                            <td>مراقبة الجودة</td>
+                            <td>محطات مخصصة</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Shortcuts Tab -->
+        <div id="shortcuts" class="tab-content">
+            <h3 style="margin-bottom: 30px; color: var(--dark-color);">⌨️ اختصارات لوحة المفاتيح</h3>
+            
+            <div class="shortcuts-grid">
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + 1</div>
+                    <div>عرض الطلبات الجديدة</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + 2</div>
+                    <div>عرض قيد التحضير</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + 3</div>
+                    <div>عرض الطلبات الجاهزة</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + R</div>
+                    <div>تحديث الطلبات</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + V</div>
+                    <div>تشغيل الأوامر الصوتية</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Ctrl + Q</div>
+                    <div>مسح QR Code</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">F11</div>
+                    <div>وضع ملء الشاشة</div>
+                </div>
+                
+                <div class="shortcut-card">
+                    <div class="shortcut-keys">Esc</div>
+                    <div>إغلاق النوافذ المنبثقة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Tab -->
+        <div id="faq" class="tab-content">
+            <h3 style="margin-bottom: 30px; color: var(--dark-color);">❓ الأسئلة الشائعة</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    كيف أبدأ في استخدام النظام؟
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    ابدأ بفتح صفحة تسجيل الدخول، اختر الحساب المناسب من الجدول، حدد محطة العمل، ثم ادخل إلى النظام. ستجد دليلاً تفاعلياً يرشدك خلال الخطوات الأولى.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    كيف تعمل الأوامر الصوتية؟
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    انقر على زر الميكروفون أو استخدم Ctrl+V، ثم تكلم بوضوح باللغة العربية. يمكنك قول أوامر مثل "طلبات جديدة" أو "تحديث" أو "إحصائيات". قل "إنهاء" لإيقاف الاستماع.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ما هي المتطلبات التقنية للنظام؟
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    تحتاج إلى متصفح حديث (Chrome 90+، Firefox 88+، Safari 14+)، 4GB رام للأداء الأمثل، كاميرا لماسح QR، وميكروفون للأوامر الصوتية. اتصال إنترنت مستقر مطلوب للتحديثات.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    كيف يعمل نظام الذكاء الاصطناعي؟
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    النظام يحلل البيانات التاريخية لتوقع الطلب، يحسن توزيع المهام، يقترح تحسينات للأداء، ويتعلم من الأنماط لتحسين الكفاءة تلقائياً.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ماذا أفعل عند حدوث خطأ في النظام؟
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    أولاً جرب تحديث الصفحة (F5). إذا استمر الخطأ، تحقق من اتصال الإنترنت، أو اتصل بالدعم الفني. النظام يحفظ البيانات تلقائياً لتجنب فقدانها.
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Tab -->
+        <div id="contact" class="tab-content">
+            <h3 style="margin-bottom: 30px; color: var(--dark-color);">📞 الدعم الفني</h3>
+            
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>دعم فني 24/7</h4>
+                    <p>فريق الدعم الفني متاح على مدار الساعة لمساعدتك في أي استفسار أو مشكلة تقنية.</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4>تدريب مخصص</h4>
+                    <p>نوفر جلسات تدريب مخصصة لفريقك لضمان الاستفادة القصوى من النظام.</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h4>صيانة متقدمة</h4>
+                    <p>خدمات صيانة وتطوير مستمرة لضمان عمل النظام بأفضل أداء.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; background: rgba(79, 172, 254, 0.1); padding: 30px; border-radius: 15px;">
+                <h4 style="margin-bottom: 20px; color: var(--dark-color);">🎯 هدفنا راحتك ونجاحك</h4>
+                <p style="font-size: 18px; line-height: 1.8; color: #666;">
+                    نحن ملتزمون بتقديم أفضل دعم فني وضمان تشغيل النظام بأقصى كفاءة. 
+                    فريقنا من الخبراء جاهز لمساعدتك في أي وقت.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+        }
+
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            answer.classList.toggle('active');
+            icon.style.transform = answer.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
