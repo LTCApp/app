@@ -1,0 +1,29 @@
+{
+  "name": "restaurant-management-system",
+  "version": "1.0.0",
+  "description": "نظام إدارة مطاعم احترافي ومتكامل",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'افتح index.html في المتصفح للبدء'",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "restaurant",
+    "management",
+    "arabic",
+    "dashboard",
+    "ecommerce"
+  ],
+  "author": "Restaurant Management Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}

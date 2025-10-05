@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - إدارة المتجر</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- External script temporarily removed for testing -->
+    <link rel="stylesheet" href="products-management.css">
+    <link rel="stylesheet" href="delivery-prices.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <i class="fas fa-store"></i>
+                <h1>لوحة التحكم</h1>
+            </div>
+            <div class="header-actions">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=2196F3&color=fff" alt="Admin">
+                    <span>المدير</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+           <!-- Sidebar -->
+           <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-tab="overview">
+                        <i class="fas fa-chart-line"></i>
+                        <span>نظرة عامة</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="sales">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>تقارير المبيعات</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="reviews">
+                        <i class="fas fa-star"></i>
+                        <span>التقييمات والآراء</span>
+                    </a>
+
+                    <a href="#" class="nav-item" data-tab="products">
+                        <i class="fas fa-boxes"></i>
+                        <span>إدارة المنتجات</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="delivery-prices">
+                        <i class="fas fa-truck"></i>
+                        <span>أسعار التوصيل</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>الإعدادات</span>
+                    </a>
+                </nav>
+            </aside>
+   
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab 1: Overview -->
+            <section id="overview-tab" class="tab-content active">
+                <div class="tab-header">
+                    <h2>نظرة عامة</h2>
+                    <p>ملخص شامل لأداء المتجر</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #4CAF50;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-sales">0 ج.م</h3>
+                            <p>إجمالي المبيعات اليوم</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 12.5%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #2196F3;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-orders">0</h3>
+                            <p>عدد الطلبات اليوم</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 8.3%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #FF9800;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-users">0</h3>
+                            <p>عدد المستخدمين</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 15.2%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #F44336;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avg-rating">0</h3>
+                            <p>متوسط التقييمات</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 0.5
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Branch Status -->
+                <div class="branch-status-card">
+                    <div class="status-header">
+                        <h3>حالة الفرع</h3>
+                        <div class="status-indicator" id="branch-status-indicator">
+                            <span class="status-dot open"></span>
+                            <span class="status-text">مفتوح</span>
+                        </div>
+                    </div>
+                    <div class="status-details">
+                        <p><i class="fas fa-clock"></i> ساعات العمل: 8:00 ص - 12:00 م</p>
+                        <p><i class="fas fa-calendar"></i> اليوم: السبت</p>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>المبيعات الأسبوعية</h3>
+                        <canvas id="weekly-sales-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>توزيع طرق الدفع</h3>
+                        <canvas id="payment-methods-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="recent-orders-card">
+                    <h3>آخر الطلبات</h3>
+                    <div class="orders-table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>العميل</th>
+                                    <th>المبلغ</th>
+                                    <th>الحالة</th>
+                                    <th>التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-body">
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Sales Reports -->
+            <section id="sales-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>تقارير المبيعات</h2>
+                    <p>تحليل شامل للمبيعات والإيرادات</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-card">
+                    <div class="filter-group">
+                        <label>التحليل حسب التاريخ:</label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-period="today">اليوم</button>
+                            <button class="filter-btn" data-period="week">هذا الأسبوع</button>
+                            <button class="filter-btn" data-period="month">هذا الشهر</button>
+                            <button class="filter-btn" data-period="custom">تاريخ مخصص</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group custom-date-range" style="display: none;">
+                        <label>من:</label>
+                        <input type="date" id="date-from" class="date-input">
+                        <label>إلى:</label>
+                        <input type="date" id="date-to" class="date-input">
+                        <button class="apply-btn" onclick="applyDateFilter()">تطبيق</button>
+                    </div>
+                </div>
+
+                <!-- Sales by Payment Method -->
+                <div class="analysis-card">
+                    <h3>المبيعات حسب طريقة الدفع</h3>
+                    <div class="payment-methods-grid">
+                        <div class="payment-method-card">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h4>كاش</h4>
+                            <p class="amount" id="cash-sales">0 ج.م</p>
+                            <span class="percentage">45%</span>
+                        </div>
+                        <div class="payment-method-card">
+                            <i class="fas fa-credit-card"></i>
+                            <h4>بطاقة ائتمان</h4>
+                            <p class="amount" id="card-sales">0 ج.م</p>
+                            <span class="percentage">35%</span>
+                        </div>
+                        <div class="payment-method-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>دفع أونلاين</h4>
+                            <p class="amount" id="online-sales">0 ج.م</p>
+                            <span class="percentage">20%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales by Location -->
+                <div class="analysis-card">
+                    <h3>المبيعات حسب الموقع</h3>
+                    <div class="locations-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الفرع</th>
+                                    <th>عدد الطلبات</th>
+                                    <th>المبيعات</th>
+                                    <th>النسبة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="locations-table-body">
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Top Products -->
+                <div class="analysis-card">
+                    <h3>المنتجات الأكثر مبيعاً</h3>
+                    <div class="top-products-list" id="top-products-list">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Detailed Sales Chart -->
+                <div class="chart-card">
+                    <h3>تفاصيل المبيعات</h3>
+                    <canvas id="detailed-sales-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Tab 3: Reviews -->
+            <section id="reviews-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>التقييمات والآراء</h2>
+                    <p>آراء العملاء وتقييماتهم</p>
+                </div>
+
+                <!-- Reviews Stats -->
+                <div class="reviews-stats-grid">
+                    <div class="reviews-summary-card">
+                        <div class="overall-rating">
+                            <h1 id="overall-rating">4.5</h1>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p>من أصل 5 نجوم</p>
+                            <span class="total-reviews" id="total-reviews">234 تقييم</span>
+                        </div>
+                    </div>
+
+                    <div class="rating-breakdown-card">
+                        <h3>توزيع التقييمات</h3>
+                        <div class="rating-bars">
+                            <div class="rating-bar-item">
+                                <span>5 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar" style="width: 70%"></div>
+                                </div>
+                                <span>70%</span>
+                            </div>
+                            <div class="rating-bar-item">
+                                <span>4 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar" style="width: 20%"></div>
+                                </div>
+                                <span>20%</span>
+                            </div>
+                            <div class="rating-bar-item">
+                                <span>3 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar" style="width: 7%"></div>
+                                </div>
+                                <span>7%</span>
+                            </div>
+                            <div class="rating-bar-item">
+                                <span>2 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar" style="width: 2%"></div>
+                                </div>
+                                <span>2%</span>
+                            </div>
+                            <div class="rating-bar-item">
+                                <span>1 نجمة</span>
+                                <div class="bar-container">
+                                    <div class="bar" style="width: 1%"></div>
+                                </div>
+                                <span>1%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Filter -->
+                <div class="reviews-filter">
+                    <button class="filter-btn active" data-stars="all">الكل</button>
+                    <button class="filter-btn" data-stars="5">5 نجوم</button>
+                    <button class="filter-btn" data-stars="4">4 نجوم</button>
+                    <button class="filter-btn" data-stars="3">3 نجوم</button>
+                    <button class="filter-btn" data-stars="2">2 نجوم</button>
+                    <button class="filter-btn" data-stars="1">1 نجمة</button>
+                </div>
+
+                <!-- Reviews List -->
+                <div class="reviews-list" id="reviews-list">
+                    <!-- Will be populated by JS -->
+                </div>
+            </section>
+
+            <!-- Tab 4: Settings -->
+            <section id="settings-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>إعدادات الفرع</h2>
+                    <p>إدارة ساعات العمل وحالة الفرع</p>
+                </div>
+
+                <!-- Branch Control -->
+                <div class="branch-control-card">
+                    <h3>التحكم في الفرع</h3>
+                    
+                    <div class="current-status">
+                        <div class="status-display">
+                            <span class="status-label">الحالة الحالية:</span>
+                            <div class="status-badge" id="current-status-badge">
+                                <span class="status-dot open"></span>
+                                <span>مفتوح</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button class="control-btn open-btn" onclick="openBranch()">
+                            <i class="fas fa-door-open"></i>
+                            فتح الفرع
+                        </button>
+                        <button class="control-btn close-btn" onclick="closeBranch()">
+                            <i class="fas fa-door-closed"></i>
+                            إغلاق الفرع
+                        </button>
+                        <button class="control-btn temp-close-btn" onclick="showTempCloseModal()">
+                            <i class="fas fa-clock"></i>
+                            إغلاق مؤقت
+                        </button>
+                    </div>
+
+                    <div class="closure-info" id="closure-info" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="closure-message"></span>
+                    </div>
+                </div>
+
+                <!-- Working Hours -->
+                <div class="working-hours-card">
+                    <h3>ساعات العمل الأسبوعية</h3>
+                    
+                    <div class="hours-table">
+                        <div class="hours-row">
+                            <div class="day-name">السبت</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="saturday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="saturday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="saturday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الأحد</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="sunday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="sunday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="sunday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الإثنين</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="monday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="monday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="monday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الثلاثاء</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="tuesday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="tuesday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="tuesday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الأربعاء</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="wednesday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="wednesday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="wednesday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الخميس</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="08:00" class="time-input" data-day="thursday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="thursday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="thursday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="hours-row">
+                            <div class="day-name">الجمعة</div>
+                            <div class="hours-inputs">
+                                <input type="time" value="13:00" class="time-input" data-day="friday" data-type="open">
+                                <span>إلى</span>
+                                <input type="time" value="00:00" class="time-input" data-day="friday" data-type="close">
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked data-day="friday">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="save-hours-btn" onclick="saveWorkingHours()">
+                        <i class="fas fa-save"></i>
+                        حفظ التغييرات
+                    </button>
+                </div>
+            </section>
+
+<!-- Products Management Tab Content -->
+<section id="products-tab" class="tab-content">
+    <div class="products-header">
+        <div class="header-top">
+            <h2>إدارة المنتجات</h2>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openAddProductModal()">
+                    <i class="fas fa-plus"></i>
+                    إضافة منتج
+                </button>
+                <button class="btn-secondary" onclick="openBulkActionsModal()">
+                    <i class="fas fa-tasks"></i>
+                    تعديل المنتجات
+                </button>
+                <button class="btn-secondary" onclick="openImportModal()">
+                    <i class="fas fa-file-import"></i>
+                    استيراد
+                </button>
+                <button class="btn-secondary" onclick="exportProducts()">
+                    <i class="fas fa-file-export"></i>
+                    تصدير
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>الصنف</label>
+                <select id="categoryFilter" onchange="filterProducts()">
+                    <option value="">الكل</option>
+                    <option value="فواكه">فواكه</option>
+                    <option value="خضروات">خضروات</option>
+                    <option value="لحوم">لحوم</option>
+                    <option value="أسماك">أسماك</option>
+                    <option value="مخبوزات">مخبوزات</option>
+                    <option value="مشروبات">مشروبات</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>العلامة التجارية</label>
+                <select id="brandFilter" onchange="filterProducts()">
+                    <option value="">الكل</option>
+                    <option value="محلي">محلي</option>
+                    <option value="مستورد">مستورد</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>الحالة</label>
+                <select id="statusFilter" onchange="filterProducts()">
+                    <option value="active">نشط</option>
+                    <option value="inactive">غير نشط</option>
+                    <option value="all">الكل</option>
+                </select>
+            </div>
+
+            <div class="filter-group search-group">
+                <label>البحث</label>
+                <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الباركود..." onkeyup="filterProducts()">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <!-- View Options -->
+        <div class="view-options">
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid" onclick="changeView('grid')">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn" data-view="list" onclick="changeView('list')">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+            <div class="bulk-actions">
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                <label for="selectAll">اختر الكل</label>
+                <button class="btn-small" onclick="bulkActivate()" id="bulkActivateBtn" style="display:none;">
+                    <i class="fas fa-check"></i> تنشيط المحدد
+                </button>
+                <button class="btn-small" onclick="bulkDeactivate()" id="bulkDeactivateBtn" style="display:none;">
+                    <i class="fas fa-times"></i> إلغاء تنشيط المحدد
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid/List -->
+    <div id="productsContainer" class="products-grid">
+        <!-- Products will be loaded here dynamically -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button onclick="previousPage()" id="prevBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <span id="pageInfo">صفحة 1 من 1</span>
+        <button onclick="nextPage()" id="nextBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+</section>
+<!-- Delivery Prices Tab Content -->
+<section id="delivery-prices-tab" class="tab-content">
+    <div class="delivery-header">
+        <div class="header-top">
+            <div>
+                <h2>إدارة أسعار التوصيل</h2>
+                <p>إدارة المناطق وأسعار التوصيل لكل منطقة</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openAddAreaModal()">
+                    <i class="fas fa-plus"></i>
+                    إضافة منطقة جديدة
+                </button>
+                <button class="btn-secondary" onclick="exportDeliveryPrices()">
+                    <i class="fas fa-file-export"></i>
+                    تصدير
+                </button>
+                <button class="btn-secondary" onclick="openImportDeliveryModal()">
+                    <i class="fas fa-file-import"></i>
+                    استيراد
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="delivery-filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="areaSearch" placeholder="ابحث عن منطقة..." onkeyup="filterAreas()">
+            </div>
+            <div class="filter-options">
+                <label>ترتيب حسب:</label>
+                <select id="sortBy" onchange="sortAreas()">
+                    <option value="name">الاسم</option>
+                    <option value="price-asc">السعر (من الأقل)</option>
+                    <option value="price-desc">السعر (من الأعلى)</option>
+                    <option value="date">تاريخ الإضافة</option>
+                </select>
+            </div>
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span><strong id="totalAreas">17</strong> منطقة</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>متوسط السعر: <strong id="avgPrice">0</strong> ج.م</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Areas Grid -->
+    <div class="delivery-areas-container">
+        <div id="deliveryAreasGrid" class="delivery-areas-grid">
+            <!-- Areas will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button onclick="previousDeliveryPage()" id="prevDeliveryBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <span id="deliveryPageInfo">صفحة 1 من 1</span>
+        <button onclick="nextDeliveryPage()" id="nextDeliveryBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+</section>
+
+<!-- Add/Edit Area Modal -->
+<div id="areaModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="areaModalTitle">إضافة منطقة جديدة</h3>
+            <button class="close-btn" onclick="closeAreaModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="areaForm" onsubmit="handleAreaSubmit(event)">
+                <div class="form-group">
+                    <label>اسم المنطقة *</label>
+                    <input type="text" id="areaName" required placeholder="مثال: الحي الأول">
+                </div>
+
+                <div class="form-group">
+                    <label>سعر التوصيل (ج.م) *</label>
+                    <input type="number" id="areaPrice" step="0.01" required placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف (اختياري)</label>
+                    <textarea id="areaDescription" rows="3" placeholder="معلومات إضافية عن المنطقة..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>وقت التوصيل المتوقع (دقيقة)</label>
+                    <input type="number" id="deliveryTime" placeholder="30">
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="areaActive" checked>
+                        <span>منطقة نشطة (متاحة للتوصيل)</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAreaModal()">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ المنطقة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Update Modal -->
+<div id="bulkDeliveryModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تحديث أسعار متعددة</h3>
+            <button class="close-btn" onclick="closeBulkDeliveryModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="bulk-update-section">
+                <p class="info-text">
+                    <i class="fas fa-info-circle"></i>
+                    أدخل اسم المنطقة والسعر الجديد في كل سطر (منطقة,سعر)
+                </p>
+                <textarea id="bulkDeliveryInput" rows="10" placeholder="الحي الأول,25.00&#10;الحي الثاني,30.00&#10;الحي الثالث,20.00"></textarea>
+                <div class="bulk-counter">
+                    <span id="bulkDeliveryCount">0</span> منطقة
+                </div>
+                <button class="btn-primary" onclick="applyBulkDeliveryUpdate()">
+                    <i class="fas fa-save"></i>
+                    تحديث الأسعار
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importDeliveryModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>استيراد أسعار التوصيل</h3>
+            <button class="close-btn" onclick="closeImportDeliveryModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="import-section">
+                <div class="import-instructions">
+                    <h4>تعليمات الاستيراد:</h4>
+                    <ul>
+                        <li>يجب أن يحتوي الملف على: اسم المنطقة، السعر</li>
+                        <li>الأعمدة الاختيارية: الوصف، وقت التوصيل، الحالة</li>
+                        <li>استخدم القالب المرفق لضمان التنسيق الصحيح</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="downloadDeliveryTemplate()">
+                        <i class="fas fa-download"></i>
+                        تحميل القالب
+                    </button>
+                </div>
+                <div class="import-upload">
+                    <div class="upload-area" id="deliveryUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>اسحب وأفلت ملف Excel هنا</p>
+                        <p>أو</p>
+                        <button class="btn-primary" onclick="document.getElementById('deliveryExcelUpload').click()">
+                            اختر ملف
+                        </button>
+                        <input type="file" id="deliveryExcelUpload" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleDeliveryExcelUpload(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteAreaModal" class="modal">
+    <div class="modal-content small">
+        <div class="modal-header">
+            <h3>تأكيد الحذف</h3>
+            <button class="close-btn" onclick="closeDeleteAreaModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="delete-confirmation">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>هل أنت متأكد من حذف هذه المنطقة؟</p>
+                <p class="warning-text">لن تتمكن من التراجع عن هذا الإجراء</p>
+                <div class="form-actions">
+                    <button class="btn-secondary" onclick="closeDeleteAreaModal()">إلغاء</button>
+                    <button class="btn-danger" onclick="confirmDeleteArea()">
+                        <i class="fas fa-trash"></i>
+                        حذف المنطقة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add/Edit Product Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3 id="modalTitle">إضافة منتج جديد</h3>
+            <button class="close-btn" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم المنتج *</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الباركود *</label>
+                        <input type="text" id="productBarcode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>السعر *</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>وحدة القياس</label>
+                        <select id="productUnit">
+                            <option value="قطعة">قطعة</option>
+                            <option value="كيلو">كيلو</option>
+                            <option value="جرام">جرام</option>
+                            <option value="لتر">لتر</option>
+                            <option value="علبة">علبة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الصنف *</label>
+                        <select id="productCategory" required>
+                            <option value="">اختر الصنف</option>
+                            <option value="فواكه">فواكه</option>
+                            <option value="خضروات">خضروات</option>
+                            <option value="لحوم">لحوم</option>
+                            <option value="أسماك">أسماك</option>
+                            <option value="مخبوزات">مخبوزات</option>
+                            <option value="مشروبات">مشروبات</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>العلامة التجارية</label>
+                        <input type="text" id="productBrand">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="form-group image-upload-section">
+                    <label>صورة المنتج</label>
+                    <div class="image-upload-options">
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-upload"></i>
+                                رفع من الجهاز
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="openAIImageSearch()">
+                                <i class="fas fa-robot"></i>
+                                بحث بالذكاء الاصطناعي
+                            </button>
+                        </div>
+                        <div class="upload-option">
+                            <input type="text" id="imageUrl" placeholder="أو أدخل رابط الصورة">
+                            <button type="button" class="btn-small" onclick="loadImageFromUrl()">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="imagePreview" class="image-preview">
+                        <img id="previewImg" src="" alt="معاينة الصورة" style="display:none">
+                        <button type="button" class="remove-image" onclick="removeImage()" style="display:none">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productActive" checked>
+                        <span>منتج نشط</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeProductModal()">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- AI Image Search Modal -->
+<div id="aiImageModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3>البحث عن صورة بالذكاء الاصطناعي</h3>
+            <button class="close-btn" onclick="closeAIImageModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="ai-search-section">
+                <div class="search-input-group">
+                    <input type="text" id="aiSearchQuery" placeholder="اكتب وصف المنتج... مثال: تفاح أحمر طازج">
+                    <button class="btn-primary" onclick="searchAIImages()">
+                        <i class="fas fa-search"></i>
+                        بحث
+                    </button>
+                </div>
+                <div id="aiImagesResults" class="ai-images-grid">
+                    <!-- AI generated images will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Actions Modal -->
+<div id="bulkActionsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تعديل المنتجات</h3>
+            <button class="close-btn" onclick="closeBulkActionsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="bulk-actions-tabs">
+                <button class="tab-btn active" onclick="switchBulkTab('barcodes')">
+                    <i class="fas fa-barcode"></i>
+                    تنشيط/إلغاء تنشيط
+                </button>
+                <button class="tab-btn" onclick="switchBulkTab('prices')">
+                    <i class="fas fa-dollar-sign"></i>
+                    تعديل الأسعار
+                </button>
+            </div>
+
+            <!-- Barcodes Tab -->
+            <div id="barcodesTab" class="bulk-tab-content active">
+                <div class="barcodes-input-section">
+                    <label>أدخل الباركودات (كل باركود في سطر)</label>
+                    <textarea id="barcodesInput" rows="10" placeholder="0055&#10;0079&#10;0082"></textarea>
+                    <div class="barcode-counter">
+                        <span id="barcodeCount">0</span> باركود
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-success" onclick="bulkActivateBarcodes()">
+                        <i class="fas fa-check"></i>
+                        تنشيط المنتجات
+                    </button>
+                    <button class="btn-danger" onclick="bulkDeactivateBarcodes()">
+                        <i class="fas fa-times"></i>
+                        إلغاء تنشيط المنتجات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prices Tab -->
+            <div id="pricesTab" class="bulk-tab-content">
+                <div class="prices-input-section">
+                    <label>أدخل الباركودات والأسعار (باركود,سعر في كل سطر)</label>
+                    <textarea id="pricesInput" rows="10" placeholder="0055,25.50&#10;0079,30.00&#10;0082,15.75"></textarea>
+                    <div class="price-counter">
+                        <span id="priceCount">0</span> منتج
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-primary" onclick="bulkUpdatePrices()">
+                        <i class="fas fa-save"></i>
+                        تحديث الأسعار
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>استيراد المنتجات من Excel</h3>
+            <button class="close-btn" onclick="closeImportModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="import-section">
+                <div class="import-instructions">
+                    <h4>تعليمات الاستيراد:</h4>
+                    <ul>
+                        <li>يجب أن يحتوي الملف على الأعمدة التالية: الاسم، الباركود، السعر، الصنف</li>
+                        <li>الأعمدة الاختيارية: العلامة التجارية، الوصف، الوحدة، الحالة، رابط الصورة</li>
+                        <li>استخدم القالب المرفق لضمان التنسيق الصحيح</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="downloadTemplate()">
+                        <i class="fas fa-download"></i>
+                        تحميل القالب
+                    </button>
+                </div>
+                <div class="import-upload">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>اسحب وأفلت ملف Excel هنا</p>
+                        <p>أو</p>
+                        <button class="btn-primary" onclick="document.getElementById('excelUpload').click()">
+                            اختر ملف
+                        </button>
+                        <input type="file" id="excelUpload" accept=".xlsx,.xls" style="display:none" onchange="handleExcelUpload(event)">
+                    </div>
+                    <div id="importProgress" style="display:none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="importProgressFill"></div>
+                        </div>
+                        <p id="importStatus">جاري الاستيراد...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+            <!-- Tab 5: Order Preparation -->
+<!-- Products Management Tab Content -->
+
+<!-- Add/Edit Product Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3 id="modalTitle">إضافة منتج جديد</h3>
+            <button class="close-btn" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم المنتج *</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الباركود *</label>
+                        <input type="text" id="productBarcode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>السعر *</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>وحدة القياس</label>
+                        <select id="productUnit">
+                            <option value="قطعة">قطعة</option>
+                            <option value="كيلو">كيلو</option>
+                            <option value="جرام">جرام</option>
+                            <option value="لتر">لتر</option>
+                            <option value="علبة">علبة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الصنف *</label>
+                        <select id="productCategory" required>
+                            <option value="">اختر الصنف</option>
+                            <option value="فواكه">فواكه</option>
+                            <option value="خضروات">خضروات</option>
+                            <option value="لحوم">لحوم</option>
+                            <option value="أسماك">أسماك</option>
+                            <option value="مخبوزات">مخبوزات</option>
+                            <option value="مشروبات">مشروبات</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>العلامة التجارية</label>
+                        <input type="text" id="productBrand">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="form-group image-upload-section">
+                    <label>صورة المنتج</label>
+                    <div class="image-upload-options">
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-upload"></i>
+                                رفع من الجهاز
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="upload-option">
+                            <button type="button" class="btn-upload" onclick="openAIImageSearch()">
+                                <i class="fas fa-robot"></i>
+                                بحث بالذكاء الاصطناعي
+                            </button>
+                        </div>
+                        <div class="upload-option">
+                            <input type="text" id="imageUrl" placeholder="أو أدخل رابط الصورة">
+                            <button type="button" class="btn-small" onclick="loadImageFromUrl()">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="imagePreview" class="image-preview">
+                        <img id="previewImg" src="" alt="معاينة الصورة" style="display:none">
+                        <button type="button" class="remove-image" onclick="removeImage()" style="display:none">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productActive" checked>
+                        <span>منتج نشط</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeProductModal()">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- AI Image Search Modal -->
+<div id="aiImageModal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3>البحث عن صورة بالذكاء الاصطناعي</h3>
+            <button class="close-btn" onclick="closeAIImageModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="ai-search-section">
+                <div class="search-input-group">
+                    <input type="text" id="aiSearchQuery" placeholder="اكتب وصف المنتج... مثال: تفاح أحمر طازج">
+                    <button class="btn-primary" onclick="searchAIImages()">
+                        <i class="fas fa-search"></i>
+                        بحث
+                    </button>
+                </div>
+                <div id="aiImagesResults" class="ai-images-grid">
+                    <!-- AI generated images will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Actions Modal -->
+<div id="bulkActionsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تعديل المنتجات</h3>
+            <button class="close-btn" onclick="closeBulkActionsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="bulk-actions-tabs">
+                <button class="tab-btn active" onclick="switchBulkTab('barcodes')">
+                    <i class="fas fa-barcode"></i>
+                    تنشيط/إلغاء تنشيط
+                </button>
+                <button class="tab-btn" onclick="switchBulkTab('prices')">
+                    <i class="fas fa-dollar-sign"></i>
+                    تعديل الأسعار
+                </button>
+            </div>
+
+            <!-- Barcodes Tab -->
+            <div id="barcodesTab" class="bulk-tab-content active">
+                <div class="barcodes-input-section">
+                    <label>أدخل الباركودات (كل باركود في سطر)</label>
+                    <textarea id="barcodesInput" rows="10" placeholder="0055&#10;0079&#10;0082"></textarea>
+                    <div class="barcode-counter">
+                        <span id="barcodeCount">0</span> باركود
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-success" onclick="bulkActivateBarcodes()">
+                        <i class="fas fa-check"></i>
+                        تنشيط المنتجات
+                    </button>
+                    <button class="btn-danger" onclick="bulkDeactivateBarcodes()">
+                        <i class="fas fa-times"></i>
+                        إلغاء تنشيط المنتجات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prices Tab -->
+            <div id="pricesTab" class="bulk-tab-content">
+                <div class="prices-input-section">
+                    <label>أدخل الباركودات والأسعار (باركود,سعر في كل سطر)</label>
+                    <textarea id="pricesInput" rows="10" placeholder="0055,25.50&#10;0079,30.00&#10;0082,15.75"></textarea>
+                    <div class="price-counter">
+                        <span id="priceCount">0</span> منتج
+                    </div>
+                </div>
+                <div class="bulk-actions-buttons">
+                    <button class="btn-primary" onclick="bulkUpdatePrices()">
+                        <i class="fas fa-save"></i>
+                        تحديث الأسعار
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>استيراد المنتجات من Excel</h3>
+            <button class="close-btn" onclick="closeImportModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="import-section">
+                <div class="import-instructions">
+                    <h4>تعليمات الاستيراد:</h4>
+                    <ul>
+                        <li>يجب أن يحتوي الملف على الأعمدة التالية: الاسم، الباركود، السعر، الصنف</li>
+                        <li>الأعمدة الاختيارية: العلامة التجارية، الوصف، الوحدة، الحالة، رابط الصورة</li>
+                        <li>استخدم القالب المرفق لضمان التنسيق الصحيح</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="downloadTemplate()">
+                        <i class="fas fa-download"></i>
+                        تحميل القالب
+                    </button>
+                </div>
+                <div class="import-upload">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>اسحب وأفلت ملف Excel هنا</p>
+                        <p>أو</p>
+                        <button class="btn-primary" onclick="document.getElementById('excelUpload').click()">
+                            اختر ملف
+                        </button>
+                        <input type="file" id="excelUpload" accept=".xlsx,.xls" style="display:none" onchange="handleExcelUpload(event)">
+                    </div>
+                    <div id="importProgress" style="display:none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="importProgressFill"></div>
+                        </div>
+                        <p id="importStatus">جاري الاستيراد...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Tab 5: Order Preparation -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Temporary Close Modal -->
+    <div id="temp-close-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إغلاق مؤقت للفرع</h3>
+                <button class="close-modal" onclick="closeTempCloseModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>اختر مدة الإغلاق المؤقت:</p>
+                <div class="temp-close-options">
+                    <button class="temp-option-btn" onclick="tempCloseBranch(1)">
+                        <i class="fas fa-clock"></i>
+                        <span>ساعة واحدة</span>
+                    </button>
+                    <button class="temp-option-btn" onclick="tempCloseBranch(2)">
+                        <i class="fas fa-clock"></i>
+                        <span>ساعتين</span>
+                    </button>
+                    <button class="temp-option-btn" onclick="tempCloseBranch('end-of-day')">
+                        <i class="fas fa-moon"></i>
+                        <span>لآخر اليوم</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="products-management.js"></script>
+    <script src="delivery-prices.js"></script>
+    <script src="dashboard-script.js"></script>
+    <script src="security.js"></script>
+</body>
+</html>

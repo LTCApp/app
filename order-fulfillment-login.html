@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تجهيز الأوردرات - تسجيل الدخول</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ====== نظام تسجيل الدخول المتقدم ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: rtl;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: backgroundMove 20s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-10px) translateY(-10px); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            direction: rtl;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            top: 2.2rem;
+            right: 1rem;
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-group input:focus + .input-icon {
+            color: #3498db;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .role-option {
+            padding: 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .role-option:hover {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .role-option.selected {
+            border-color: #3498db;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .role-option i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .role-option span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .login-button {
+            padding: 1.2rem 2rem;
+            background: linear-gradient(145deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .quick-login {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .quick-login h3 {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .quick-login-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .quick-btn {
+            padding: 0.8rem;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #2c3e50;
+        }
+
+        .quick-btn:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            background: linear-gradient(145deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-login-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Floating Animation */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container floating">
+        <div class="login-header">
+            <div class="login-logo">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h1 class="login-title">نظام تجهيز الأوردرات</h1>
+            <p class="login-subtitle">نظام متقدم لإدارة طلبات السوبر ماركت</p>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="username">اسم المستخدم:</label>
+                <input type="text" id="username" name="username" required>
+                <i class="fas fa-user input-icon"></i>
+            </div>
+
+            <div class="form-group">
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" name="password" required>
+                <i class="fas fa-lock input-icon"></i>
+            </div>
+
+            <div class="form-group">
+                <label>اختر دورك:</label>
+                <div class="role-selector">
+                    <div class="role-option" data-role="fulfillment">
+                        <i class="fas fa-box"></i>
+                        <span>موظف تجهيز</span>
+                    </div>
+                    <div class="role-option" data-role="supervisor">
+                        <i class="fas fa-user-tie"></i>
+                        <span>مشرف</span>
+                    </div>
+                    <div class="role-option" data-role="manager">
+                        <i class="fas fa-crown"></i>
+                        <span>مدير</span>
+                    </div>
+                    <div class="role-option" data-role="admin">
+                        <i class="fas fa-cog"></i>
+                        <span>مدير عام</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="login-button" id="login-btn">
+                <span class="loading-spinner" id="loading-spinner"></span>
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل الدخول
+            </button>
+        </form>
+
+        <div class="quick-login">
+            <h3>تسجيل دخول سريع (للاختبار):</h3>
+            <div class="quick-login-buttons">
+                <div class="quick-btn" onclick="quickLogin('fulfillment', 'موظف تجهيز', 'fulfillment123')">
+                    <i class="fas fa-box"></i> موظف تجهيز
+                </div>
+                <div class="quick-btn" onclick="quickLogin('supervisor', 'مشرف عام', 'supervisor123')">
+                    <i class="fas fa-user-tie"></i> مشرف
+                </div>
+                <div class="quick-btn" onclick="quickLogin('manager', 'مدير الفرع', 'manager123')">
+                    <i class="fas fa-crown"></i> مدير
+                </div>
+                <div class="quick-btn" onclick="quickLogin('admin', 'مدير عام', 'admin123')">
+                    <i class="fas fa-cog"></i> مدير عام
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // معالج تسجيل الدخول
+        class OrderFulfillmentLogin {
+            constructor() {
+                this.selectedRole = null;
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                // اختيار الدور
+                document.querySelectorAll('.role-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        this.selectRole(e.currentTarget.dataset.role);
+                    });
+                });
+
+                // إرسال نموذج تسجيل الدخول
+                document.getElementById('login-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // اختصار Enter
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.handleLogin();
+                    }
+                });
+            }
+
+            selectRole(role) {
+                // إزالة التحديد السابق
+                document.querySelectorAll('.role-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // إضافة التحديد الجديد
+                document.querySelector(`[data-role="${role}"]`).classList.add('selected');
+                this.selectedRole = role;
+            }
+
+            async handleLogin() {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                // تحقق من المدخلات
+                if (!username || !password) {
+                    this.showError('يرجى إدخال اسم المستخدم وكلمة المرور');
+                    return;
+                }
+
+                if (!this.selectedRole) {
+                    this.showError('يرجى اختيار دورك في النظام');
+                    return;
+                }
+
+                // عرض مؤشر التحميل
+                this.showLoading(true);
+
+                // محاكاة التحقق من بيانات الدخول
+                await this.simulateAuthentication();
+
+                // تحقق من بيانات الدخول
+                if (this.validateCredentials(username, password, this.selectedRole)) {
+                    this.loginSuccess(username, this.selectedRole);
+                } else {
+                    this.showLoading(false);
+                    this.showError('بيانات دخول غير صحيحة أو لا تملك صلاحية لهذا الدور');
+                }
+            }
+
+            validateCredentials(username, password, role) {
+                // بيانات الدخول الصحيحة
+                const validCredentials = {
+                    'fulfillment': { username: 'fulfillment', password: 'fulfillment123' },
+                    'supervisor': { username: 'supervisor', password: 'supervisor123' },
+                    'manager': { username: 'manager', password: 'manager123' },
+                    'admin': { username: 'admin', password: 'admin123' }
+                };
+
+                const roleCredentials = validCredentials[role];
+                return roleCredentials && 
+                       roleCredentials.username === username && 
+                       roleCredentials.password === password;
+            }
+
+            async simulateAuthentication() {
+                // محاكاة فترة انتظار الخادم
+                return new Promise(resolve => {
+                    setTimeout(resolve, 1500);
+                });
+            }
+
+            loginSuccess(username, role) {
+                // حفظ بيانات الجلسة
+                localStorage.setItem('operatorName', username);
+                localStorage.setItem('operatorRole', role);
+                localStorage.setItem('loginTime', Date.now());
+
+                this.showSuccess('تم تسجيل الدخول بنجاح! جاري التحويل...');
+
+                // تحويل إلى نظام تجهيز الأوردرات
+                setTimeout(() => {
+                    window.location.href = 'order-fulfillment-system.html';
+                }, 1500);
+            }
+
+            showError(message) {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                // إخفاء رسالة النجاح
+                document.getElementById('success-message').style.display = 'none';
+
+                // إخفاء الرسالة بعد 5 ثوان
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            showSuccess(message) {
+                const successDiv = document.getElementById('success-message');
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                
+                // إخفاء رسالة الخطأ
+                document.getElementById('error-message').style.display = 'none';
+            }
+
+            showLoading(show) {
+                const spinner = document.getElementById('loading-spinner');
+                const button = document.getElementById('login-btn');
+                
+                if (show) {
+                    spinner.style.display = 'inline-block';
+                    button.disabled = true;
+                    button.style.cursor = 'not-allowed';
+                } else {
+                    spinner.style.display = 'none';
+                    button.disabled = false;
+                    button.style.cursor = 'pointer';
+                }
+            }
+        }
+
+        // تسجيل دخول سريع
+        function quickLogin(role, name, password) {
+            document.getElementById('username').value = role;
+            document.getElementById('password').value = password;
+            
+            // اختيار الدور
+            loginSystem.selectRole(role);
+            
+            // تسجيل الدخول تلقائياً
+            setTimeout(() => {
+                loginSystem.handleLogin();
+            }, 500);
+        }
+
+        // تهيئة النظام
+        let loginSystem;
+        document.addEventListener('DOMContentLoaded', () => {
+            loginSystem = new OrderFulfillmentLogin();
+            
+            // تحديد الدور الافتراضي
+            loginSystem.selectRole('fulfillment');
+            
+            console.log('🔐 نظام تسجيل الدخول جاهز');
+        });
+
+        // تحقق من وجود جلسة نشطة
+        if (localStorage.getItem('operatorName')) {
+            const loginTime = localStorage.getItem('loginTime');
+            const now = Date.now();
+            const sessionDuration = 24 * 60 * 60 * 1000; // 24 ساعة
+            
+            if (loginTime && (now - loginTime) < sessionDuration) {
+                // تحويل تلقائي للنظام
+                window.location.href = 'order-fulfillment-system.html';
+            } else {
+                // مسح الجلسة المنتهية الصلاحية
+                localStorage.clear();
+            }
+        }
+    </script>
+</body>
+</html>

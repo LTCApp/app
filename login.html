@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تسجيل الدخول إلى سوبر ماركت">
+    <meta name="theme-color" content="#E53935">
+    <title>تسجيل الدخول - سوبر ماركت</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="auth-page">
+    <!-- الهيدر البسيط -->
+    <header class="auth-header">
+        <div class="auth-header-content">
+            <a href="index.html" class="back-button">
+                <span>←</span>
+            </a>
+            <div class="auth-logo">
+                <span class="logo-icon">🛒</span>
+                <span>سوبر ماركت</span>
+            </div>
+            <div class="spacer"></div>
+        </div>
+    </header>
+
+    <!-- محتوى تسجيل الدخول -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header-text">
+                    <h1>مرحباً بعودتك</h1>
+                    <p>سجل الدخول للمتابعة</p>
+                </div>
+
+                <!-- أزرار تسجيل الدخول الاجتماعي -->
+                <div class="social-auth">
+                    <button class="social-btn google-btn" onclick="signInWithGoogle()">
+                        <svg width="20" height="20" viewBox="0 0 20 20">
+                            <path fill="#4285F4" d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z"/>
+                            <path fill="#34A853" d="M13.46 15.13c-.83.59-1.96 1-3.46 1-2.64 0-4.88-1.74-5.68-4.15H1.07v2.52C2.72 17.75 6.09 20 10 20c2.7 0 4.96-.89 6.62-2.42l-3.16-2.45z"/>
+                            <path fill="#FBBC05" d="M3.99 10c0-.69.12-1.35.32-1.97V5.51H1.07A9.973 9.973 0 000 10c0 1.61.39 3.14 1.07 4.49l3.24-2.52c-.2-.62-.32-1.28-.32-1.97z"/>
+                            <path fill="#EA4335" d="M10 3.88c1.88 0 3.13.81 3.85 1.48l2.84-2.76C14.96.99 12.7 0 10 0 6.09 0 2.72 2.25 1.07 5.51l3.24 2.52C5.12 5.62 7.36 3.88 10 3.88z"/>
+                        </svg>
+                        <span>تسجيل الدخول باستخدام Google</span>
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>أو</span>
+                </div>
+
+                <!-- نموذج تسجيل الدخول -->
+                <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                    <!-- رقم الموبايل -->
+                    <div class="form-group">
+                        <label for="phone">رقم الموبايل</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📱</span>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                placeholder="05xxxxxxxx"
+                                required
+                                pattern="[0-9]{10}"
+                                maxlength="10"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- كلمة المرور -->
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                name="password" 
+                                placeholder="أدخل كلمة المرور"
+                                required
+                                minlength="6"
+                            >
+                            <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                                <span id="loginPassword-eye">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- تذكرني ونسيت كلمة المرور -->
+                    <div class="form-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember" name="remember">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">تذكرني</span>
+                        </label>
+                        <a href="#" class="link" onclick="showForgotPassword(event)">نسيت كلمة المرور؟</a>
+                    </div>
+
+                    <!-- زر تسجيل الدخول -->
+                    <button type="submit" class="auth-submit-btn">
+                        <span>تسجيل الدخول</span>
+                        <span class="btn-loader" style="display: none;">⏳</span>
+                    </button>
+                </form>
+
+                <!-- رابط إنشاء حساب -->
+                <div class="auth-footer">
+                    <p>ليس لديك حساب؟ <a href="signup.html" class="link">إنشاء حساب جديد</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة نسيت كلمة المرور -->
+    <div class="modal" id="forgotPasswordModal" style="display: none;">
+        <div class="modal-overlay" onclick="closeForgotPassword()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>استعادة كلمة المرور</h2>
+                <button class="modal-close" onclick="closeForgotPassword()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>أدخل رقم موبايلك وسنرسل لك رمز التحقق لإعادة تعيين كلمة المرور</p>
+                <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label for="resetPhone">رقم الموبايل</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📱</span>
+                            <input 
+                                type="tel" 
+                                id="resetPhone" 
+                                name="resetPhone" 
+                                placeholder="05xxxxxxxx"
+                                required
+                                pattern="[0-9]{10}"
+                                maxlength="10"
+                            >
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        <span>إرسال رمز التحقق</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة OTP -->
+    <div class="modal" id="otpModal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>التحقق من رقم الموبايل</h2>
+            </div>
+            <div class="modal-body">
+                <p class="otp-message">تم إرسال رمز التحقق إلى رقم <strong id="otpPhone"></strong></p>
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" maxlength="1" id="otp1" onkeyup="moveToNext(this, 'otp2')" onkeydown="moveToPrev(event, this, null)">
+                    <input type="text" class="otp-input" maxlength="1" id="otp2" onkeyup="moveToNext(this, 'otp3')" onkeydown="moveToPrev(event, this, 'otp1')">
+                    <input type="text" class="otp-input" maxlength="1" id="otp3" onkeyup="moveToNext(this, 'otp4')" onkeydown="moveToPrev(event, this, 'otp2')">
+                    <input type="text" class="otp-input" maxlength="1" id="otp4" onkeyup="moveToNext(this, 'otp5')" onkeydown="moveToPrev(event, this, 'otp3')">
+                    <input type="text" class="otp-input" maxlength="1" id="otp5" onkeyup="moveToNext(this, 'otp6')" onkeydown="moveToPrev(event, this, 'otp4')">
+                    <input type="text" class="otp-input" maxlength="1" id="otp6" onkeyup="verifyOTPLogin()" onkeydown="moveToPrev(event, this, 'otp5')">
+                </div>
+                <p class="otp-timer">إعادة الإرسال بعد <span id="otpTimer">60</span> ثانية</p>
+                <button class="resend-otp-btn" id="resendOtpBtn" onclick="resendOTP()" disabled>
+                    إعادة إرسال الرمز
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

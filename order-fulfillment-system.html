@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تجهيز الأوردرات - السوبر ماركت</title>
+    <link rel="stylesheet" href="order-fulfillment-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header Section -->
+        <header class="system-header">
+            <div class="header-left">
+                <div class="logo-section">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h1>نظام تجهيز الأوردرات</h1>
+                </div>
+                <div class="live-stats">
+                    <div class="stat-item pending">
+                        <i class="fas fa-clock"></i>
+                        <span id="pending-count">0</span>
+                        <label>معلق</label>
+                    </div>
+                    <div class="stat-item active">
+                        <i class="fas fa-spinner"></i>
+                        <span id="active-count">0</span>
+                        <label>قيد التجهيز</label>
+                    </div>
+                    <div class="stat-item ready">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="ready-count">0</span>
+                        <label>جاهز</label>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="time-display">
+                    <div id="current-time"></div>
+                    <div id="current-date"></div>
+                </div>
+                <div class="session-info">
+                    <span id="operator-name">موظف التجهيز</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="filter-controls">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-list"></i> جميع الطلبات
+                </button>
+                <button class="filter-btn" data-filter="pending">
+                    <i class="fas fa-clock"></i> معلقة
+                </button>
+                <button class="filter-btn" data-filter="preparing">
+                    <i class="fas fa-spinner"></i> قيد التجهيز
+                </button>
+                <button class="filter-btn" data-filter="ready">
+                    <i class="fas fa-check"></i> جاهزة
+                </button>
+                <button class="filter-btn" data-filter="priority">
+                    <i class="fas fa-exclamation-triangle"></i> أولوية عالية
+                </button>
+            </div>
+            <div class="action-controls">
+                <button class="action-btn refresh" onclick="refreshOrders()">
+                    <i class="fas fa-sync"></i> تحديث
+                </button>
+                <button class="action-btn print" onclick="printDailyReport()">
+                    <i class="fas fa-print"></i> طباعة التقرير
+                </button>
+                <button class="action-btn settings" onclick="openSettings()">
+                    <i class="fas fa-cog"></i> الإعدادات
+                </button>
+                <button class="action-btn emergency" onclick="emergencyMode()">
+                    <i class="fas fa-exclamation-circle"></i> وضع الطوارئ
+                </button>
+            </div>
+        </div>
+
+        <!-- Orders Grid -->
+        <div class="orders-container">
+            <div class="orders-grid" id="orders-grid">
+                <!-- Orders will be dynamically populated here -->
+            </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div id="order-details-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>تفاصيل الطلب #<span id="modal-order-id"></span></h2>
+                    <span class="close-modal" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Order details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn primary" onclick="updateOrderStatus()">تحديث الحالة</button>
+                    <button class="modal-btn secondary" onclick="printOrder()">طباعة</button>
+                    <button class="modal-btn danger" onclick="cancelOrder()">إلغاء الطلب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Panel -->
+        <div id="notifications-panel" class="notifications-panel">
+            <!-- Notifications will be added dynamically -->
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>إعدادات النظام</h2>
+                    <span class="close-modal" onclick="closeSettingsModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>إعدادات الصوت</h3>
+                        <label>
+                            <input type="checkbox" id="sound-notifications" checked> إشعارات صوتية
+                        </label>
+                        <label>
+                            <input type="range" id="volume-control" min="0" max="100" value="70"> مستوى الصوت
+                        </label>
+                    </div>
+                    <div class="settings-section">
+                        <h3>إعدادات العرض</h3>
+                        <label>
+                            <input type="checkbox" id="auto-refresh" checked> تحديث تلقائي
+                        </label>
+                        <label>
+                            مدة التحديث:
+                            <select id="refresh-interval">
+                                <option value="10">10 ثوان</option>
+                                <option value="30" selected>30 ثانية</option>
+                                <option value="60">دقيقة</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="settings-section">
+                        <h3>إعدادات الطباعة</h3>
+                        <label>
+                            <input type="checkbox" id="auto-print" checked> طباعة تلقائية للطلبات الجديدة
+                        </label>
+                        <label>
+                            حجم الخط:
+                            <select id="print-font-size">
+                                <option value="small">صغير</option>
+                                <option value="medium" selected>متوسط</option>
+                                <option value="large">كبير</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn primary" onclick="saveSettings()">حفظ الإعدادات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Files -->
+    <audio id="new-order-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D1w3UpBSqBzPLUgTIHF2m+8eGFNggVZ7zz4o0+ChxStOXwsWIYBTV+yOLUtEoLF2e+8+OKOwkaVLLz5o0/CRhnvPLgij4JS6zq8bhhGQU2fszm4kIGBRZYqPHkhjEHF2eozOeTMqQVOKzqwXMaABRXn+bxpkUDDVqmz+OGMwcXaKbZ3JwlABFYnubzrE4LF2qzz+iGMwaUaKfO3JwlABJXnunnwH4bBRRUpqHjirUH"></source>
+    </audio>
+    <audio id="order-ready-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D1w3UpBSqBzPLUgTIHF2m+8eGFNggVZ7zz4o0+ChxStOXwsWIYBTV+yOLUtEoLF2e+8+OKOwkaVLLz5o0/CRhnvPLgij4JS6zq8bhhGQU2fszm4kIGBRZYqPHkhjEHF2eozOeTMqQVOKzqwXMaABRXn+bxpkUDDVqmz+OGMwcXaKbZ3JwlABFYnubzrE4LF2qzz+iGMwaUaKfO3JwlABJXnunnwH4bBRRUpqHjirUH"></source>
+    </audio>
+
+    <!-- Data Manager -->
+    <script src="order-data-manager.js"></script>
+    <!-- Reports Generator -->
+    <script src="order-reports-generator.js"></script>
+    <!-- Main System -->
+    <script src="order-fulfillment-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!-- Delivery Prices Tab Content -->
+<section id="delivery-prices-tab" class="tab-content">
+    <div class="delivery-header">
+        <div class="header-top">
+            <div>
+                <h2>إدارة أسعار التوصيل</h2>
+                <p>إدارة المناطق وأسعار التوصيل لكل منطقة</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openAddAreaModal()">
+                    <i class="fas fa-plus"></i>
+                    إضافة منطقة جديدة
+                </button>
+                <button class="btn-secondary" onclick="exportDeliveryPrices()">
+                    <i class="fas fa-file-export"></i>
+                    تصدير
+                </button>
+                <button class="btn-secondary" onclick="openImportDeliveryModal()">
+                    <i class="fas fa-file-import"></i>
+                    استيراد
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="delivery-filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="areaSearch" placeholder="ابحث عن منطقة..." onkeyup="filterAreas()">
+            </div>
+            <div class="filter-options">
+                <label>ترتيب حسب:</label>
+                <select id="sortBy" onchange="sortAreas()">
+                    <option value="name">الاسم</option>
+                    <option value="price-asc">السعر (من الأقل)</option>
+                    <option value="price-desc">السعر (من الأعلى)</option>
+                    <option value="date">تاريخ الإضافة</option>
+                </select>
+            </div>
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span><strong id="totalAreas">17</strong> منطقة</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>متوسط السعر: <strong id="avgPrice">0</strong> ج.م</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Areas Grid -->
+    <div class="delivery-areas-container">
+        <div id="deliveryAreasGrid" class="delivery-areas-grid">
+            <!-- Areas will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button onclick="previousDeliveryPage()" id="prevDeliveryBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <span id="deliveryPageInfo">صفحة 1 من 1</span>
+        <button onclick="nextDeliveryPage()" id="nextDeliveryBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+</section>
+
+<!-- Add/Edit Area Modal -->
+<div id="areaModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="areaModalTitle">إضافة منطقة جديدة</h3>
+            <button class="close-btn" onclick="closeAreaModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="areaForm" onsubmit="handleAreaSubmit(event)">
+                <div class="form-group">
+                    <label>اسم المنطقة *</label>
+                    <input type="text" id="areaName" required placeholder="مثال: الحي الأول">
+                </div>
+
+                <div class="form-group">
+                    <label>سعر التوصيل (ج.م) *</label>
+                    <input type="number" id="areaPrice" step="0.01" required placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف (اختياري)</label>
+                    <textarea id="areaDescription" rows="3" placeholder="معلومات إضافية عن المنطقة..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>وقت التوصيل المتوقع (دقيقة)</label>
+                    <input type="number" id="deliveryTime" placeholder="30">
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="areaActive" checked>
+                        <span>منطقة نشطة (متاحة للتوصيل)</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAreaModal()">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ المنطقة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Update Modal -->
+<div id="bulkDeliveryModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تحديث أسعار متعددة</h3>
+            <button class="close-btn" onclick="closeBulkDeliveryModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="bulk-update-section">
+                <p class="info-text">
+                    <i class="fas fa-info-circle"></i>
+                    أدخل اسم المنطقة والسعر الجديد في كل سطر (منطقة,سعر)
+                </p>
+                <textarea id="bulkDeliveryInput" rows="10" placeholder="الحي الأول,25.00&#10;الحي الثاني,30.00&#10;الحي الثالث,20.00"></textarea>
+                <div class="bulk-counter">
+                    <span id="bulkDeliveryCount">0</span> منطقة
+                </div>
+                <button class="btn-primary" onclick="applyBulkDeliveryUpdate()">
+                    <i class="fas fa-save"></i>
+                    تحديث الأسعار
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importDeliveryModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>استيراد أسعار التوصيل</h3>
+            <button class="close-btn" onclick="closeImportDeliveryModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="import-section">
+                <div class="import-instructions">
+                    <h4>تعليمات الاستيراد:</h4>
+                    <ul>
+                        <li>يجب أن يحتوي الملف على: اسم المنطقة، السعر</li>
+                        <li>الأعمدة الاختيارية: الوصف، وقت التوصيل، الحالة</li>
+                        <li>استخدم القالب المرفق لضمان التنسيق الصحيح</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="downloadDeliveryTemplate()">
+                        <i class="fas fa-download"></i>
+                        تحميل القالب
+                    </button>
+                </div>
+                <div class="import-upload">
+                    <div class="upload-area" id="deliveryUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>اسحب وأفلت ملف Excel هنا</p>
+                        <p>أو</p>
+                        <button class="btn-primary" onclick="document.getElementById('deliveryExcelUpload').click()">
+                            اختر ملف
+                        </button>
+                        <input type="file" id="deliveryExcelUpload" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleDeliveryExcelUpload(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteAreaModal" class="modal">
+    <div class="modal-content small">
+        <div class="modal-header">
+            <h3>تأكيد الحذف</h3>
+            <button class="close-btn" onclick="closeDeleteAreaModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="delete-confirmation">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>هل أنت متأكد من حذف هذه المنطقة؟</p>
+                <p class="warning-text">لن تتمكن من التراجع عن هذا الإجراء</p>
+                <div class="form-actions">
+                    <button class="btn-secondary" onclick="closeDeleteAreaModal()">إلغاء</button>
+                    <button class="btn-danger" onclick="confirmDeleteArea()">
+                        <i class="fas fa-trash"></i>
+                        حذف المنطقة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
