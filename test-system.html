@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار نظام تجهيز الأوردرات</title>
+    <link rel="stylesheet" href="order-fulfillment-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .test-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            border: 2px solid #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 10000;
+            max-width: 300px;
+        }
+        .test-status {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .test-pass { background: #d4edda; color: #155724; }
+        .test-fail { background: #f8d7da; color: #721c24; }
+        .test-pending { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <!-- لوحة الاختبار -->
+    <div class="test-panel">
+        <h4>🔧 فحص النظام</h4>
+        <div id="test-css" class="test-status test-pending">⏳ تحميل CSS...</div>
+        <div id="test-data-manager" class="test-status test-pending">⏳ مدير البيانات...</div>
+        <div id="test-reports" class="test-status test-pending">⏳ مولد التقارير...</div>
+        <div id="test-main-system" class="test-status test-pending">⏳ النظام الرئيسي...</div>
+        <button id="run-test-btn" onclick="runSystemTest()">🔄 إعادة الفحص</button>
+    </div>
+
+    <div class="main-container">
+        <!-- Header Section -->
+        <header class="system-header">
+            <div class="header-left">
+                <div class="logo-section">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h1>نظام تجهيز الأوردرات - اختبار</h1>
+                </div>
+                <div class="live-stats">
+                    <div class="stat-item pending">
+                        <i class="fas fa-clock"></i>
+                        <span id="pending-count">0</span>
+                        <label>معلق</label>
+                    </div>
+                    <div class="stat-item active">
+                        <i class="fas fa-spinner"></i>
+                        <span id="active-count">0</span>
+                        <label>نشط</label>
+                    </div>
+                    <div class="stat-item completed">
+                        <i class="fas fa-check"></i>
+                        <span id="completed-count">0</span>
+                        <label>مكتمل</label>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="operator-info">
+                    <i class="fas fa-user"></i>
+                    <span id="operator-name">مشرف النظام</span>
+                </div>
+                <div class="current-time" id="current-time">00:00:00</div>
+                <button class="logout-btn" onclick="window.location.href='order-fulfillment-login.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل خروج
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="orders-board">
+            <!-- Pending Orders -->
+            <div class="order-column" id="pending-col">
+                <h2>طلبات معلقة <span class="count" id="pending-count-col">0</span></h2>
+                <div class="order-list" id="pending-list">
+                    <div class="order-card high-priority">
+                        <div class="order-header">
+                            <span class="order-id">TEST-001</span>
+                            <span class="priority high">عالي</span>
+                            <span class="time-stamp">منذ 5 دقائق</span>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>عميل تجريبي</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">حليب × 2</div>
+                            <div class="item">خبز × 1</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">45.50 ريال</span>
+                            <button class="action-btn primary">بدء التجهيز</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparing Orders -->
+            <div class="order-column" id="preparing-col">
+                <h2>قيد التجهيز <span class="count" id="preparing-count-col">0</span></h2>
+                <div class="order-list" id="preparing-list"></div>
+            </div>
+
+            <!-- Ready Orders -->
+            <div class="order-column" id="ready-col">
+                <h2>جاهز للتسليم <span class="count" id="ready-count-col">0</span></h2>
+                <div class="order-list" id="ready-list"></div>
+            </div>
+
+            <!-- Completed Orders -->
+            <div class="order-column" id="completed-col">
+                <h2>مكتمل <span class="count" id="completed-count-col">0</span></h2>
+                <div class="order-list" id="completed-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- اختبار تدريجي للمكونات -->
+    <script>
+        console.log('🔄 بدء فحص النظام...');
+        
+        // فحص CSS
+        function testCSS() {
+            try {
+                const testEl = document.createElement('div');
+                testEl.className = 'order-card';
+                document.body.appendChild(testEl);
+                const styles = window.getComputedStyle(testEl);
+                document.body.removeChild(testEl);
+                
+                if (styles.padding || styles.margin) {
+                    updateTestStatus('test-css', 'pass', '✅ CSS محمل');
+                    return true;
+                } else {
+                    updateTestStatus('test-css', 'fail', '❌ CSS غير محمل');
+                    return false;
+                }
+            } catch (error) {
+                updateTestStatus('test-css', 'fail', '❌ خطأ في CSS: ' + error.message);
+                return false;
+            }
+        }
+
+        // فحص مدير البيانات
+        function testDataManager() {
+            try {
+                if (typeof OrderDataManager !== 'undefined') {
+                    const dm = new OrderDataManager();
+                    if (dm.productCatalog) {
+                        updateTestStatus('test-data-manager', 'pass', '✅ مدير البيانات جاهز');
+                        return true;
+                    }
+                }
+                updateTestStatus('test-data-manager', 'fail', '❌ مدير البيانات غير محمل');
+                return false;
+            } catch (error) {
+                updateTestStatus('test-data-manager', 'fail', '❌ خطأ في مدير البيانات: ' + error.message);
+                return false;
+            }
+        }
+
+        // فحص مولد التقارير
+        function testReportsGenerator() {
+            try {
+                if (typeof OrderReportsGenerator !== 'undefined') {
+                    const rg = new OrderReportsGenerator();
+                    if (rg.reportTemplates) {
+                        updateTestStatus('test-reports', 'pass', '✅ مولد التقارير جاهز');
+                        return true;
+                    }
+                }
+                updateTestStatus('test-reports', 'fail', '❌ مولد التقارير غير محمل');
+                return false;
+            } catch (error) {
+                updateTestStatus('test-reports', 'fail', '❌ خطأ في مولد التقارير: ' + error.message);
+                return false;
+            }
+        }
+
+        // فحص النظام الرئيسي
+        function testMainSystem() {
+            try {
+                if (typeof OrderFulfillmentSystem !== 'undefined') {
+                    updateTestStatus('test-main-system', 'pass', '✅ النظام الرئيسي جاهز');
+                    return true;
+                } else {
+                    updateTestStatus('test-main-system', 'fail', '❌ النظام الرئيسي غير محمل');
+                    return false;
+                }
+            } catch (error) {
+                updateTestStatus('test-main-system', 'fail', '❌ خطأ في النظام الرئيسي: ' + error.message);
+                return false;
+            }
+        }
+
+        // تحديث حالة الاختبار
+        function updateTestStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test-status test-${status}`;
+            element.textContent = message;
+        }
+
+        // تشغيل الفحص الكامل
+        function runSystemTest() {
+            console.log('🔄 إعادة فحص النظام...');
+            
+            setTimeout(() => testCSS(), 100);
+            setTimeout(() => testDataManager(), 200);
+            setTimeout(() => testReportsGenerator(), 300);
+            setTimeout(() => testMainSystem(), 400);
+        }
+
+        // تشغيل الفحص عند التحميل
+        window.addEventListener('load', () => {
+            setTimeout(runSystemTest, 500);
+        });
+
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('ar-SA');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+
+    <!-- تحميل المكونات بالترتيب -->
+    <script src="order-data-manager.js"></script>
+    <script src="order-reports-generator.js"></script>
+    <script src="order-fulfillment-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تجهيز الأوردرات - السوبر ماركت</title>
+    <link rel="stylesheet" href="order-fulfillment-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header Section -->
+        <header class="system-header">
+            <div class="header-left">
+                <div class="logo-section">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h1>نظام تجهيز الأوردرات</h1>
+                </div>
+                <div class="live-stats">
+                    <div class="stat-item pending">
+                        <i class="fas fa-clock"></i>
+                        <span id="pending-count">3</span>
+                        <label>معلق</label>
+                    </div>
+                    <div class="stat-item active">
+                        <i class="fas fa-spinner"></i>
+                        <span id="active-count">2</span>
+                        <label>نشط</label>
+                    </div>
+                    <div class="stat-item completed">
+                        <i class="fas fa-check"></i>
+                        <span id="completed-count">15</span>
+                        <label>مكتمل</label>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="operator-info">
+                    <i class="fas fa-user"></i>
+                    <span id="operator-name">مشرف النظام</span>
+                </div>
+                <div class="current-time" id="current-time">14:25:30</div>
+                <button class="logout-btn" onclick="window.location.href='order-fulfillment-login.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل خروج
+                </button>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-list"></i>
+                    جميع الطلبات
+                </button>
+                <button class="filter-btn" data-filter="high">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    عالي الأولوية
+                </button>
+                <button class="filter-btn" data-filter="urgent">
+                    <i class="fas fa-fire"></i>
+                    عاجل
+                </button>
+            </div>
+            <div class="actions">
+                <button class="action-btn primary" onclick="refreshOrders()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحديث
+                </button>
+                <button class="action-btn secondary" onclick="showReports()">
+                    <i class="fas fa-chart-bar"></i>
+                    التقارير
+                </button>
+                <button class="action-btn secondary" onclick="printDailyReport()">
+                    <i class="fas fa-print"></i>
+                    طباعة
+                </button>
+            </div>
+        </div>
+
+        <!-- Orders Board -->
+        <div class="orders-board">
+            <!-- Pending Orders -->
+            <div class="order-column" id="pending-col">
+                <h2>طلبات معلقة <span class="count" id="pending-count-col">3</span></h2>
+                <div class="order-list" id="pending-list">
+                    <!-- Order Card 1 -->
+                    <div class="order-card high-priority" data-order-id="ORD-12034">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12034</span>
+                            <span class="priority high">عالي</span>
+                            <span class="time-stamp">منذ 8 دقائق</span>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>خالد الأحمد</span>
+                            <i class="fas fa-phone" style="margin-right: 10px;"></i>
+                            <span>+966501234567</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">حليب كامل الدسم × 2</div>
+                            <div class="item">خبز توست × 1</div>
+                            <div class="item">جبن شيدر × 1</div>
+                            <div class="item-more">+3 منتجات أخرى</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">156.50 ريال</span>
+                            <button class="action-btn primary" onclick="startPreparing('ORD-12034')">
+                                <i class="fas fa-play"></i>
+                                بدء التجهيز
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Card 2 -->
+                    <div class="order-card medium-priority" data-order-id="ORD-12035">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12035</span>
+                            <span class="priority medium">متوسط</span>
+                            <span class="time-stamp">منذ 12 دقيقة</span>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>سارة محمد</span>
+                            <i class="fas fa-phone" style="margin-right: 10px;"></i>
+                            <span>+966507654321</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">أرز بسمتي × 2 كيس</div>
+                            <div class="item">زيت زيتون × 1</div>
+                            <div class="item-more">+2 منتجات أخرى</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">89.00 ريال</span>
+                            <button class="action-btn primary" onclick="startPreparing('ORD-12035')">
+                                <i class="fas fa-play"></i>
+                                بدء التجهيز
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Card 3 -->
+                    <div class="order-card urgent-priority" data-order-id="ORD-12036">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12036</span>
+                            <span class="priority urgent">عاجل</span>
+                            <span class="time-stamp">منذ 3 دقائق</span>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>أحمد علي</span>
+                            <i class="fas fa-phone" style="margin-right: 10px;"></i>
+                            <span>+966509876543</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">مياه × 6 عبوات</div>
+                            <div class="item">عصير برتقال × 2</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">34.50 ريال</span>
+                            <button class="action-btn urgent" onclick="startPreparing('ORD-12036')">
+                                <i class="fas fa-rocket"></i>
+                                معالجة عاجلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparing Orders -->
+            <div class="order-column" id="preparing-col">
+                <h2>قيد التجهيز <span class="count" id="preparing-count-col">2</span></h2>
+                <div class="order-list" id="preparing-list">
+                    <!-- Order Card 4 -->
+                    <div class="order-card preparing" data-order-id="ORD-12030">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12030</span>
+                            <span class="priority medium">متوسط</span>
+                            <div class="timer-display">
+                                <i class="fas fa-stopwatch"></i>
+                                <span class="timer">05:23</span>
+                            </div>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>فاطمة عبدالله</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item completed">✓ لحم بقر × 1 كيلو</div>
+                            <div class="item completed">✓ بصل × 2 كيلو</div>
+                            <div class="item pending">طماطم × 1 كيلو</div>
+                            <div class="item pending">خس × 1 حبة</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">234.75 ريال</span>
+                            <button class="action-btn success" onclick="markReady('ORD-12030')">
+                                <i class="fas fa-check"></i>
+                                جاهز للتسليم
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Card 5 -->
+                    <div class="order-card preparing" data-order-id="ORD-12031">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12031</span>
+                            <span class="priority high">عالي</span>
+                            <div class="timer-display">
+                                <i class="fas fa-stopwatch"></i>
+                                <span class="timer">12:45</span>
+                            </div>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>عبدالرحمن سالم</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item completed">✓ حليب أطفال × 2</div>
+                            <div class="item pending">حفاضات × 1 عبوة</div>
+                            <div class="item pending">مناديل × 3 عبوات</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">127.25 ريال</span>
+                            <button class="action-btn success" onclick="markReady('ORD-12031')">
+                                <i class="fas fa-check"></i>
+                                جاهز للتسليم
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ready Orders -->
+            <div class="order-column" id="ready-col">
+                <h2>جاهز للتسليم <span class="count" id="ready-count-col">1</span></h2>
+                <div class="order-list" id="ready-list">
+                    <!-- Order Card 6 -->
+                    <div class="order-card ready" data-order-id="ORD-12028">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12028</span>
+                            <span class="priority medium">متوسط</span>
+                            <div class="ready-time">
+                                <i class="fas fa-clock"></i>
+                                <span>جاهز منذ 3 دقائق</span>
+                            </div>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>نورا القحطاني</span>
+                            <i class="fas fa-truck" style="margin-right: 10px; color: #28a745;"></i>
+                            <span>في الطريق</span>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">مواد تنظيف × 5 منتجات</div>
+                            <div class="item">أدوات مطبخ × 3 منتجات</div>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">198.50 ريال</span>
+                            <button class="action-btn primary" onclick="markCompleted('ORD-12028')">
+                                <i class="fas fa-truck"></i>
+                                تم التسليم
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Orders -->
+            <div class="order-column" id="completed-col">
+                <h2>مكتمل <span class="count" id="completed-count-col">15</span></h2>
+                <div class="order-list" id="completed-list">
+                    <!-- Recent completed orders preview -->
+                    <div class="order-card completed" data-order-id="ORD-12027">
+                        <div class="order-header">
+                            <span class="order-id">ORD-12027</span>
+                            <span class="completed-time">مكتمل منذ 15 دقيقة</span>
+                        </div>
+                        <div class="customer-info">
+                            <i class="fas fa-user"></i>
+                            <span>محمد البراك</span>
+                        </div>
+                        <div class="order-footer">
+                            <span class="total">67.25 ريال</span>
+                            <button class="action-btn secondary" onclick="viewOrderDetails('ORD-12027')">
+                                <i class="fas fa-eye"></i>
+                                عرض التفاصيل
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="show-more">
+                        <button class="action-btn secondary" onclick="showAllCompleted()">
+                            عرض جميع الطلبات المكتملة (15)
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Audio Files -->
+    <audio id="new-order-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D1w3UpBSqBzPLUgTIHF2m+8eGFNggVZ7zz4o0+ChxStOXwsWIYBTV+yOLUtEoLF2e+8+OKOwkaVLLz5o0/CRhnvPLgij4JS6zq8bhhGQU2fszm4kIGBRZYqPHkhjEHF2eozOeTMqQVOKzqwXMaABRXn+bxpkUDDVqmz+OGMwcXaKbZ3JwlABFYnubzrE4LF2qzz+iGMwaUaKfO3JwlABJXnunnwH4bBRRUpqHjirUH" type="audio/wav">
+    </audio>
+    <audio id="order-ready-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D1w3UpBSqBzPLUgTIHF2m+8eGFNggVZ7zz4o0+ChxStOXwsWIYBTV+yOLUtEoLF2e+8+OKOwkaVLLz5o0/CRhnvPLgij4JS6zq8bhhGQU2fszm4kIGBRZYqPHkhjEHF2eozOeTMqQVOKzqwXMaABRXn+bxpkUDDVqmz+OGMwcXaKbZ3JwlABFYnubzrE4LF2qzz+iGMwaUaKfO3JwlABJXnunnwH4bBRRUpqHjirUH" type="audio/wav">
+    </audio>
+
+    <script>
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = now.toLocaleTimeString('ar-SA');
+            }
+        }
+
+        // تحديث العدادات التفاعلية
+        function updateTimers() {
+            const timers = document.querySelectorAll('.timer');
+            timers.forEach(timer => {
+                const currentTime = timer.textContent.split(':');
+                let minutes = parseInt(currentTime[0]);
+                let seconds = parseInt(currentTime[1]);
+                
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                }
+                
+                timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // تغيير لون التايمر حسب الوقت
+                if (minutes > 15) {
+                    timer.parentElement.style.color = '#dc3545';
+                } else if (minutes > 10) {
+                    timer.parentElement.style.color = '#ffc107';
+                } else {
+                    timer.parentElement.style.color = '#28a745';
+                }
+            });
+        }
+
+        // إظهار التنبيه
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                   type === 'error' ? 'exclamation-circle' : 
+                                   type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(notification);
+            
+            // إزالة التنبيه بعد 5 ثواني
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // دوال التفاعل مع الطلبات
+        function startPreparing(orderId) {
+            showNotification(`تم بدء تجهيز الطلب ${orderId}`, 'success');
+            // هنا يمكن إضافة منطق نقل الطلب لقائمة التجهيز
+        }
+
+        function markReady(orderId) {
+            showNotification(`الطلب ${orderId} جاهز للتسليم`, 'success');
+            // تشغيل صوت التنبيه
+            const readySound = document.getElementById('order-ready-sound');
+            if (readySound) readySound.play().catch(() => {});
+        }
+
+        function markCompleted(orderId) {
+            showNotification(`تم تسليم الطلب ${orderId} بنجاح`, 'success');
+        }
+
+        function refreshOrders() {
+            showNotification('جاري تحديث الطلبات...', 'info');
+            // محاكاة التحديث
+            setTimeout(() => {
+                showNotification('تم تحديث الطلبات بنجاح', 'success');
+            }, 1000);
+        }
+
+        function showReports() {
+            showNotification('جاري تحميل التقارير...', 'info');
+        }
+
+        function printDailyReport() {
+            showNotification('جاري إعداد التقرير للطباعة...', 'info');
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        function viewOrderDetails(orderId) {
+            showNotification(`عرض تفاصيل الطلب ${orderId}`, 'info');
+        }
+
+        function showAllCompleted() {
+            showNotification('عرض جميع الطلبات المكتملة...', 'info');
+        }
+
+        // تفعيل الفلاتر
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // إزالة active من جميع الأزرار
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // إضافة active للزر المحدد
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    showNotification(`تم تطبيق فلتر: ${this.textContent.trim()}`, 'info');
+                });
+            });
+
+            // بدء التحديثات
+            updateTime();
+            setInterval(updateTime, 1000);
+            setInterval(updateTimers, 1000);
+            
+            // رسالة ترحيب
+            setTimeout(() => {
+                showNotification('مرحباً! نظام تجهيز الأوردرات جاهز للعمل', 'success');
+            }, 500);
+        });
+
+        // منع إغلاق الصفحة بالخطأ
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = 'يوجد طلبات غير مكتملة. هل أنت متأكد من الخروج؟';
+        });
+
+        console.log('🎯 نظام تجهيز الأوردرات جاهز للعمل!');
+    </script>
+</body>
+</html>
